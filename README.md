@@ -1,7 +1,7 @@
 # WORK IN PROGRESS
-MPU9150 example meant to be used with Nordic's nRF51 3rd revision IC and SDK 10.0.0. 
+MPU9150 examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11. 
 
-This example, with its MPU9150 library, will also probably work with the MPU6050, but I have not tested it. Quote from Invensense:
+These examples, with the MPU9150 library, are tested only on MPU9150 and MPU9255. It will however probably work with e.g. the MPU6050 as the register maps seems to be the same for the entire MPUxxxx series. Quote from Invensense:
 
 <i>"The MPU-6050 is higher power, lower noise, and larger package versus the MPU-6500. Most of your code should port over, but some low power features are different and will need to be recoded in. Basic data acquisitions shouldn’t have changed.
 
