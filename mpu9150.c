@@ -7,6 +7,7 @@
 #include "nrf_drv_twi.h"
 #include "mpu9150.h"
 #include "mpu9150_register_map.h"
+#include "nrf_gpio.h"
 
 static nrf_drv_twi_t const * m_twi_instance;
 volatile static bool twi_tx_done = false;
@@ -18,13 +19,23 @@ void mpu9150_twi_event_handler(const nrf_drv_twi_evt_t *evt)
     switch(evt->type)
     {
         case NRF_DRV_TWI_EVT_DONE:
-            if(evt->xfer_desc.type == NRF_DRV_TWI_XFER_TX)
+            nrf_gpio_pin_toggle(24);
+            switch(evt->xfer_desc.type)
             {
-                twi_tx_done = true;
-            }
-            else if(evt->xfer_desc.type == NRF_DRV_TWI_XFER_RX)
-            {
-                twi_rx_done = true;
+                case NRF_DRV_TWI_XFER_TX:
+                    twi_tx_done = true;
+                    break;
+                case NRF_DRV_TWI_XFER_TXTX:
+                    twi_tx_done = true;
+                    break;
+                case NRF_DRV_TWI_XFER_RX:
+                    twi_rx_done = true;
+                    break;
+                case NRF_DRV_TWI_XFER_TXRX:
+                    twi_rx_done = true;
+                    break;
+                default:
+                    break;
             }
             break;
         case NRF_DRV_TWI_EVT_ADDRESS_NACK:
@@ -36,26 +47,60 @@ void mpu9150_twi_event_handler(const nrf_drv_twi_evt_t *evt)
     }      
 }
 
-
-static uint32_t mpu9150_write_burst(uint8_t reg, uint8_t const * p_data, uint32_t length)
+static void stupid_buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
 {
+    uint8_t *ptr_new_buffer;
+    uint8_t *ptr_data_place_holder;
+    
+    ptr_data_place_holder = p_data;
+    ptr_new_buffer = new_buffer;
+    *ptr_new_buffer = reg;
+    ptr_new_buffer++;
+    
+    for(int i = 0; i < length; i++)
+    {
+        *ptr_new_buffer = *ptr_data_place_holder;
+        ptr_new_buffer++;
+        ptr_data_place_holder++;
+    }
+}
+
+
+static uint32_t mpu9150_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
+{    
     uint32_t err_code;
     uint32_t timeout = MPU9150_TWI_TIMEOUT;
-
-    err_code = nrf_drv_twi_tx(m_twi_instance, MPU9150_ADDRESS, &reg, 1, true);
-    if(err_code != NRF_SUCCESS) return err_code;
+    
+    uint8_t buffer[20];
+    stupid_buffer_merger(buffer, reg, p_data, length);
+    
+    nrf_drv_twi_xfer_desc_t xfer_desc;
+    xfer_desc.address = MPU9150_ADDRESS;
+    xfer_desc.type = NRF_DRV_TWI_XFER_TX;
+    xfer_desc.primary_length = length + 1;
+    xfer_desc.p_primary_buf = buffer;
+    
+    err_code = nrf_drv_twi_xfer(m_twi_instance, &xfer_desc, 0);
     
     while((!twi_tx_done) && --timeout);  
     if(!timeout) return NRF_ERROR_TIMEOUT;
     twi_tx_done = false;
-    
-    err_code = nrf_drv_twi_tx(m_twi_instance, MPU9150_ADDRESS, p_data, length, false);
-    if(err_code != NRF_SUCCESS) return err_code;
-    
-    timeout = MPU9150_TWI_TIMEOUT;
-    while((!twi_tx_done) && --timeout);
-    if(!timeout) return NRF_ERROR_TIMEOUT;
-    twi_tx_done = false;
+   
+
+//    err_code = nrf_drv_twi_tx(m_twi_instance, MPU9150_ADDRESS, &reg, 1, true);
+//    if(err_code != NRF_SUCCESS) return err_code;
+//    
+//    while((!twi_tx_done) && timeout--);  
+//    if(!timeout) return NRF_ERROR_TIMEOUT;
+//    twi_tx_done = false;
+//    
+//    err_code = nrf_drv_twi_tx(m_twi_instance, MPU9150_ADDRESS, p_data, length, false);
+//    if(err_code != NRF_SUCCESS) return err_code;
+//    
+//    timeout = MPU9150_TWI_TIMEOUT;
+//    while((!twi_tx_done) && timeout--);
+//    if(!timeout) return NRF_ERROR_TIMEOUT;
+//    twi_tx_done = false;
     
     return err_code;
 }
@@ -130,10 +175,6 @@ uint32_t mpu9150_init(nrf_drv_twi_t const * const p_instance)
 {
     uint32_t err_code;
     m_twi_instance = p_instance;
-    
-    // Reset all registers
-    err_code = mpu9150_write_single(MPU9150_REG_PWR_MGMT_1, 0x80);
-    if(err_code != NRF_SUCCESS) return err_code;
     
     uint8_t reset_value = 7; // Resets gyro, accelerometer and temperature sensor signal paths.
     err_code = mpu9150_write_single(MPU9150_REG_SIGNAL_PATH_RESET, reset_value);

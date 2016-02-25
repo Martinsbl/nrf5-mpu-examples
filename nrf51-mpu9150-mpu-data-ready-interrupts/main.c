@@ -122,7 +122,7 @@ void mpu_init(void)
     
     // Setup and configure the MPU9150 with intial values
     mpu9150_config_t p_mpu_config = MPU9150_DEFAULT_CONFIG(); // Load default values
-    p_mpu_config.smplrt_div = 19;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
+    p_mpu_config.smplrt_div = 199;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
     err_code = mpu9150_config(&p_mpu_config); // Configure the MPU9150 with above values
     APP_ERROR_CHECK(err_code); // Check for errors in return value
@@ -170,11 +170,9 @@ static void gpiote_init(void)
  */
 int main(void)
 {
-    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
-    
     uint32_t err_code;
     uart_config();
-    printf("\033[2J\033[;HMPU9150 example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU9150 example with MPU generated data ready interrupts. Compiled @ %s\r\n", __TIME__);
     twi_init();
     gpiote_init();
     mpu_init();
@@ -182,22 +180,19 @@ int main(void)
     accel_values_t acc_values;
     uint32_t sample_number = 0;
     uint8_t int_source;
-    
+        
     while(1)
     {
         if(mpu_data_ready == true)
         {
-            // Read accelerometer sensor values
-//            mpu9150_read_int_source(&int_source);
-//            printf("0x%x\n\r", int_source);
+
             err_code = mpu9150_read_accel(&acc_values);
             APP_ERROR_CHECK(err_code);
             // Clear terminal and print values
-            //printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
+            printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
             mpu_data_ready = false;
             nrf_drv_gpiote_out_toggle(LED_2);
         }
-        //nrf_delay_ms(250);
     }
 }
 
