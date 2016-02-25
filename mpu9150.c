@@ -105,7 +105,7 @@ static uint32_t mpu9150_write_burst(uint8_t reg, uint8_t * p_data, uint32_t leng
     return err_code;
 }
 
-static uint32_t mpu9150_write_single(uint8_t reg, uint8_t data)
+uint32_t mpu9150_write_register(uint8_t reg, uint8_t data)
 {
     uint32_t err_code;
     uint32_t timeout = MPU9150_TWI_TIMEOUT;
@@ -159,14 +159,14 @@ uint32_t mpu9150_int_cfg_pin(mpu9150_int_pin_cfg_t *cfg)
 {
     uint8_t *data; 
     data = (uint8_t*)cfg;
-    return mpu9150_write_single(MPU9150_REG_INT_PIN_CFG, *data);
+    return mpu9150_write_register(MPU9150_REG_INT_PIN_CFG, *data);
 }
 
 uint32_t mpu9150_int_enable(mpu9150_int_enable_t *cfg)
 {
     uint8_t *data; 
     data = (uint8_t*)cfg;
-    return mpu9150_write_single(MPU9150_REG_INT_ENABLE, *data);
+    return mpu9150_write_register(MPU9150_REG_INT_ENABLE, *data);
 }
     
     
@@ -177,11 +177,11 @@ uint32_t mpu9150_init(nrf_drv_twi_t const * const p_instance)
     m_twi_instance = p_instance;
     
     uint8_t reset_value = 7; // Resets gyro, accelerometer and temperature sensor signal paths.
-    err_code = mpu9150_write_single(MPU9150_REG_SIGNAL_PATH_RESET, reset_value);
+    err_code = mpu9150_write_register(MPU9150_REG_SIGNAL_PATH_RESET, reset_value);
     if(err_code != NRF_SUCCESS) return err_code;
     
     // Chose  PLL with X axis gyroscope reference as clock source
-    err_code = mpu9150_write_single(MPU9150_REG_PWR_MGMT_1, 1);
+    err_code = mpu9150_write_register(MPU9150_REG_PWR_MGMT_1, 1);
     if(err_code != NRF_SUCCESS) return err_code;
     
     return NRF_SUCCESS;

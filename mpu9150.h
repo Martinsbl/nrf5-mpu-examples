@@ -180,12 +180,19 @@ void mpu9150_twi_event_handler(const nrf_drv_twi_evt_t *evt);
  */
 uint32_t mpu9150_init(nrf_drv_twi_t const * const p_instance);
 
+/**@brief Function for reading an arbitrary register
+ *
+ * @param[in]   reg             Register to write
+ * @param[in]   data            Value
+ * @retval      uint32_t        Error code
+ */
+uint32_t mpu9150_write_register(uint8_t reg, uint8_t data);
 
 /**@brief Function for reading arbitrary register(s)
  *
  * @param[in]   reg             Register to read
  * @param[in]   p_data          Pointer to place to store value(s)
- * @param[in]   p_data          Number of registers to read
+ * @param[in]   length          Number of registers to read
  * @retval      uint32_t        Error code
  */
 uint32_t mpu9150_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length);

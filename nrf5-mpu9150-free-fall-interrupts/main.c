@@ -31,7 +31,7 @@
 #define UART_RX_BUF_SIZE 1
 
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
-volatile bool mpu_data_ready = false;
+volatile bool mpu_free_fall_event = false;
 
 /**
  * @brief UART events handler.
@@ -122,7 +122,7 @@ void mpu_init(void)
     
     // Setup and configure the MPU9150 with intial values
     mpu9150_config_t p_mpu_config = MPU9150_DEFAULT_CONFIG(); // Load default values
-    p_mpu_config.smplrt_div = 199;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
+    p_mpu_config.smplrt_div = 9;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
     err_code = mpu9150_config(&p_mpu_config); // Configure the MPU9150 with above values
     APP_ERROR_CHECK(err_code); // Check for errors in return value
@@ -136,18 +136,18 @@ void mpu_init(void)
     
     // Enable the MPU interrupts
     mpu9150_int_enable_t p_int_enable = MPU9150_DEFAULT_INT_ENABLE_CONFIG();
-    p_int_enable.data_rdy_en = 1; // Trigger interrupt everytime new sensor values are available
+    p_int_enable.ff_en = 1; // Trigger interrupt on free fall
     err_code = mpu9150_int_enable(&p_int_enable); // Configure interrupts
     APP_ERROR_CHECK(err_code); // Check for errors in return value    
 }
 
 /**
- * @brief Simple interrupt handler setting a flag indicating that data is ready
+ * @brief Simple interrupt handler setting a flag indicating a free fall
  *
  */
 void int_pin_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-    mpu_data_ready = true;
+    mpu_free_fall_event = true;
 }
 
 /**
@@ -182,19 +182,32 @@ int main(void)
     gpiote_init();
     mpu_init();
     
+    
+    
+    uint8_t value;
+    
+    mpu9150_write_register(MPU9150_REG_FF_DUR, 0x01);
+    mpu9150_write_register(MPU9150_REG_FF_THR, 0xFF);
+    
+    mpu9150_read_registers(MPU9150_REG_FF_DUR, &value, 1);
+    printf("MPU9150_REG_FF_DUR: 0x%x\n\r", value);
+    
+    mpu9150_read_registers(MPU9150_REG_FF_THR, &value, 1);
+    printf("MPU9150_REG_FF_THR: 0x%x\r\n", value);
+    
     accel_values_t acc_values;
     uint32_t sample_number = 0;
         
     while(1)
     {
-        if(mpu_data_ready == true)
+        if(mpu_free_fall_event == true)
         {
 
             err_code = mpu9150_read_accel(&acc_values);
             APP_ERROR_CHECK(err_code);
             // Clear terminal and print values
-            printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
-            mpu_data_ready = false;
+            printf("\033[2J\033[;HFree fall # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
+            mpu_free_fall_event = false;
         }
     }
 }
