@@ -116,6 +116,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -144,34 +148,34 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>81</LineNumber>
+          <LineNumber>438</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>3582</Address>
+          <Address>7124</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Nordic_SDKs\11.0.0\examples\mpu9150\nrf51-mpu9150-mpu-data-ready-interrupts\mpu9150.c</Filename>
+          <Filename>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\nrf51422_xxac\../../mpu9150.c\81</Expression>
+          <Expression>\\nrf51422_xxac\../../../../../components/drivers_nrf/twi_master/nrf_drv_twi.c\438</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>79</LineNumber>
+          <LineNumber>938</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>3574</Address>
+          <Address>1068</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\Nordic_SDKs\11.0.0\examples\mpu9150\nrf51-mpu9150-mpu-data-ready-interrupts\mpu9150.c</Filename>
+          <Filename>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\nrf51422_xxac\../../mpu9150.c\79</Expression>
+          <Expression>\\nrf51422_xxac\../../../../../components/drivers_nrf/twi_master/nrf_drv_twi.c\938</Expression>
         </Bp>
       </Breakpoint>
       <Tracepoint>
@@ -219,7 +223,7 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\main.c</PathWithFileName>

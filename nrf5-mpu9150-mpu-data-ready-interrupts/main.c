@@ -179,7 +179,6 @@ int main(void)
     
     accel_values_t acc_values;
     uint32_t sample_number = 0;
-    uint8_t int_source;
         
     while(1)
     {
