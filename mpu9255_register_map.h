@@ -2,8 +2,8 @@
  *
  */
 
-#ifndef MPU_REG_MAP_H
-#define MPU_REG_MAP_H
+#ifndef MPU9255_REG_MAP_H
+#define MPU9255_REG_MAP_H
 
 
 #include <stdbool.h>
@@ -129,5 +129,5 @@
  *@}
  **/
 
-#endif /* MPU_H */
+#endif /* MPU9255_REG_MAP_H */
 

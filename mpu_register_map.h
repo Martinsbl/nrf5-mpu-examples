@@ -1,0 +1,21 @@
+/* 
+ *
+ */
+
+#ifndef MPU_REG_MAP_H
+#define MPU_REG_MAP_H
+
+#if defined(MPU60x0)
+    #include "mpu60x0_register_map.h"
+#elif defined(MPU9150)
+    #include "mpu9150_register_map.h"
+#elif defined(MPU9255)
+    #include "mpu9255_register_map.h"
+#endif
+
+/**
+ *@}
+ **/
+
+#endif /* MPU9255_REG_MAP_H */
+

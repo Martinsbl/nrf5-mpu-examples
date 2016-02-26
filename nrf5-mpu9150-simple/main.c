@@ -18,11 +18,11 @@
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
 #include "mpu9150.h"
-#include "mpu9150_register_map.h"
+#include "mpu_register_map.h"
 
 /*Pins to connect MPU. */
-#define MPU9150_TWI_SCL_PIN 1
-#define MPU9150_TWI_SDA_PIN 2
+#define MPU_TWI_SCL_PIN 1
+#define MPU_TWI_SDA_PIN 2
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
@@ -85,7 +85,7 @@ static void uart_config(void)
 void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
 {   
     // Pass TWI events down to the MPU driver.
-    mpu9150_twi_event_handler(p_event);
+    mpu_twi_event_handler(p_event);
 }
 
 /**
@@ -96,31 +96,31 @@ void twi_init(void)
 {
     ret_code_t err_code;
     
-    const nrf_drv_twi_config_t twi_mpu_9150_config = {
-       .scl                = MPU9150_TWI_SCL_PIN,
-       .sda                = MPU9150_TWI_SDA_PIN,
+    const nrf_drv_twi_config_t twi_mpu_config = {
+       .scl                = MPU_TWI_SCL_PIN,
+       .sda                = MPU_TWI_SDA_PIN,
        .frequency          = NRF_TWI_FREQ_400K,
        .interrupt_priority = APP_IRQ_PRIORITY_HIGH
     };
     
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_9150_config, twi_handler, NULL);
+    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
     APP_ERROR_CHECK(err_code);
     
     nrf_drv_twi_enable(&m_twi_instance);
 }
 
-void mpu_init(void)
+void mpu_setup(void)
 {
     ret_code_t ret_code;
-    // Initiate MPU9150 driver with TWI instance handler
-    ret_code = mpu9150_init(&m_twi_instance);
+    // Initiate MPU driver with TWI instance handler
+    ret_code = mpu_init(&m_twi_instance);
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
-    // Setup and configure the MPU9150 with intial values
-    mpu9150_config_t p_mpu_config = MPU9150_DEFAULT_CONFIG(); // Load default values
+    // Setup and configure the MPU with intial values
+    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
     p_mpu_config.smplrt_div = 19;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
-    ret_code = mpu9150_config(&p_mpu_config); // Configure the MPU9150 with above values
+    ret_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(ret_code); // Check for errors in return value 
 }
 
@@ -131,9 +131,9 @@ int main(void)
 {
     uint32_t err_code;
     uart_config();
-    printf("\033[2J\033[;HMPU9150 example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU example. Compiled @ %s\r\n", __TIME__);
     twi_init();
-    mpu_init();
+    mpu_setup();
     
     
     
@@ -142,7 +142,7 @@ int main(void)
     while(1)
     {
         // Read accelerometer sensor values
-        err_code = mpu9150_read_accel(&acc_values);
+        err_code = mpu_read_accel(&acc_values);
         APP_ERROR_CHECK(err_code);
         // Clear terminal and print values
         printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);

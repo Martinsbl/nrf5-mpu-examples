@@ -2,19 +2,20 @@
  *
  */
 
-#ifndef MPU9150_H
-#define MPU9150_H
+#ifndef MPU_H
+#define MPU_H
 
 
 #include <stdbool.h>
 #include <stdint.h>
 #include "nrf_drv_twi.h"
 
-#define MPU9150_TWI_TIMEOUT 5000 
-#define MPU9150_ADDRESS     0x68 
+#define MPU_TWI_TIMEOUT 5000 
+#define MPU_ADDRESS     0x68 
 
-#define MPU9150_MPU9150_BASE_NUM    0x4000
-#define MPU9150_SUCCESS             (MPU9150_MPU9150_BASE_NUM + 0)
+#define MPU_MPU_BASE_NUM    0x4000
+#define MPU_SUCCESS             (MPU_MPU_BASE_NUM + 0)
+#define MPU_BAD_PARAMETER       (MPU_MPU_BASE_NUM + 1)
 
 #if defined(MPU9150)
     #define MPU_MG_PR_LSB_FF_THR    32
@@ -102,10 +103,10 @@ typedef struct
     sync_dlpf_config_t  sync_dlpf_gonfig;   // Digital low pass fileter and external Frame Synchronization (FSYNC) configuration structure
     gyro_config_t       gyro_config;        // Gyro configuration structure
     accel_config_t      accel_config;       // Accelerometer configuration structure
-}mpu9150_config_t;
+}mpu_config_t;
 
 /**@brief MPU9150 instance default configuration. */
-#define MPU9150_DEFAULT_CONFIG()                          \
+#define MPU_DEFAULT_CONFIG()                          \
     {                                                     \
         .smplrt_div                     = 7,              \
         .sync_dlpf_gonfig.dlpf_cfg      = 1,              \
@@ -129,10 +130,10 @@ typedef struct
     uint8_t latch_int_en    :1;  // When this bit is equal to 0, the INT pin emits a 50us long pulse. When this bit is equal to 1, the INT pin is held high until the interrupt is cleared.
     uint8_t int_open        :1;  // When this bit is equal to 0, the INT pin is configured as push-pull. When this bit is equal to 1, the INT pin is configured as open drain.
     uint8_t int_level       :1; // When this bit is equal to 0, the logic level for the INT pin is active high. When this bit is equal to 1, the logic level for the INT pin is active low.
-}mpu9150_int_pin_cfg_t;
+}mpu_int_pin_cfg_t;
 
 /**@brief MPU9150 interrupt pin default configuration. */
-#define MPU9150_DEFAULT_INT_PIN_CONFIG()    \
+#define MPU_DEFAULT_INT_PIN_CONFIG()    \
 {                                       \
     .clkout_en          = 0,    \
     .i2c_bypass_en      = 0,    \
@@ -154,10 +155,10 @@ typedef struct
     uint8_t zmot_en         :1; // When set to 1, this bit enables Zero Motion detection to generate an interrupt.
     uint8_t mot_en          :1; // When set to 1, this bit enables Motion detection to generate an interrupt.
     uint8_t ff_en           :1; // When set to 1, this bit enables Free Fall detection to generate an interrupt.
-}mpu9150_int_enable_t;
+}mpu_int_enable_t;
 
 /**@brief MPU9150 interrupt sources default configuration. */
-#define MPU9150_DEFAULT_INT_ENABLE_CONFIG() \
+#define MPU_DEFAULT_INT_ENABLE_CONFIG() \
 {                           \
     .data_rdy_en    = 0,    \
     .i2c_mst_int_en = 0,    \
@@ -172,7 +173,7 @@ typedef struct
  * @param[in]   evt             TWI driver event
  * @retval      uint32_t        Error code
  */
-void mpu9150_twi_event_handler(const nrf_drv_twi_evt_t *evt);
+void mpu_twi_event_handler(const nrf_drv_twi_evt_t *evt);
   
 
 /**@brief Function for initiating MPU and MPU library
@@ -186,7 +187,7 @@ void mpu9150_twi_event_handler(const nrf_drv_twi_evt_t *evt);
  * @param[in]   p_instance      Instance of nRF5x TWI module
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_init(nrf_drv_twi_t const * const p_instance);
+uint32_t mpu_init(nrf_drv_twi_t const * const p_instance);
 
 /**@brief Function for reading an arbitrary register
  *
@@ -194,7 +195,7 @@ uint32_t mpu9150_init(nrf_drv_twi_t const * const p_instance);
  * @param[in]   data            Value
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_write_register(uint8_t reg, uint8_t data);
+uint32_t mpu_write_register(uint8_t reg, uint8_t data);
 
 /**@brief Function for reading arbitrary register(s)
  *
@@ -203,7 +204,7 @@ uint32_t mpu9150_write_register(uint8_t reg, uint8_t data);
  * @param[in]   length          Number of registers to read
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length);
+uint32_t mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length);
     
 
 /**@brief Function for basic configuring of the MPU
@@ -224,7 +225,7 @@ uint32_t mpu9150_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length);
  * @param[in]   config          Pointer to configuration structure
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_config(mpu9150_config_t * config);
+uint32_t mpu_config(mpu_config_t * config);
 
 
 /**@brief Function for configuring the behaviour of the interrupt pin of the MPU
@@ -232,7 +233,7 @@ uint32_t mpu9150_config(mpu9150_config_t * config);
  * @param[in]   config          Pointer to configuration structure
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_int_cfg_pin(mpu9150_int_pin_cfg_t *cfg);
+uint32_t mpu_int_cfg_pin(mpu_int_pin_cfg_t *cfg);
 
 
 /**@brief Function for eneabling interrupts sources in MPU
@@ -240,7 +241,7 @@ uint32_t mpu9150_int_cfg_pin(mpu9150_int_pin_cfg_t *cfg);
  * @param[in]   config          Pointer to configuration structure
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_int_enable(mpu9150_int_enable_t *cfg);
+uint32_t mpu_int_enable(mpu_int_enable_t *cfg);
     
 
 /**@brief Function for reading MPU accelerometer data.
@@ -248,7 +249,7 @@ uint32_t mpu9150_int_enable(mpu9150_int_enable_t *cfg);
  * @param[in]   accel_values    Pointer to variable to hold accelerometer data
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_read_accel(accel_values_t * accel_values);
+uint32_t mpu_read_accel(accel_values_t * accel_values);
 
 
 /**@brief Function for reading MPU gyroscope data.
@@ -256,7 +257,7 @@ uint32_t mpu9150_read_accel(accel_values_t * accel_values);
  * @param[in]   gyro_values     Pointer to variable to hold gyroscope data
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_read_gyro(gyro_values_t * gyro_values);
+uint32_t mpu_read_gyro(gyro_values_t * gyro_values);
 
 
 /**@brief Function for reading MPU temperature data.
@@ -264,19 +265,19 @@ uint32_t mpu9150_read_gyro(gyro_values_t * gyro_values);
  * @param[in]   temp_values     Pointer to variable to hold temperature data
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_read_temp(temp_value_t * temp_values);
+uint32_t mpu_read_temp(temp_value_t * temp_values);
 
 /**@brief Function for reading the source of the MPU generated interrupts.
  *
  * @param[in]   int_source      Pointer to variable to hold interrupt source
  * @retval      uint32_t        Error code
  */
-uint32_t mpu9150_read_int_source(uint8_t * int_source);
+uint32_t mpu_read_int_source(uint8_t * int_source);
 
 
-uint32_t mpu9150_set_ff_threshold(uint8_t mg);
+uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
 
-#endif /* MPU9150_H */
+#endif /* MPU_H */
 
 /**
   @}

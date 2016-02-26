@@ -18,13 +18,13 @@
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
 #include "mpu9150.h"
-#include "mpu9150_register_map.h"
+#include "mpu_register_map.h"
 #include "nrf_drv_gpiote.h"
 
 /*Pins to connect MPU. */
-#define MPU9150_TWI_SCL_PIN     1
-#define MPU9150_TWI_SDA_PIN     2
-#define MPU9150_MPU_INT_PIN     3
+#define MPU_TWI_SCL_PIN     1
+#define MPU_TWI_SDA_PIN     2
+#define MPU_MPU_INT_PIN     3
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
@@ -89,7 +89,7 @@ static void uart_config(void)
 void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
 {   
     // Pass TWI events down to the MPU driver.
-    mpu9150_twi_event_handler(p_event);
+    mpu_twi_event_handler(p_event);
 }
 
 /**
@@ -100,44 +100,46 @@ void twi_init(void)
 {
     uint32_t err_code;
     
-    const nrf_drv_twi_config_t twi_mpu_9150_config = {
-       .scl                = MPU9150_TWI_SCL_PIN,
-       .sda                = MPU9150_TWI_SDA_PIN,
+    const nrf_drv_twi_config_t twi_mpu_config = {
+       .scl                = MPU_TWI_SCL_PIN,
+       .sda                = MPU_TWI_SDA_PIN,
        .frequency          = NRF_TWI_FREQ_400K,
        .interrupt_priority = APP_IRQ_PRIORITY_HIGH
     };
     
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_9150_config, twi_handler, NULL);
+    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
     APP_ERROR_CHECK(err_code);
     
     nrf_drv_twi_enable(&m_twi_instance);
 }
 
-void mpu_init(void)
+void mpu_setup(void)
 {
     uint32_t err_code;
-    // Initiate MPU9150 driver with TWI instance handler
-    err_code = mpu9150_init(&m_twi_instance);
+    // Initiate MPU driver with TWI instance handler
+    err_code = mpu_init(&m_twi_instance);
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
-    // Setup and configure the MPU9150 with intial values
-    mpu9150_config_t p_mpu_config = MPU9150_DEFAULT_CONFIG(); // Load default values
+    // Setup and configure the MPU with intial values
+    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
     p_mpu_config.smplrt_div = 9;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_16G; // Set accelerometer full scale range to 2G
-    err_code = mpu9150_config(&p_mpu_config); // Configure the MPU9150 with above values
+    err_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
     
     // This is a way to configure the interrupt pin behaviour
-    mpu9150_int_pin_cfg_t p_int_pin_cfg = MPU9150_DEFAULT_INT_PIN_CONFIG(); // Default configurations
+    mpu_int_pin_cfg_t p_int_pin_cfg = MPU_DEFAULT_INT_PIN_CONFIG(); // Default configurations
     p_int_pin_cfg.int_rd_clear = 1; // When this bit is equal to 1, interrupt status bits are cleared on any read operation
-    err_code = mpu9150_int_cfg_pin(&p_int_pin_cfg); // Configure pin behaviour
+    err_code = mpu_int_cfg_pin(&p_int_pin_cfg); // Configure pin behaviour
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
+    mpu_config_ff_detection(900, 1);
+    
     // Enable the MPU interrupts
-    mpu9150_int_enable_t p_int_enable = MPU9150_DEFAULT_INT_ENABLE_CONFIG();
+    mpu_int_enable_t p_int_enable = MPU_DEFAULT_INT_ENABLE_CONFIG();
     p_int_enable.ff_en = 1; // Trigger interrupt on free fall
-    err_code = mpu9150_int_enable(&p_int_enable); // Configure interrupts
+    err_code = mpu_int_enable(&p_int_enable); // Configure interrupts
     APP_ERROR_CHECK(err_code); // Check for errors in return value    
 }
 
@@ -152,7 +154,7 @@ void int_pin_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 
 /**
  * @brief Function for initiating the GPIOTE module and enable the 
- * nRF5 to trigger an interrupt on a Low-To-High event on pin MPU9150_MPU_INT_PIN
+ * nRF5 to trigger an interrupt on a Low-To-High event on pin MPU_MPU_INT_PIN
  *
  */
 static void gpiote_init(void)
@@ -164,10 +166,10 @@ static void gpiote_init(void)
     
     nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_LOTOHI(true);
 
-    err_code = nrf_drv_gpiote_in_init(MPU9150_MPU_INT_PIN, &in_config, int_pin_handler);
+    err_code = nrf_drv_gpiote_in_init(MPU_MPU_INT_PIN, &in_config, int_pin_handler);
     APP_ERROR_CHECK(err_code);
 
-    nrf_drv_gpiote_in_event_enable(MPU9150_MPU_INT_PIN, true);
+    nrf_drv_gpiote_in_event_enable(MPU_MPU_INT_PIN, true);
 }
 
 /**
@@ -177,23 +179,23 @@ int main(void)
 {
     uint32_t err_code;
     uart_config();
-    printf("\033[2J\033[;HMPU9150 example with MPU generated data ready interrupts. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU example with MPU generated data ready interrupts. Compiled @ %s\r\n", __TIME__);
     twi_init();
     gpiote_init();
-    mpu_init();
+    mpu_setup();
     
     
     
     uint8_t value;
     
-    mpu9150_write_register(MPU9150_REG_FF_DUR, 0x01);
-    mpu9150_write_register(MPU9150_REG_FF_THR, 0xFF);
+    mpu_read_registers(MPU_REG_FF_DUR, &value, 1);
+    printf("MPU_REG_FF_DUR: 0x%x\n\r", value);
     
-    mpu9150_read_registers(MPU9150_REG_FF_DUR, &value, 1);
-    printf("MPU9150_REG_FF_DUR: 0x%x\n\r", value);
+    mpu_read_registers(MPU_REG_FF_THR, &value, 1);
+    printf("MPU_REG_FF_THR: 0x%x\r\n", value);
     
-    mpu9150_read_registers(MPU9150_REG_FF_THR, &value, 1);
-    printf("MPU9150_REG_FF_THR: 0x%x\r\n", value);
+    mpu_read_registers(MPU_REG_INT_ENABLE, &value, 1);
+    printf("MPU_REG_INT_ENABLE: 0x%x\r\n", value);
     
     accel_values_t acc_values;
     uint32_t sample_number = 0;
@@ -203,7 +205,7 @@ int main(void)
         if(mpu_free_fall_event == true)
         {
 
-            err_code = mpu9150_read_accel(&acc_values);
+            err_code = mpu_read_accel(&acc_values);
             APP_ERROR_CHECK(err_code);
             // Clear terminal and print values
             printf("\033[2J\033[;HFree fall # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
