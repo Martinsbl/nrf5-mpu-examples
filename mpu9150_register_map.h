@@ -2,9 +2,16 @@
  *
  */
 
-#ifndef MPU_REG_MAP_H
-#define MPU_REG_MAP_H
+#ifndef MPU9150_REG_MAP_H
+#define MPU9150_REG_MAP_H
 
+ // NOT ACCURATE AND TRUSTWORTHY
+ // NOT ACCURATE AND TRUSTWORTHY
+ // NOT ACCURATE AND TRUSTWORTHY
+ // NOT ACCURATE AND TRUSTWORTHY
+ // NOT ACCURATE AND TRUSTWORTHY
+ // NOT ACCURATE AND TRUSTWORTHY
+ // MUST BE UPDATED
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -129,5 +136,5 @@
  *@}
  **/
 
-#endif /* MPU_H */
+#endif /* MPU9150_REG_MAP_H */
 
