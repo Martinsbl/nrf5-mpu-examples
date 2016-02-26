@@ -123,7 +123,7 @@ void mpu_init(void)
     // Setup and configure the MPU9150 with intial values
     mpu9150_config_t p_mpu_config = MPU9150_DEFAULT_CONFIG(); // Load default values
     p_mpu_config.smplrt_div = 9;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
-    p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
+    p_mpu_config.accel_config.afs_sel = AFS_16G; // Set accelerometer full scale range to 2G
     err_code = mpu9150_config(&p_mpu_config); // Configure the MPU9150 with above values
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
@@ -211,5 +211,7 @@ int main(void)
         }
     }
 }
+
+
 
 /** @} */

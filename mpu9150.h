@@ -16,6 +16,14 @@
 #define MPU9150_MPU9150_BASE_NUM    0x4000
 #define MPU9150_SUCCESS             (MPU9150_MPU9150_BASE_NUM + 0)
 
+#if defined(MPU9150)
+    #define MPU_MG_PR_LSB_FF_THR    32
+#elif defined(MPU9255)
+    #define MPU_MG_PR_LSB_FF_THR    4
+#elif defined(MPU60x0)
+    #define MPU_MG_PR_LSB_FF_THR    1
+#endif
+
 /**@brief Enum defining Accelerometer's Full Scale range posibillities in Gs. */
 enum accel_range {
   AFS_2G = 0,       // 2 G
@@ -264,6 +272,9 @@ uint32_t mpu9150_read_temp(temp_value_t * temp_values);
  * @retval      uint32_t        Error code
  */
 uint32_t mpu9150_read_int_source(uint8_t * int_source);
+
+
+uint32_t mpu9150_set_ff_threshold(uint8_t mg);
 
 #endif /* MPU9150_H */
 

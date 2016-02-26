@@ -242,6 +242,13 @@ uint32_t mpu9150_read_int_source(uint8_t * int_source)
     return mpu9150_read_registers(MPU9150_REG_INT_STATUS, int_source, 1);
 }
 
+uint32_t mpu9150_set_ff_threshold(uint8_t mg)
+{
+    uint8_t threshold = (uint8_t)(mg/MPU_MG_PR_LSB_FF_THR);
+    
+    return mpu9150_write_register(MPU9150_REG_FF_THR, mg);
+}
+
 /**
   @}
 */
