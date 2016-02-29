@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "nrf_drv_twi.h"
-#include "mpu9150.h"
+#include "mpu.h"
 #include "mpu_register_map.h"
 #include "nrf_gpio.h"
 
