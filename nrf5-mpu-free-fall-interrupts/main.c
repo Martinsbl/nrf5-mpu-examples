@@ -21,6 +21,10 @@
 #include "mpu_register_map.h"
 #include "nrf_drv_gpiote.h"
 
+#if defined(MPU9255)
+    #error "This example doesn't work on MPU9255!"
+#endif
+
 /*Pins to connect MPU. */
 #define MPU_TWI_SCL_PIN     1
 #define MPU_TWI_SDA_PIN     2
@@ -134,7 +138,7 @@ void mpu_setup(void)
     err_code = mpu_int_cfg_pin(&p_int_pin_cfg); // Configure pin behaviour
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
-    mpu_config_ff_detection(900, 1);
+    mpu_config_ff_detection(900, 2);
     
     // Enable the MPU interrupts
     mpu_int_enable_t p_int_enable = MPU_DEFAULT_INT_ENABLE_CONFIG();
@@ -179,7 +183,7 @@ int main(void)
 {
     uint32_t err_code;
     uart_config();
-    printf("\033[2J\033[;HMPU example with MPU generated data ready interrupts. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU example with MPU generated free fall interrupts. Compiled @ %s\r\n", __TIME__);
     twi_init();
     gpiote_init();
     mpu_setup();
@@ -188,12 +192,7 @@ int main(void)
     
     uint8_t value;
     
-    mpu_read_registers(MPU_REG_FF_DUR, &value, 1);
-    printf("MPU_REG_FF_DUR: 0x%x\n\r", value);
-    
-    mpu_read_registers(MPU_REG_FF_THR, &value, 1);
-    printf("MPU_REG_FF_THR: 0x%x\r\n", value);
-    
+   
     mpu_read_registers(MPU_REG_INT_ENABLE, &value, 1);
     printf("MPU_REG_INT_ENABLE: 0x%x\r\n", value);
     
