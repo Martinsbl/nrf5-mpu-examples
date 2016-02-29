@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'nrf5-mpu9150-mpu-data-ready-interrupts' 
+ * Project: 'nrf5-mpu-free-fall-interrupts' 
  * Target:  'nrf51422_xxac' 
  */
 

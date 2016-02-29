@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'nrf5-mpu9150-simple' 
+ * Project: 'nrf5-mpu-simple' 
  * Target:  'nrf51422_xxac' 
  */
 
