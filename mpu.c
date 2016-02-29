@@ -242,6 +242,7 @@ uint32_t mpu_read_int_source(uint8_t * int_source)
     return mpu_read_registers(MPU_REG_INT_STATUS, int_source, 1);
 }
 
+#if defined(MPU9150)
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
 {
     uint32_t err_code;
@@ -253,6 +254,7 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
     
     return mpu_write_register(MPU_REG_FF_DUR, duration);
 }
+#endif
 
 /**
   @}

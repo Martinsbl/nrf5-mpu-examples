@@ -70,33 +70,70 @@ typedef struct
 /**@brief Simple typedef to hold temperature values */
 typedef int16_t temp_value_t;
 
-/**@brief MPU9150 driver digital low pass fileter and external Frame Synchronization (FSYNC) pin sampling configuration structure */
+/**@brief MPU driver digital low pass fileter and external Frame Synchronization (FSYNC) pin sampling configuration structure */
 typedef struct
 {
     uint8_t dlpf_cfg     :3; // 3-bit unsigned value. Configures the Digital Low Pass Filter setting.
     uint8_t ext_sync_set :3; // 3-bit unsigned value. Configures the external Frame Synchronization (FSYNC) pin sampling.
+#if defined(MPU9255)
+    uint8_t fifo_mode    :1; // When set to ‘1’, when the fifo is full, additional writes will not be written to fifo. When set to ‘0’, when the fifo is full, additional writes will be written to the fifo, replacing the oldest data.
+    uint8_t              :1;
+#else
     uint8_t              :2;
+#endif
 }sync_dlpf_config_t;
 
-/**@brief MPU9150 driver gyro configuration structure. */
+/**@brief MPU driver gyro configuration structure. */
 typedef struct
 {
+#if defined(MPU9255)
+    uint8_t f_choice        :2;
+    uint8_t                 :1;
+#else
     uint8_t                 :3;
+#endif
     uint8_t fs_sel          :2; // FS_SEL 2-bit unsigned value. Selects the full scale range of gyroscopes.
+    
+#if defined(MPU9255)
+    uint8_t gz_st           :1;
+    uint8_t gy_st           :1;
+    uint8_t gx_st           :1;
+#else
     uint8_t                 :3;
+#endif
 }gyro_config_t;
 
-/**@brief MPU9150 driver accelerometer configuration structure. */
+/**@brief MPU driver accelerometer configuration structure. */
 typedef struct
 {
+#if defined(MPU9255)
+    uint8_t                 :3;
+#else
     uint8_t accel_hpf       :3; // 3-bit unsigned value. Selects the Digital High Pass Filter configuration.
+#endif
     uint8_t afs_sel         :2; // 2-bit unsigned value. Selects the full scale range of accelerometers.
     uint8_t za_st           :1; // When set to 1, the Z- Axis accelerometer performs self test.
     uint8_t ya_st           :1; // When set to 1, the Y- Axis accelerometer performs self test.
     uint8_t xa_st           :1; // When set to 1, the X- Axis accelerometer performs self test.
 }accel_config_t;
 
-/**@brief MPU9150 driver general configuration structure. */
+#if defined(MPU9255)
+/**@brief MPU9255 driver accelerometer second configuration structure. */
+typedef struct
+{
+    uint8_t a_dlpf_cfg      :2; // 3-bit unsigned value. Selects the Digital High Pass Filter configuration.
+    uint8_t accel_f_choice_b :2; // 2-bit unsigned value. Selects the full scale range of accelerometers.
+    uint8_t                 :4;
+}accel_config_2_t;
+
+#define MPU_DEFAULT_2_CONFIG()                          \
+    {                                                     \
+        .a_dlpf_cfg             = 0,              \
+        .accel_f_choice_b       = 0,              \
+    }
+#endif
+
+/**@brief MPU driver general configuration structure. */
 typedef struct
 {
     uint8_t             smplrt_div;         // Divider from the gyroscope output rate used to generate the Sample Rate for the MPU-9150. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV)
@@ -105,7 +142,24 @@ typedef struct
     accel_config_t      accel_config;       // Accelerometer configuration structure
 }mpu_config_t;
 
-/**@brief MPU9150 instance default configuration. */
+#if defined(MPU9255) 
+#define MPU_DEFAULT_CONFIG()                          \
+    {                                                     \
+        .smplrt_div                     = 7,              \
+        .sync_dlpf_gonfig.dlpf_cfg      = 1,              \
+        .sync_dlpf_gonfig.ext_sync_set  = 0,              \
+        .gyro_config.fs_sel             = GFS_2000DPS,    \
+        .gyro_config.f_choice           = 0,              \
+        .gyro_config.gz_st              = 0,              \
+        .gyro_config.gy_st              = 0,              \
+        .gyro_config.gx_st              = 0,              \
+        .accel_config.afs_sel           = AFS_16G,        \
+        .accel_config.za_st             = 0,              \
+        .accel_config.ya_st             = 0,              \
+        .accel_config.xa_st             = 0,              \
+    }
+#else
+/**@brief MPU instance default configuration. */
 #define MPU_DEFAULT_CONFIG()                          \
     {                                                     \
         .smplrt_div                     = 7,              \
@@ -118,8 +172,9 @@ typedef struct
         .accel_config.ya_st             = 0,              \
         .accel_config.xa_st             = 0,              \
     }
+#endif
  
-/**@brief MPU9150 driver interrupt pin configuration structure. */    
+/**@brief MPU driver interrupt pin configuration structure. */    
 typedef struct
 {
     uint8_t clkout_en       :1;  // When this bit is equal to 1, a reference clock output is provided at the CLKOUT pin. When this bit is equal to 0, the clock output is disabled. For further information regarding CLKOUT, please refer to the MPU-9150 Product Specification document.
@@ -132,7 +187,7 @@ typedef struct
     uint8_t int_level       :1; // When this bit is equal to 0, the logic level for the INT pin is active high. When this bit is equal to 1, the logic level for the INT pin is active low.
 }mpu_int_pin_cfg_t;
 
-/**@brief MPU9150 interrupt pin default configuration. */
+/**@brief MPU interrupt pin default configuration. */
 #define MPU_DEFAULT_INT_PIN_CONFIG()    \
 {                                       \
     .clkout_en          = 0,    \
@@ -145,7 +200,7 @@ typedef struct
     .int_level          = 0,    \
 }
 
-/**@brief MPU9150 driver interrupt source configuration structure. */
+/**@brief MPU driver interrupt source configuration structure. */
 typedef struct
 {
     uint8_t data_rdy_en     :1; // When set to 1, this bit enables the Data Ready interrupt, which occurs each time a write operation to all of the sensor registers has been completed.
@@ -157,7 +212,7 @@ typedef struct
     uint8_t ff_en           :1; // When set to 1, this bit enables Free Fall detection to generate an interrupt.
 }mpu_int_enable_t;
 
-/**@brief MPU9150 interrupt sources default configuration. */
+/**@brief MPU interrupt sources default configuration. */
 #define MPU_DEFAULT_INT_ENABLE_CONFIG() \
 {                           \
     .data_rdy_en    = 0,    \
@@ -210,7 +265,7 @@ uint32_t mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length);
 /**@brief Function for basic configuring of the MPU
  * 
  * Register 25 � Sample Rate Divider SMPRT_DIV. This register specifies 
- * the divider from the gyroscope output rate used to generate the Sample Rate for the MPU-9150.
+ * the divider from the gyroscope output rate used to generate the Sample Rate for the MPU.
  * 
  * Register 26 � Configuration CONFIG. This register configures 
  * the external Frame Synchronization (FSYNC) pin sampling and the Digital Low Pass Filter (DLPF) 
@@ -274,8 +329,9 @@ uint32_t mpu_read_temp(temp_value_t * temp_values);
  */
 uint32_t mpu_read_int_source(uint8_t * int_source);
 
-
+#if defined(MPU9150)
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
+#endif
 
 #endif /* MPU_H */
 
