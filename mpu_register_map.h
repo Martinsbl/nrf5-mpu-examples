@@ -11,6 +11,8 @@
     #include "mpu9150_register_map.h"
 #elif defined(MPU9255)
     #include "mpu9255_register_map.h"
+#else 
+    #error "No MPU defined. Please define MPU in Target Options C/C++ Defines"
 #endif
 
 /**

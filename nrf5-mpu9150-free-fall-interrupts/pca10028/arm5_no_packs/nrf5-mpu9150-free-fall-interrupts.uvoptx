@@ -116,6 +116,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -144,36 +148,27 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>438</LineNumber>
+          <LineNumber>251</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>7124</Address>
+          <Address>4424</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</Filename>
+          <Filename>..\..\..\mpu9150.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\nrf51422_xxac\../../../../../components/drivers_nrf/twi_master/nrf_drv_twi.c\438</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>938</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>1068</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\nrf51422_xxac\../../../../../components/drivers_nrf/twi_master/nrf_drv_twi.c\938</Expression>
+          <Expression>\\nrf51422_xxac\../../../mpu9150.c\251</Expression>
         </Bp>
       </Breakpoint>
+      <WatchWindow1>
+        <Ww>
+          <count>0</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>threshold</ItemText>
+        </Ww>
+      </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
