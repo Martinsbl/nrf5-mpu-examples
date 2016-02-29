@@ -17,22 +17,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MPU_REG_XGOFFS_TC        0x00
-#define MPU_REG_YGOFFS_TC        0x01                                                                          
-#define MPU_REG_ZGOFFS_TC        0x02
-#define MPU_REG_X_FINE_GAIN      0x03
-#define MPU_REG_Y_FINE_GAIN      0x04
-#define MPU_REG_Z_FINE_GAIN      0x05
-#define MPU_REG_XA_OFFSET_H      0x06
-#define MPU_REG_XA_OFFSET_L_TC   0x07
-#define MPU_REG_YA_OFFSET_H      0x08
-#define MPU_REG_YA_OFFSET_L_TC   0x09
-#define MPU_REG_ZA_OFFSET_H      0x0A
-#define MPU_REG_ZA_OFFSET_L_TC   0x0B
-#define MPU_REG_SELF_TEST_X      0x0D
-#define MPU_REG_SELF_TEST_Y      0x0E    
-#define MPU_REG_SELF_TEST_Z      0x0F
-#define MPU_REG_SELF_TEST_A      0x10
+#define MPU_REG_X_SELF_TEST_X_GYRO       0x00
+#define MPU_REG_X_SELF_TEST_Y_GYRO       0x01                                                                          
+#define MPU_REG_X_SELF_TEST_Z_GYRO       0x02
+#define MPU_REG_X_SELF_TEST_X_ACCEL      0x0D
+#define MPU_REG_X_SELF_TEST_Y_ACCEL      0x0E
+#define MPU_REG_X_SELF_TEST_Z_ACCEL      0x0F
+
 #define MPU_REG_XG_OFFS_USRH     0x13
 #define MPU_REG_XG_OFFS_USRL     0x14
 #define MPU_REG_YG_OFFS_USRH     0x15
@@ -43,12 +34,10 @@
 #define MPU_REG_CONFIG           0x1A
 #define MPU_REG_GYRO_CONFIG      0x1B
 #define MPU_REG_ACCEL_CONFIG     0x1C
-#define MPU_REG_FF_THR           0x1D
-#define MPU_REG_FF_DUR           0x1E
-#define MPU_REG_MOT_THR          0x1F
-#define MPU_REG_MOT_DUR          0x20
-#define MPU_REG_ZMOT_THR         0x21
-#define MPU_REG_ZRMOT_DUR        0x22
+#define MPU_REG_ACCEL_CONFIG_2   0x1D
+#define MPU_REG_LP_ACCEL_ODR     0x1E
+#define MPU_REG_WOM_THR          0x1F
+
 #define MPU_REG_FIFO_EN          0x23
 #define MPU_REG_I2C_MST_CTRL     0x24   
 #define MPU_REG_I2C_SLV0_ADDR    0x25
@@ -71,7 +60,7 @@
 #define MPU_REG_I2C_MST_STATUS   0x36
 #define MPU_REG_INT_PIN_CFG      0x37
 #define MPU_REG_INT_ENABLE       0x38
-#define MPU_REG_DMP_INT_STATUS   0x39
+
 #define MPU_REG_INT_STATUS       0x3A
 #define MPU_REG_ACCEL_XOUT_H     0x3B
 #define MPU_REG_ACCEL_XOUT_L     0x3C
@@ -130,7 +119,7 @@
 #define MPU_REG_FIFO_COUNTH      0x72
 #define MPU_REG_FIFO_COUNTL      0x73
 #define MPU_REG_FIFO_R_W         0x74
-#define MPU_REG_WHO_AM_I_MPU9150 0x75
+#define MPU_REG_WHO_AM_I_        0x75
 
 
 /**
