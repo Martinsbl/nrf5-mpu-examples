@@ -47,7 +47,9 @@ void mpu_twi_event_handler(const nrf_drv_twi_evt_t *evt)
     }      
 }
 
-static void stupid_buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
+// The new TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
+// Hence we need to merge the MPU register address with the buffer and transmit all as one transmission  
+static void buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     uint8_t *ptr_new_buffer;
     uint8_t *ptr_data_place_holder;
@@ -72,7 +74,7 @@ static uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
     uint32_t timeout = MPU_TWI_TIMEOUT;
     
     uint8_t buffer[20];
-    stupid_buffer_merger(buffer, reg, p_data, length);
+    buffer_merger(buffer, reg, p_data, length);
     
     nrf_drv_twi_xfer_desc_t xfer_desc;
     xfer_desc.address = MPU_ADDRESS;
