@@ -16,28 +16,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MPU_REG_XGOFFS_TC        0x00
-#define MPU_REG_YGOFFS_TC        0x01                                                                          
-#define MPU_REG_ZGOFFS_TC        0x02
-#define MPU_REG_X_FINE_GAIN      0x03
-#define MPU_REG_Y_FINE_GAIN      0x04
-#define MPU_REG_Z_FINE_GAIN      0x05
-#define MPU_REG_XA_OFFSET_H      0x06
-#define MPU_REG_XA_OFFSET_L_TC   0x07
-#define MPU_REG_YA_OFFSET_H      0x08
-#define MPU_REG_YA_OFFSET_L_TC   0x09
-#define MPU_REG_ZA_OFFSET_H      0x0A
-#define MPU_REG_ZA_OFFSET_L_TC   0x0B
-#define MPU_REG_SELF_TEST_X      0x0D
-#define MPU_REG_SELF_TEST_Y      0x0E    
-#define MPU_REG_SELF_TEST_Z      0x0F
-#define MPU_REG_SELF_TEST_A      0x10
-#define MPU_REG_XG_OFFS_USRH     0x13
-#define MPU_REG_XG_OFFS_USRL     0x14
-#define MPU_REG_YG_OFFS_USRH     0x15
-#define MPU_REG_YG_OFFS_USRL     0x16
-#define MPU_REG_ZG_OFFS_USRH     0x17
-#define MPU_REG_ZG_OFFS_USRL     0x18
 #define MPU_REG_SMPLRT_DIV       0x19
 #define MPU_REG_CONFIG           0x1A
 #define MPU_REG_GYRO_CONFIG      0x1B
