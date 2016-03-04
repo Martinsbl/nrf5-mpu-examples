@@ -22,9 +22,9 @@
 #include "nrf_drv_gpiote.h"
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN     1
-#define MPU_TWI_SDA_PIN     2
-#define MPU_MPU_INT_PIN     3
+#define MPU_TWI_SCL_PIN     3
+#define MPU_TWI_SDA_PIN     4
+#define MPU_MPU_INT_PIN     28
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256

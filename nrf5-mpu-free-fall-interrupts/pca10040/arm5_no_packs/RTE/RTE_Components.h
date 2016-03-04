@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'nrf5-ble-mpu-simple' 
- * Target:  'nrf52832_xxaa_s132' 
+ * Project: 'nrf5-mpu-free-fall-interrupts' 
+ * Target:  'nrf52832_xxaa' 
  */
 
 #ifndef RTE_COMPONENTS_H

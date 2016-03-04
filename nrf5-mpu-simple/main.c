@@ -20,9 +20,9 @@
 #include "mpu.h"
 #include "mpu_register_map.h"
 
-/*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN 1
-#define MPU_TWI_SDA_PIN 2
+/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
+#define MPU_TWI_SCL_PIN 3
+#define MPU_TWI_SDA_PIN 4
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256

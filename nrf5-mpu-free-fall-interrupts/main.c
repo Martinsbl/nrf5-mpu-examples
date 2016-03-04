@@ -26,9 +26,9 @@
 #endif
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN     1
-#define MPU_TWI_SDA_PIN     2
-#define MPU_MPU_INT_PIN     3
+#define MPU_TWI_SCL_PIN     3
+#define MPU_TWI_SDA_PIN     4
+#define MPU_MPU_INT_PIN     28
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
@@ -187,14 +187,6 @@ int main(void)
     twi_init();
     gpiote_init();
     mpu_setup();
-    
-    
-    
-    uint8_t value;
-    
-   
-    mpu_read_registers(MPU_REG_INT_ENABLE, &value, 1);
-    printf("MPU_REG_INT_ENABLE: 0x%x\r\n", value);
     
     accel_values_t acc_values;
     uint32_t sample_number = 0;
