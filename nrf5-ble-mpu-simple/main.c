@@ -91,8 +91,8 @@ static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID
 #define UART_RX_BUF_SIZE 1
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN 1
-#define MPU_TWI_SDA_PIN 2
+#define MPU_TWI_SCL_PIN 3
+#define MPU_TWI_SDA_PIN 4
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
 ble_mpu_t m_mpu;
