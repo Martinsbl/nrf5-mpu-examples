@@ -261,4 +261,3 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
 /**
   @}
 */
-
