@@ -145,7 +145,7 @@ int main(void)
         err_code = mpu_read_accel(&acc_values);
         APP_ERROR_CHECK(err_code);
         // Clear terminal and print values
-        printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
+        printf("\033[3;1HSampleSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
         nrf_delay_ms(250);
     }
 }
