@@ -6,8 +6,6 @@
 #include "app_uart.h"
 #include "bsp.h"
 #include "app_error.h"
-#include "nrf_gpiote.h"
-#include "nrf_drv_gpiote.h"
 #include "mpu_register_map.h"
 #include "mpu.h"
 
@@ -201,7 +199,7 @@ void TIMER0_IRQHandler(void)
     // Reset the TWIM RX pointer to initial address of RX buffer
     NRF_TWIM0->RXD.PTR = (uint32_t)&p_rx_buffer;
     // Toggle a LED for show
-    nrf_drv_gpiote_out_toggle(LED_1);
+    nrf_gpio_pin_toggle(LED_1);
     // Set flag to notify main context of the new data available
     twi_transfers_complete = true;  
 }

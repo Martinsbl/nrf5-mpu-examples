@@ -422,13 +422,6 @@
         </Group>
         <Group>
           <GroupName>Board Support</GroupName>
-          <Files>
-            <File>
-              <FileName>bsp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\bsp\bsp.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>Documentation</GroupName>
@@ -459,24 +452,9 @@
               <FilePath>..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
             </File>
             <File>
-              <FileName>nrf_drv_clock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\clock\nrf_drv_clock.c</FilePath>
-            </File>
-            <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
-            </File>
-            <File>
-              <FileName>nrf_drv_gpiote.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
-            </File>
-            <File>
-              <FileName>nrf_drv_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\rtc\nrf_drv_rtc.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_twi.c</FileName>
@@ -499,11 +477,6 @@
           <GroupName>nRF_Libraries</GroupName>
           <Files>
             <File>
-              <FileName>app_button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\button\app_button.c</FilePath>
-            </File>
-            <File>
               <FileName>app_error.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
@@ -512,11 +485,6 @@
               <FileName>app_fifo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\timer\app_timer.c</FilePath>
             </File>
             <File>
               <FileName>app_twi.c</FileName>
