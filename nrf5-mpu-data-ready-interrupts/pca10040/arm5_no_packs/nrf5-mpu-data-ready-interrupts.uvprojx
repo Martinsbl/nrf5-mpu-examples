@@ -373,7 +373,7 @@
               <MiscControls>--c99</MiscControls>
               <Define>BSP_DEFINES_ONLY NRF52_PAN_53 NRF52_PAN_15 NRF52_PAN_54 NRF52_PAN_20 NRF52_PAN_55 NRF52_PAN_30 NRF52_PAN_58 NRF52_PAN_31 NRF52_PAN_62 NRF52_PAN_36 NRF52_PAN_63 NRF52_PAN_51 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET BOARD_PCA10040 NRF52_PAN_12 NRF52 MPU9150 DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\twi_sensor_pca10040;..\..\config;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\mpu9150;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\gpiote</IncludePath>
+              <IncludePath>..\..\config\twi_sensor_pca10040;..\..\config;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\gpiote</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

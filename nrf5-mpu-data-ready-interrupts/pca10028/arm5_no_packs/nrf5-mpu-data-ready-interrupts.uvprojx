@@ -373,7 +373,7 @@
               <MiscControls>--c99</MiscControls>
               <Define>BSP_DEFINES_ONLY BOARD_PCA10028 NRF51 TWI0_USE_EASY_DMA = 0 DEBUG MPU9255</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\twi_sensor_pca10028;..\..\config;..\..\..\..\..\components\toolchain;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\bsp;..\..;..\..\..\..\mpu9150;..\..\..\..\..\components\drivers_nrf\gpiote</IncludePath>
+              <IncludePath>..\..\config\twi_sensor_pca10028;..\..\config;..\..\..\..\..\components\toolchain;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\bsp;..\..;..\..\..;..\..\..\..\..\components\drivers_nrf\gpiote</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
