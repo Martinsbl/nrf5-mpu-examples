@@ -198,7 +198,12 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
+<<<<<<< HEAD
       <tvExp>1</tvExp>
+=======
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\main.c</PathWithFileName>
@@ -211,6 +216,10 @@
       <FileNumber>2</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+<<<<<<< HEAD
+=======
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\mpu.c</PathWithFileName>
@@ -222,6 +231,7 @@
 
   <Group>
     <GroupName>Board Support</GroupName>
+<<<<<<< HEAD
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
@@ -238,6 +248,12 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+=======
+    <tvExp>1</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
   </Group>
 
   <Group>
@@ -248,9 +264,16 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>3</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>4</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>3</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\Abstract.txt</PathWithFileName>
@@ -260,9 +283,16 @@
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>5</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>4</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\license.txt</PathWithFileName>
@@ -280,9 +310,16 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>4</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>6</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>5</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</PathWithFileName>
@@ -292,9 +329,16 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>7</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>6</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</PathWithFileName>
@@ -304,6 +348,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>8</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
@@ -319,6 +364,12 @@
       <FileNumber>9</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>7</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</PathWithFileName>
@@ -328,6 +379,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>10</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
@@ -355,6 +407,12 @@
       <FileNumber>12</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>8</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</PathWithFileName>
@@ -364,9 +422,16 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>13</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>9</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</PathWithFileName>
@@ -376,9 +441,16 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>14</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>10</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd\nrf_soc.c</PathWithFileName>
@@ -396,6 +468,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>5</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>15</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
@@ -411,6 +484,12 @@
       <FileNumber>16</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>11</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\util\app_error.c</PathWithFileName>
@@ -420,9 +499,16 @@
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>17</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>12</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\fifo\app_fifo.c</PathWithFileName>
@@ -432,6 +518,7 @@
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>18</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
@@ -447,6 +534,12 @@
       <FileNumber>19</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>13</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\twi\app_twi.c</PathWithFileName>
@@ -456,9 +549,16 @@
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>20</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>14</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\util\app_util_platform.c</PathWithFileName>
@@ -468,9 +568,16 @@
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>21</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>15</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\util\nrf_assert.c</PathWithFileName>
@@ -480,9 +587,16 @@
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
+<<<<<<< HEAD
       <FileNumber>22</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
+=======
+      <FileNumber>16</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+>>>>>>> 91144a7e5c41cabe15006e50b73042a0c81cb000
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\components\libraries\uart\retarget.c</PathWithFileName>
