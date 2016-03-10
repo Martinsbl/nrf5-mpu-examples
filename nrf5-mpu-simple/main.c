@@ -122,7 +122,7 @@ void mpu_setup(void)
  * @brief Function for main application entry.
  */
 int main(void)
-{
+{    
     uint32_t err_code;
     uart_config();
     printf("\033[2J\033[;HMPU simple example. Compiled @ %s\r\n", __TIME__);
