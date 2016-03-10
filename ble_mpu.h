@@ -1,3 +1,8 @@
+ /* 
+  * This code is not extensively tested and only 
+  * meant as a simple explanation and for inspiration. 
+  * NO WARRANTY of ANY KIND is provided. 
+  */
 
 #ifndef MPU_SERVICE_H__
 #define MPU_SERVICE_H__

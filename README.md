@@ -10,3 +10,6 @@ The MPU-9150 contains the MPU-6050 and an AK8975 magnetometer from AKM. The MPU-
 This example and library does not implement the AK8963 or any low power features. Further on, since the MPU6050's and MPU9150's register map is the same it should work fine on both sensors.
 
 More on the difference between MPU6050 and MPU9150: http://www.sureshjoshi.com/embedded/invensense-imus-what-to-know/
+
+ * The examples are not extensively tested and only meant as simple explanations and for inspiration. 
+ * NO WARRANTY of ANY KIND is provided. *

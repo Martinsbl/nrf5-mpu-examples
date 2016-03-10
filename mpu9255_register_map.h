@@ -1,16 +1,14 @@
-/* 
- *
- */
-
+ /* 
+  * This code is not extensively tested and only 
+  * meant as a simple explanation and for inspiration. 
+  * THE LIST OF REGISTERS MIGHT NOT BE ACCURATE
+  * NO WARRANTY of ANY KIND is provided. 
+  */
+  
 #ifndef MPU9255_REG_MAP_H
 #define MPU9255_REG_MAP_H
 
 
- // NOT ACCURATE AND TRUSTWORTHY
- // NOT ACCURATE AND TRUSTWORTHY
- // NOT ACCURATE AND TRUSTWORTHY
- // NOT ACCURATE AND TRUSTWORTHY 
- // NOT ACCURATE AND TRUSTWORTHY
  // NOT ACCURATE AND TRUSTWORTHY
  // MUST BE UPDATED
 
