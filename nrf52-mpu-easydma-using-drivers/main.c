@@ -1,0 +1,305 @@
+ /* 
+  * This example is not extensively tested and only 
+  * meant as a simple explanation and for inspiration. 
+  * NO WARRANTY of ANY KIND is provided. 
+  */
+
+#include <stdio.h>
+#include "boards.h"
+#include "app_util_platform.h"
+#include "app_uart.h"
+#include "app_error.h"
+#include "nrf_drv_twi.h"
+#include "nrf_delay.h"
+#include "mpu.h"
+#include "mpu_register_map.h"
+#include "nrf_drv_ppi.h"
+#include "nrf_drv_timer.h"
+#include "nrf_drv_gpiote.h"
+#include "nrf_gpio.h"
+
+/*UART buffer sizes. */
+#define UART_TX_BUF_SIZE 256
+#define UART_RX_BUF_SIZE 1
+
+/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
+#define MPU_TWI_SCL_PIN 3
+#define MPU_TWI_SDA_PIN 4
+
+/* TWI buffer sizes. */
+#define TWIM_TX_BUF_SIZE 1
+#define TWIM_RX_BUF_SIZE 10
+
+/* The TWI instance to use to communicate with the MPU */
+static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
+
+/* Define a type with a two dimensioanal array holding a list of MPU sensor data */
+typedef struct ArrayList
+{
+    uint8_t buffer[6];
+}array_list_t;
+
+/* Declare a simple TX buffer holding the firs register in MPU we want to read from. */
+array_list_t p_rx_buffer[TWIM_RX_BUF_SIZE];
+/* Declare a MPU sensor data buffer */
+uint8_t p_tx_data[TWIM_TX_BUF_SIZE] = {MPU_REG_ACCEL_XOUT_H};
+
+volatile bool twi_transfers_complete = false;
+
+static nrf_drv_timer_t twi_start_timer_instance = NRF_DRV_TIMER_INSTANCE(0);
+static nrf_drv_timer_t twi_transfer_counter_instance = NRF_DRV_TIMER_INSTANCE(1);
+
+// TWI transfer start handler. Not used
+void twi_start_timer_handler(nrf_timer_event_t event_type, void * p_context)
+{
+    nrf_gpio_pin_toggle(LED_4);
+}
+
+// TWI transfer counter handler. 
+void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context)
+{
+    nrf_drv_gpiote_out_toggle(LED_3);
+    twi_transfers_complete = true;
+    //nrf_drv_twi_disable(&m_twi_instance);
+    
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);// sizeof(p_rx_buffer));
+    
+    uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    |
+                        NRF_DRV_TWI_FLAG_HOLD_XFER              |
+                        NRF_DRV_TWI_FLAG_RX_POSTINC             |
+                        NRF_DRV_TWI_FLAG_REPEATED_XFER;
+    
+    uint32_t err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);// TWIM is now configured and ready to be started.
+    APP_ERROR_CHECK(err_code);
+}
+
+/**
+ * @brief UART events handler. Not really necessary for this example
+ */
+static void uart_events_handler(app_uart_evt_t * p_event)
+{
+    switch (p_event->evt_type)
+    {
+        case APP_UART_COMMUNICATION_ERROR:
+            APP_ERROR_HANDLER(p_event->data.error_communication);
+            break;
+
+        case APP_UART_FIFO_ERROR:
+            APP_ERROR_HANDLER(p_event->data.error_code);
+            break;
+
+        default:
+            break;
+    }
+}
+
+
+/**
+ * @brief UART initialization.
+ * Just the usual way. Nothing special here
+ */
+static void uart_config(void)
+{
+    uint32_t                     err_code;
+    const app_uart_comm_params_t comm_params =
+    {
+        RX_PIN_NUMBER,
+        TX_PIN_NUMBER,
+        RTS_PIN_NUMBER,
+        CTS_PIN_NUMBER,
+        APP_UART_FLOW_CONTROL_DISABLED,
+        false,
+        UART_BAUDRATE_BAUDRATE_Baud115200
+    };
+
+    APP_UART_FIFO_INIT(&comm_params,
+                       UART_RX_BUF_SIZE,
+                       UART_TX_BUF_SIZE,
+                       uart_events_handler,
+                       APP_IRQ_PRIORITY_LOW,
+                       err_code);
+
+    APP_ERROR_CHECK(err_code);
+}
+
+
+/**
+ * @brief TWI events handler.
+ */
+void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
+{   
+    // Pass TWI events down to the MPU driver.
+    mpu_twi_event_handler(p_event);
+}
+
+/**
+ * @brief TWI initialization.
+ * Just the usual way. Nothing special here
+ */
+void twi_init(void)
+{
+    ret_code_t err_code;
+    
+    const nrf_drv_twi_config_t twi_mpu_config = {
+       .scl                = MPU_TWI_SCL_PIN,
+       .sda                = MPU_TWI_SDA_PIN,
+       .frequency          = NRF_TWI_FREQ_400K,
+       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
+    };
+    
+    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
+    APP_ERROR_CHECK(err_code);
+    
+    nrf_drv_twi_enable(&m_twi_instance);
+}
+
+void mpu_setup(void)
+{
+    ret_code_t ret_code;
+    // Initiate MPU driver with TWI instance handler
+    ret_code = mpu_init(&m_twi_instance);
+    APP_ERROR_CHECK(ret_code); // Check for errors in return value
+    
+    // Setup and configure the MPU with intial values
+    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
+    p_mpu_config.smplrt_div = 19;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
+    p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
+    ret_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
+    APP_ERROR_CHECK(ret_code); // Check for errors in return value 
+}
+
+static void gpiote_init()
+{
+    ret_code_t err_code;
+    uint32_t timer_compare_evt_addr;
+    uint32_t twi_start_task_addr;
+    nrf_ppi_channel_t ppi_channel_twi_start;
+    
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);// sizeof(p_rx_buffer));
+    
+    uint32_t flags =    NRF_DRV_TWI_FLAG_HOLD_XFER           |
+                        NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER |
+                        NRF_DRV_TWI_FLAG_REPEATED_XFER;
+    
+    err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);// TWIM is now configured and ready to be started.
+    APP_ERROR_CHECK(err_code);
+    
+    // Set up PPI to trigger the transfer.
+    twi_start_task_addr = nrf_drv_twi_start_task_get(&m_twi_instance, xfer.type);
+    
+    err_code = nrf_drv_ppi_init();
+    APP_ERROR_CHECK(err_code);
+
+    err_code = nrf_drv_timer_init(&twi_start_timer_instance, NULL, twi_start_timer_handler);
+    APP_ERROR_CHECK(err_code);
+    
+    nrf_drv_timer_extended_compare(&twi_start_timer_instance, (nrf_timer_cc_channel_t)0, 400*1000UL, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, false);
+
+    err_code = nrf_drv_ppi_channel_alloc(&ppi_channel_twi_start);
+    APP_ERROR_CHECK(err_code);
+
+    timer_compare_evt_addr = nrf_drv_timer_event_address_get(&twi_start_timer_instance, NRF_TIMER_EVENT_COMPARE0);
+    
+    err_code = nrf_drv_ppi_channel_assign(ppi_channel_twi_start, timer_compare_evt_addr, twi_start_task_addr);
+    APP_ERROR_CHECK(err_code);
+
+    err_code = nrf_drv_ppi_channel_enable(ppi_channel_twi_start);
+    APP_ERROR_CHECK(err_code);
+        
+    
+    // Setup TWI tranfer counter
+    uint32_t counter_task_addr;
+    uint32_t twi_transfer_complete_evt_addr;
+    nrf_ppi_channel_t ppi_channel_twi_transfer_count;
+    
+    nrf_drv_timer_config_t counter_config = NRF_DRV_TIMER_DEFAULT_CONFIG(1);
+    counter_config.mode = NRF_TIMER_MODE_COUNTER;
+    
+    err_code = nrf_drv_timer_init(&twi_transfer_counter_instance, &counter_config, twi_transfer_counter_handler);
+    APP_ERROR_CHECK(err_code);
+    
+    
+    nrf_drv_timer_extended_compare(&twi_transfer_counter_instance, (nrf_timer_cc_channel_t)0, TWIM_RX_BUF_SIZE, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, true);
+    
+    err_code = nrf_drv_ppi_channel_alloc(&ppi_channel_twi_transfer_count);
+    APP_ERROR_CHECK(err_code);
+    
+    counter_task_addr = nrf_drv_timer_task_address_get(&twi_transfer_counter_instance, NRF_TIMER_TASK_COUNT);
+    
+    twi_transfer_complete_evt_addr = nrf_drv_twi_stopped_event_get(&m_twi_instance);
+    // Set up PPI to count the number of transfers.
+    
+    err_code = nrf_drv_ppi_channel_assign(ppi_channel_twi_transfer_count, twi_transfer_complete_evt_addr, counter_task_addr);
+    APP_ERROR_CHECK(err_code);
+
+    err_code = nrf_drv_ppi_channel_enable(ppi_channel_twi_transfer_count);
+    APP_ERROR_CHECK(err_code);
+    
+    // Enable timer
+    nrf_drv_timer_enable(&twi_transfer_counter_instance);
+    // Enable timer
+    nrf_drv_timer_enable(&twi_start_timer_instance);
+    
+}
+
+
+void twi_transfer_start()
+{
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);//sizeof(p_rx_buffer));
+    
+    uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    |
+                        NRF_DRV_TWI_FLAG_RX_POSTINC             |
+                        NRF_DRV_TWI_FLAG_REPEATED_XFER;
+    
+    ret_code_t ret = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);
+    
+    APP_ERROR_CHECK(ret);
+}
+
+/**
+ * @brief Function for main application entry.
+ */
+int main(void)
+{
+    nrf_gpio_range_cfg_output(LED_3, LED_4);
+    uart_config();
+    printf("\033[2J\033[;HMPU nRF52 EasyDMA example. Compiled @ %s\r\n", __TIME__);
+    
+    twi_init();
+    mpu_setup();
+    
+    gpiote_init();   
+    twi_transfer_start();
+    
+    
+    int i = 0;
+    accel_values_t acc_values;
+    
+    while(1)
+    {
+        while(twi_transfers_complete == false){}
+            
+        // Clear terminal and print values
+        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_SIZE * i++);
+        uint8_t *data;
+        for(uint8_t j = 0; j<TWIM_RX_BUF_SIZE; j++)
+        {
+            data = (uint8_t*)&acc_values;
+            for(uint8_t i = 0; i<6; i++)
+            {
+                *data = p_rx_buffer[j].buffer[5-i];
+                data++;
+            }
+            printf("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
+            nrf_delay_ms(1); // Small delay so not to overload the UART 
+        }
+        twi_transfers_complete = false;
+        // Enter System ON sleep mode
+        __WFE();
+        // Make sure any pending events are cleared
+        __SEV();
+        __WFE();
+    }
+}
+
+/** @} */
