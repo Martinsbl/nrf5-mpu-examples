@@ -16,9 +16,9 @@
 #include "nrf_drv_gpiote.h"
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN     3
-#define MPU_TWI_SDA_PIN     4
-#define MPU_MPU_INT_PIN     28
+#define MPU_TWI_SCL_PIN     1
+#define MPU_TWI_SDA_PIN     2
+#define MPU_MPU_INT_PIN     3
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
@@ -116,7 +116,7 @@ void mpu_setup(void)
     
     // Setup and configure the MPU with intial values
     mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
-    p_mpu_config.smplrt_div = 199;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
+    p_mpu_config.smplrt_div = 199;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 199 gives a sample rate of 5Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
     err_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(err_code); // Check for errors in return value
