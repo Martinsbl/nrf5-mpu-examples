@@ -13,6 +13,12 @@ MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0.
 * Define your MPU in Keil's "Target Options -> C/C++". Use define "MPU9255", "MPU9150", or "MPU60x0".
 * Remember to define the correct TWI pins and interrupt pins. The defines are located in main.c.
 
+# Disclaimer
+<b>
+ * The examples are not extensively tested and only meant as simple explanations and for inspiration. 
+ * NO WARRANTY of ANY KIND is provided. *
+ </b>
+
 # MPUs
 Quote on differences between different MPUs from Invensense:
 <i>"The MPU-6050 is higher power, lower noise, and larger package versus the MPU-6500. Most of your code should port over, but some low power features are different and will need to be recoded in. Basic data acquisitions shouldn’t have changed.
@@ -23,7 +29,3 @@ This example and library does not implement the AK8963 or any low power features
 
 More on the difference between MPU6050 and MPU9150: http://www.sureshjoshi.com/embedded/invensense-imus-what-to-know/
 
-<b>
- * The examples are not extensively tested and only meant as simple explanations and for inspiration. 
- * NO WARRANTY of ANY KIND is provided. *
- </b>
