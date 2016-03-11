@@ -16,7 +16,7 @@
 #include "nrf_drv_gpiote.h"
 
 #if defined(MPU9255)
-    #error "This example doesn't work on MPU9255!"
+    #error "This example doesn't work on MPU9255 because it has not free fall detection!"
 #endif
 
 /*Pins to connect MPU. */
