@@ -35,7 +35,7 @@
 #define CENTRAL_LINK_COUNT               0                                          /**<number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT            1                                          /**<number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
-#define DEVICE_NAME                      "mpu"                          /**< Name of device. Will be included in the advertising data. */
+#define DEVICE_NAME                      "MPU BLE simple"                          /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME                "NordicSemiconductor"                      /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                 300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS       180                                        /**< The advertising timeout in units of seconds. */
@@ -71,8 +71,8 @@ static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID
 #define UART_RX_BUF_SIZE 1
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN 3
-#define MPU_TWI_SDA_PIN 4
+#define MPU_TWI_SCL_PIN 1
+#define MPU_TWI_SDA_PIN 2
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
 ble_mpu_t m_mpu;
@@ -336,9 +336,11 @@ static void sys_evt_dispatch(uint32_t sys_evt)
 static void ble_stack_init(void)
 {
     uint32_t err_code;
-
+    
+    nrf_clock_lf_cfg_t clock_lf_cfg = NRF_CLOCK_LFCLKSRC;
+    
     // Initialize the SoftDevice handler module.
-    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_20_PPM, NULL);
+    SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
     
     ble_enable_params_t ble_enable_params;
     err_code = softdevice_enable_get_default_config(CENTRAL_LINK_COUNT,
@@ -607,7 +609,7 @@ int main(void)
     uint32_t err_code;
     bool erase_bonds;
     uart_config();
-    printf("\033[2J\033[;HMPU BLE example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU BLE simple example. Compiled @ %s\r\n", __TIME__);
 
     // Initialize.
     timers_init();
