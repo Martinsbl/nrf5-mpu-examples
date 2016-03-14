@@ -259,7 +259,7 @@ void mpu_setup()
  */
 int main(void)
 {
-    nrf_gpio_range_cfg_output(LED_1, LED_1);
+    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
     // Initate UART and pring welcome message
     uart_config();
     printf("\033[2J\033[;HMPU nRF52 EasyDMA register example. Compiled @ %s\r\n", __TIME__);
@@ -281,13 +281,20 @@ int main(void)
     uint8_t sample_nr = 0;
     // Accelerometer structure to hold new values.
     accel_values_t acc_values;
-   
     
     while (true)
     {
+        nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
         // Wait for new available data 
-        while(twi_transfers_complete == false){}
-            
+        while(twi_transfers_complete == false)
+        {
+            // Enter System ON sleep mode
+            __WFE();
+            // Make sure any pending events are cleared
+            __SEV();
+            __WFE();
+        }
+        nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
         // Print header with total number of samples received
         printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * sample_nr++);
         // Declare pointer used to point to RX buffer
@@ -310,12 +317,6 @@ int main(void)
         }
         // Reset data ready flag
         twi_transfers_complete = false;
-         
-        // Enter System ON sleep mode
-        __WFE();
-        // Make sure any pending events are cleared
-        __SEV();
-        __WFE();
     }
 }
 /** @} */
