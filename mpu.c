@@ -47,8 +47,8 @@ void mpu_twi_event_handler(const nrf_drv_twi_evt_t *evt)
     }      
 }
 
-// The new TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
-// Hence we need to merge the MPU register address with the buffer and transmit all as one transmission  
+// The new SDK 11 TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
+// Hence we need to merge the MPU register address with the buffer and then transmit all as one transmission  
 static void buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     uint8_t *ptr_new_buffer;
@@ -70,25 +70,29 @@ static void buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, u
 
 static uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
 {    
+    // This burst write function is not optimal and needs improvement. 
+    // The new SDK 11 TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
     uint32_t err_code;
     uint32_t timeout = MPU_TWI_TIMEOUT;
     
+    // Merging MPU register address and p_data into one buffer.
     uint8_t buffer[20];
     buffer_merger(buffer, reg, p_data, length);
     
+    // Setting up transfer
     nrf_drv_twi_xfer_desc_t xfer_desc;
     xfer_desc.address = MPU_ADDRESS;
     xfer_desc.type = NRF_DRV_TWI_XFER_TX;
     xfer_desc.primary_length = length + 1;
     xfer_desc.p_primary_buf = buffer;
     
-    twi_tx_done = false;
+    // Transfering
     err_code = nrf_drv_twi_xfer(m_twi_instance, &xfer_desc, 0);
     
     while((!twi_tx_done) && --timeout);  
     if(!timeout) return NRF_ERROR_TIMEOUT;
+    twi_tx_done = false;
     
-   
 //    twi_tx_done = false;
 //    err_code = nrf_drv_twi_tx(m_twi_instance, MPU_ADDRESS, &reg, 1, true);
 //    if(err_code != NRF_SUCCESS) return err_code;
