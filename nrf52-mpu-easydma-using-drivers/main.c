@@ -277,8 +277,16 @@ int main(void)
     
     while(1)
     {
-        while(twi_transfers_complete == false){}
-            
+        nrf_gpio_pin_set(LED_4);
+        while(twi_transfers_complete == false)
+        {
+            // Enter System ON sleep mode
+            __WFE();
+            // Make sure any pending events are cleared
+            __SEV();
+            __WFE();
+        }
+        nrf_gpio_pin_clear(LED_4);
         // Clear terminal and print values
         printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_SIZE * i++);
         uint8_t *data;
@@ -293,12 +301,8 @@ int main(void)
             printf("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
             nrf_delay_ms(1); // Small delay so not to overload the UART 
         }
+        
         twi_transfers_complete = false;
-        // Enter System ON sleep mode
-        __WFE();
-        // Make sure any pending events are cleared
-        __SEV();
-        __WFE();
     }
 }
 
