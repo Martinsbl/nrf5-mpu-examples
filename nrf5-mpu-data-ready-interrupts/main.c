@@ -16,9 +16,9 @@
 #include "nrf_drv_gpiote.h"
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN     1
-#define MPU_TWI_SDA_PIN     2
-#define MPU_MPU_INT_PIN     3
+#define MPU_TWI_SCL_PIN     3
+#define MPU_TWI_SDA_PIN     4
+#define MPU_MPU_INT_PIN     28
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
@@ -170,6 +170,7 @@ static void gpiote_init(void)
 int main(void)
 {
     uint32_t err_code;
+    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
     uart_config();
     printf("\033[2J\033[;HMPU example with MPU generated data ready interrupts. Compiled @ %s\r\n", __TIME__);
     twi_init();
@@ -181,15 +182,22 @@ int main(void)
         
     while(1)
     {
-        if(mpu_data_ready == true)
+        nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
+        while(mpu_data_ready != true)
         {
-
-            err_code = mpu_read_accel(&acc_values);
-            APP_ERROR_CHECK(err_code);
-            // Clear terminal and print values
-            printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
-            mpu_data_ready = false;
+            // Enter System ON sleep mode
+            __WFE();
+            // Make sure any pending events are cleared
+            __SEV();
+            __WFE();            
         }
+        nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
+
+        err_code = mpu_read_accel(&acc_values);
+        APP_ERROR_CHECK(err_code);
+        // Clear terminal and print values
+        printf("\033[2J\033[;HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
+        mpu_data_ready = false;
     }
 }
 
