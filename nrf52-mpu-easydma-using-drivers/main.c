@@ -34,56 +34,67 @@
 #define TWIM_RX_BUF_LENGTH  10
 
 
-/* The buffer width, TWIM_RX_BUF_WIDTH, defines how much data to read out for every sample. For example: 
+/* The buffer width, TWIM_RX_BUF_WIDTH, and tx buffer, p_tx_data, defines how much and what kind of data to read out for every sample. For example: 
  * A buffer width of 6 and register read address MPU_REG_ACCEL_XOUT_H will read out accelerometer data only. 
  * A buffer width of 14 and register read address MPU_REG_ACCEL_XOUT_H will read out all acceleromter, temperateure, and gyroscope data. 
  * A buffer width of 6 and register start address MPU_REG_GYRO_XOUT_H will read out gyroscope data only. */
-#define TWIM_RX_BUF_WIDTH   6   
+#define TWIM_RX_BUF_WIDTH   6   // Reading accelerometer only
 
 
 /* The TWI instance to use to communicate with the MPU */
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
-/* Define a type with a two dimensioanal array holding a list of MPU sensor data */
+/* Define a type with a two dimensioanal array, TWIM_RX_BUF_WIDTH wide and TWIM_RX_BUF_LENGTH long, holding a list of MPU sensor data */
 typedef struct ArrayList
 {
-    uint8_t buffer[6];
+    uint8_t buffer[TWIM_RX_BUF_WIDTH];
 }array_list_t;
 
-/* Declare an RX buffer holding the sensor data we want in MPU we want to read from. 
+/* Declare an RX buffer to hold the sensor data in the MPU we want to read. 
  * TWIM_RX_BUF_LENGTH defines how many samples of accelerometer data and/or gyroscope data and/or temperature
  * data we want to read out. What kind of sensor values we read out is defined by the register address
  * held in p_tx_data and the buffer width TWIM_RX_BUF_WIDTH.  */
 array_list_t p_rx_buffer[TWIM_RX_BUF_LENGTH];
 
 /* Declare a simple TX buffer holding the first register in MPU we want to read from. */
-uint8_t p_tx_data[1] = {MPU_REG_ACCEL_XOUT_H};
+uint8_t p_tx_data[1] = {MPU_REG_ACCEL_XOUT_H};  // Reading accelerometer only
 
+/* Flag to indicate that TWIM_RX_BUF_LENGTH number of samples have been transferred from MPU */
 volatile bool twi_transfers_complete = false;
 
-static nrf_drv_timer_t twi_start_timer_instance = NRF_DRV_TIMER_INSTANCE(0);
+/* Timer instance to trigger each read from MPU */
+static nrf_drv_timer_t timer_instance_twi_start = NRF_DRV_TIMER_INSTANCE(0);
+
+/* Counter instance to count number of transferred samples, and trigger an interrupt and wake up CPU 
+ * when TWIM_RX_BUF_LENGTH number of samples have transferred from MPU */
 static nrf_drv_timer_t twi_transfer_counter_instance = NRF_DRV_TIMER_INSTANCE(1);
 
 // TWI transfer start handler. Not used
 void twi_start_timer_handler(nrf_timer_event_t event_type, void * p_context)
 {
-    nrf_gpio_pin_toggle(LED_4);
+    ;
 }
 
 // TWI transfer counter handler. 
 void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context)
 {
+    // Toggle LED to indicate TWIM_RX_BUF_LENGTH has been transferd
     nrf_drv_gpiote_out_toggle(LED_3);
+    
+    // Set flag to start printing of samples in main loop
     twi_transfers_complete = true;
     
-    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);// sizeof(p_rx_buffer));
+    // Set up next transfer sequence
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / TWIM_RX_BUF_LENGTH);
     
-    uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    |
-                        NRF_DRV_TWI_FLAG_HOLD_XFER              |
-                        NRF_DRV_TWI_FLAG_RX_POSTINC             |
-                        NRF_DRV_TWI_FLAG_REPEATED_XFER;
+    // Set flags for next transfer sequence
+    uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    | // We don't use any twi event handlers as we don't want to wake up CPU on TWI events
+                        NRF_DRV_TWI_FLAG_HOLD_XFER              | // Don't start transfer yet
+                        NRF_DRV_TWI_FLAG_RX_POSTINC             | // Increment address in buffer after each transfer
+                        NRF_DRV_TWI_FLAG_REPEATED_XFER;           // Indicate that we are transfering numerous times
     
-    uint32_t err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);// TWIM is now configured and ready to be started.
+    // Pass configurations and flags to TWIM driver. The TWIM is now and prepared, but actually started.
+    uint32_t err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -138,7 +149,8 @@ static void uart_config(void)
 
 
 /**
- * @brief TWI events handler.
+ * @brief TWI events handler. This handler is only used during the MPU intialization routines. 
+ * It is disabled when the MPU transfers with easyDMA are initated.
  */
 void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
 {   
@@ -167,6 +179,10 @@ void twi_init(void)
     nrf_drv_twi_enable(&m_twi_instance);
 }
 
+/**
+ * @brief MPU initialization.
+ * Just the usual way. Nothing special here
+ */
 void mpu_setup(void)
 {
     ret_code_t ret_code;
@@ -182,92 +198,146 @@ void mpu_setup(void)
     APP_ERROR_CHECK(ret_code); // Check for errors in return value 
 }
 
-static void gpiote_init()
+/**
+ * @brief TWI transfer setup. This functions initiates the timer used to trigger
+ * the TWI transfers. It also configures the the TWI transfers and sets up a PPI channel 
+ * connecting the timer compare event with the TWI transfer start task. 
+ */
+static void twi_transfer_start_timer_init()
 {
     ret_code_t err_code;
-    uint32_t timer_compare_evt_addr;
-    uint32_t twi_start_task_addr;
+    // Variable to store address of timer compare event. 
+    uint32_t event_address_timer_compare;
+    // Variable to store address of twi start task.
+    uint32_t task_address_twi_start;
+    // Variable holding PPI channel number
     nrf_ppi_channel_t ppi_channel_twi_start;
     
-    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);// sizeof(p_rx_buffer));
+    // Set up next transfer sequence
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / TWIM_RX_BUF_LENGTH);
     
-    uint32_t flags =    NRF_DRV_TWI_FLAG_HOLD_XFER           |
-                        NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER |
-                        NRF_DRV_TWI_FLAG_REPEATED_XFER;
+    // Set flags for next transfer sequence
+    uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    | // We don't use any twi event handlers as we don't want to wake up CPU on TWI events
+                        NRF_DRV_TWI_FLAG_HOLD_XFER              | // Don't start transfer yet
+                        NRF_DRV_TWI_FLAG_RX_POSTINC             | // Increment address in buffer after each transfer
+                        NRF_DRV_TWI_FLAG_REPEATED_XFER;           // Indicate that we are transfering numerous times
     
-    err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);// TWIM is now configured and ready to be started.
+    // Pass configurations and flags to TWIM driver. The TWIM is now and prepared, but actually started.
+    err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);
     APP_ERROR_CHECK(err_code);
     
-    // Set up PPI to trigger the transfer.
-    twi_start_task_addr = nrf_drv_twi_start_task_get(&m_twi_instance, xfer.type);
+    // Initializing the timer triggering the TWI transfers. Passing:
+    // Instance of timer
+    // NULL = default timer configurations
+    // Timer handler. Can not be NULL even though it is not used.
+    err_code = nrf_drv_timer_init(&timer_instance_twi_start, NULL, twi_start_timer_handler);
+    APP_ERROR_CHECK(err_code);
     
+    uint32_t mpu_sample_period = nrf_drv_timer_us_to_ticks(&timer_instance_twi_start, 20000); // Sample every 20 ms (50 Hz)
+    // Configuring the timer triggering the TWI transfers. Passing:
+    // Timer instance
+    // Capture Compare channel number
+    // Sample period in micro seconds
+    // Shortcut to clear timer on Capture Compare event
+    // Disable the interrupt for the compare channel enabling the CPU to sleep during events
+    nrf_drv_timer_extended_compare(&timer_instance_twi_start, (nrf_timer_cc_channel_t)0, mpu_sample_period, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, false);
+    
+
+    // Initate ppi driver. Ignore error if driver is already initialized
     err_code = nrf_drv_ppi_init();
-    APP_ERROR_CHECK(err_code);
-
-    err_code = nrf_drv_timer_init(&twi_start_timer_instance, NULL, twi_start_timer_handler);
-    APP_ERROR_CHECK(err_code);
+    if((err_code != 0) && (err_code != MODULE_ALREADY_INITIALIZED))
+    {
+        APP_ERROR_CHECK(err_code);
+    }
     
-    nrf_drv_timer_extended_compare(&twi_start_timer_instance, (nrf_timer_cc_channel_t)0, 400*1000UL, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, false);
-
+    // Get the address of the TWI start task. This is the register address of the actual TWI task. Look in the nRF52 Product Specification -> TWI -> Registers
+    task_address_twi_start = nrf_drv_twi_start_task_get(&m_twi_instance, xfer.type);
+    // Get the address of the timer compare[0] event. This is the register address of the actual timer compare[0] event. Look in the nRF52 Product Specification -> Timer -> Registers
+    event_address_timer_compare = nrf_drv_timer_event_address_get(&timer_instance_twi_start, NRF_TIMER_EVENT_COMPARE0);
+    
+    // Allocate a PPI channel. This function is especially useful when using a softdevice as it will ensure that the the returend PPI channels is free
     err_code = nrf_drv_ppi_channel_alloc(&ppi_channel_twi_start);
     APP_ERROR_CHECK(err_code);
-
-    timer_compare_evt_addr = nrf_drv_timer_event_address_get(&twi_start_timer_instance, NRF_TIMER_EVENT_COMPARE0);
     
-    err_code = nrf_drv_ppi_channel_assign(ppi_channel_twi_start, timer_compare_evt_addr, twi_start_task_addr);
+    // Connect the timer compare event and twi start task using the PPI channel
+    err_code = nrf_drv_ppi_channel_assign(ppi_channel_twi_start, event_address_timer_compare, task_address_twi_start);
     APP_ERROR_CHECK(err_code);
 
+    // Enable the PPI channel.
     err_code = nrf_drv_ppi_channel_enable(ppi_channel_twi_start);
     APP_ERROR_CHECK(err_code);
-        
-    
+       
+}
+
+/**
+ * @brief This function sets up a counter used to count TWI transfers. It also sets up a PPI channel 
+ * connecting the Counter increment task and the TWI transfer complete event. 
+ * When each TWI transfer is completed the counter increments. When TWIM_RX_BUF_LENGTH number of samples is counted
+ * the counter triggers an interrupt, twi_transfer_counter_handler, and wakes up the CPU.
+ */
+void twi_transfer_counter_init(void)
+{
     // Setup TWI tranfer counter
-    uint32_t counter_task_addr;
-    uint32_t twi_transfer_complete_evt_addr;
+    uint32_t err_code;
+    // Variable to store address of counter increment task. 
+    uint32_t task_address_counter_increment;
+    // Variable to store address of TWI transfer complete event. 
+    uint32_t event_address_twi_transfer_complete;
+    // Variable holding PPI channel number
     nrf_ppi_channel_t ppi_channel_twi_transfer_count;
     
+    // Set up counter with default configuration
     nrf_drv_timer_config_t counter_config = NRF_DRV_TIMER_DEFAULT_CONFIG(1);
     counter_config.mode = NRF_TIMER_MODE_COUNTER;
     
+    // Initializing the counter counting the TWI transfers. Passing:
+    // Instance of counter
+    // Configurations
+    // Timer handler. This timer will be triggered when TWIM_RX_BUF_LENGTH number of transfers have completed.
     err_code = nrf_drv_timer_init(&twi_transfer_counter_instance, &counter_config, twi_transfer_counter_handler);
     APP_ERROR_CHECK(err_code);
     
-    
+    // Configuring the timer triggering the TWI transfers. Passing:
+    // Counter instance
+    // Capture Compare channel number
+    // Number of samples to count
+    // Shortcut to clear timer on Capture Compare event
+    // Use interrupts
     nrf_drv_timer_extended_compare(&twi_transfer_counter_instance, (nrf_timer_cc_channel_t)0, TWIM_RX_BUF_LENGTH, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, true);
     
+    // Initate ppi driver. Ignore error if driver is already initialized
+    err_code = nrf_drv_ppi_init();
+    if((err_code != 0) && (err_code != MODULE_ALREADY_INITIALIZED))
+    {
+        APP_ERROR_CHECK(err_code);
+    }
+    
+    // Allocate a PPI channel. This function is especially useful when using a softdevice as it will ensure that the the returend PPI channels is free
     err_code = nrf_drv_ppi_channel_alloc(&ppi_channel_twi_transfer_count);
     APP_ERROR_CHECK(err_code);
     
-    counter_task_addr = nrf_drv_timer_task_address_get(&twi_transfer_counter_instance, NRF_TIMER_TASK_COUNT);
+    // Get the address of the counter increment task. This is the register address of the actual counter task. Look in the nRF52 Product Specification -> Timer -> Registers
+    task_address_counter_increment = nrf_drv_timer_task_address_get(&twi_transfer_counter_instance, NRF_TIMER_TASK_COUNT);
+    // Get the address of the TWI transfer complete event. This is the register address of the event. Look in the nRF52 Product Specification -> TWI -> Registers
+    event_address_twi_transfer_complete = nrf_drv_twi_stopped_event_get(&m_twi_instance);
     
-    twi_transfer_complete_evt_addr = nrf_drv_twi_stopped_event_get(&m_twi_instance);
-    // Set up PPI to count the number of transfers.
-    
-    err_code = nrf_drv_ppi_channel_assign(ppi_channel_twi_transfer_count, twi_transfer_complete_evt_addr, counter_task_addr);
+    // Connect the TWI transfer complete event and the counter increment task using the PPI channel
+    err_code = nrf_drv_ppi_channel_assign(ppi_channel_twi_transfer_count, event_address_twi_transfer_complete, task_address_counter_increment);
     APP_ERROR_CHECK(err_code);
 
+    // Enable the PPI channel.
     err_code = nrf_drv_ppi_channel_enable(ppi_channel_twi_transfer_count);
     APP_ERROR_CHECK(err_code);
-    
-    // Enable timer
-    nrf_drv_timer_enable(&twi_transfer_counter_instance);
-    // Enable timer
-    nrf_drv_timer_enable(&twi_start_timer_instance);
-    
 }
 
 
 void twi_transfer_start()
 {
-    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);//sizeof(p_rx_buffer));
+    // Enable the counter counting number of TWI transfers
+    nrf_drv_timer_enable(&twi_transfer_counter_instance);
     
-    uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    |
-                        NRF_DRV_TWI_FLAG_RX_POSTINC             |
-                        NRF_DRV_TWI_FLAG_REPEATED_XFER;
-    
-    ret_code_t ret = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);
-    
-    APP_ERROR_CHECK(ret);
+    // Enable timer triggering TWI transfers
+    nrf_drv_timer_enable(&timer_instance_twi_start);
 }
 
 /**
@@ -275,23 +345,32 @@ void twi_transfer_start()
  */
 int main(void)
 {
-    nrf_gpio_range_cfg_output(LED_3, LED_4);
+    // Configure some LEDs
+    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
+    // Configure UART
     uart_config();
-    printf("\033[2J\033[;HMPU nRF52 EasyDMA example. Compiled @ %s\r\n", __TIME__);
+    // Print welcome message
+    printf("\033[2J\033[;HMPU nRF52 EasyDMA drivers example. Compiled @ %s\r\n", __TIME__);
     
+    // Setup TWI. 
     twi_init();
+    // Setup the MPU
     mpu_setup();
     
-    gpiote_init();   
+    // Configure a timer to trigger TWI transfers between nRF52 and MPU
+    twi_transfer_start_timer_init();   
+    // Configure a counter to count number of TWI transfers
+    twi_transfer_counter_init();
+    // Start the TWI transfers between the nRF52 and MPU
     twi_transfer_start();
     
     
-    int i = 0;
-    accel_values_t acc_values;
+    uint32_t sample_nr = 0; // Variable holding number of samples read from MPU
+    accel_values_t acc_values; // Variable to temporarily hold MPU accelerometer data
     
     while(1)
     {
-        nrf_gpio_pin_set(LED_4);
+        nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
         while(twi_transfers_complete == false)
         {
             // Enter System ON sleep mode
@@ -300,12 +379,18 @@ int main(void)
             __SEV();
             __WFE();
         }
-        nrf_gpio_pin_clear(LED_4);
-        // Clear terminal and print values
-        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * i++);
+        nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
+        
+        // Clear terminal
+        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * ++sample_nr);
         uint8_t *data;
+        
+        // THIS FOR LOOP ASSUMES THAT TWIM_RX_BUF_WIDTH IS 6 BYTES AND THAT ONLY ACCELEROMETER DATA IS SAMPLED
+        // IF A WIDER BUFFER IS USED TO SAMPLE TEMPERATURE AND GYROSCOPE AS WELL YOU SHOULD CHANGE THIS LOOP
+        // TO PRINT EVERYTHING
         for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
         {
+            // Move sampled data into accelerometer struct of type accel_values_t
             data = (uint8_t*)&acc_values;
             for(uint8_t i = 0; i<6; i++)
             {
