@@ -1,0 +1,3 @@
+# nRF52 reading accelerometer data from MPU using EasyDMA
+
+This example configures the nRF52 to read accelerometer data from MPU using EasyDMA while the CPU is sleeping. The example shows how to use the timer, TWI, and ppi drivers found in SDK 11. A timer is used to trigger a TWI transfer reading MPU samples at regular intervals. A second timer is used to count number of samples. When a certain number of samples have been collected the CPU awakes and the samples are printed to UART.
