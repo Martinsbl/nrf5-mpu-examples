@@ -30,11 +30,11 @@
 
 /* The buffer length, TWIM_RX_BUF_LENGTH, defines how many samples will fit in the buffer. Each sample
  * may contain accelerometer data and/or gyroscope data and/or temperature. What data to read is defined by 
- * TWIM_RX_BUF_WIDTH and reigster address in p_tx_data.*/
+ * TWIM_RX_BUF_WIDTH and reigster address in p_tx_buffer.*/
 #define TWIM_RX_BUF_LENGTH  10
 
 
-/* The buffer width, TWIM_RX_BUF_WIDTH, and tx buffer, p_tx_data, defines how much and what kind of data to read out for every sample. For example: 
+/* The buffer width, TWIM_RX_BUF_WIDTH, and tx buffer, p_tx_buffer, defines how much and what kind of data to read out for every sample. For example: 
  * A buffer width of 6 and register read address MPU_REG_ACCEL_XOUT_H will read out accelerometer data only. 
  * A buffer width of 14 and register read address MPU_REG_ACCEL_XOUT_H will read out all acceleromter, temperateure, and gyroscope data. 
  * A buffer width of 6 and register start address MPU_REG_GYRO_XOUT_H will read out gyroscope data only. */
@@ -53,13 +53,13 @@ typedef struct ArrayList
 /* Declare an RX buffer to hold the sensor data in the MPU we want to read. 
  * TWIM_RX_BUF_LENGTH defines how many samples of accelerometer data and/or gyroscope data and/or temperature
  * data we want to read out. What kind of sensor values we read out is defined by the register address
- * held in p_tx_data and the buffer width TWIM_RX_BUF_WIDTH.  */
+ * held in p_tx_buffer and the buffer width TWIM_RX_BUF_WIDTH.  */
 array_list_t p_rx_buffer[TWIM_RX_BUF_LENGTH];
 
 /* Declare a simple TX buffer holding the first register in MPU we want to read from. */
-uint8_t p_tx_data[1] = {MPU_REG_ACCEL_XOUT_H};  // Reading accelerometer only
+uint8_t p_tx_buffer[1] = {MPU_REG_ACCEL_XOUT_H};  // Reading accelerometer only
 
-/* Flag to indicate that TWIM_RX_BUF_LENGTH number of samples have been transferred from MPU */
+/* Flag to indicate to the applications main context that TWIM_RX_BUF_LENGTH number of samples have been transferred from MPU */
 volatile bool twi_transfers_complete = false;
 
 /* Timer instance to trigger each read from MPU */
@@ -68,6 +68,11 @@ static nrf_drv_timer_t timer_instance_twi_start = NRF_DRV_TIMER_INSTANCE(0);
 /* Counter instance to count number of transferred samples, and trigger an interrupt and wake up CPU 
  * when TWIM_RX_BUF_LENGTH number of samples have transferred from MPU */
 static nrf_drv_timer_t twi_transfer_counter_instance = NRF_DRV_TIMER_INSTANCE(1);
+
+
+
+
+
 
 // TWI transfer start handler. Not used
 void twi_start_timer_handler(nrf_timer_event_t event_type, void * p_context)
@@ -85,7 +90,7 @@ void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context
     twi_transfers_complete = true;
     
     // Set up next transfer sequence
-    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / TWIM_RX_BUF_LENGTH);
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_buffer, sizeof(p_tx_buffer), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / TWIM_RX_BUF_LENGTH);
     
     // Set flags for next transfer sequence
     uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    | // We don't use any twi event handlers as we don't want to wake up CPU on TWI events
@@ -214,7 +219,7 @@ static void twi_transfer_start_timer_init()
     nrf_ppi_channel_t ppi_channel_twi_start;
     
     // Set up next transfer sequence
-    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / TWIM_RX_BUF_LENGTH);
+    nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_buffer, sizeof(p_tx_buffer), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / TWIM_RX_BUF_LENGTH);
     
     // Set flags for next transfer sequence
     uint32_t flags =    NRF_DRV_TWI_FLAG_NO_XFER_EVT_HANDLER    | // We don't use any twi event handlers as we don't want to wake up CPU on TWI events
@@ -383,24 +388,27 @@ int main(void)
         
         // Clear terminal
         printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * ++sample_nr);
-        uint8_t *data;
         
         // THIS FOR LOOP ASSUMES THAT TWIM_RX_BUF_WIDTH IS 6 BYTES AND THAT ONLY ACCELEROMETER DATA IS SAMPLED
         // IF A WIDER BUFFER IS USED TO SAMPLE TEMPERATURE AND GYROSCOPE AS WELL YOU SHOULD CHANGE THIS LOOP
         // TO PRINT EVERYTHING
+        uint8_t *data;
+        // Itterate through entire RX buffer 
         for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
         {
-            // Move sampled data into accelerometer struct of type accel_values_t
+            // Temporarily store each sensor data set found in buffer in accelerometer structure variable
             data = (uint8_t*)&acc_values;
+            // Itterate through and store all data in each sensor set
             for(uint8_t i = 0; i<6; i++)
             {
                 *data = p_rx_buffer[j].buffer[5-i];
                 data++;
             }
+            // Print sensor data set
             printf("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
             nrf_delay_ms(1); // Small delay so not to overload the UART 
         }
-        
+        // Reset data ready flag
         twi_transfers_complete = false;
     }
 }
