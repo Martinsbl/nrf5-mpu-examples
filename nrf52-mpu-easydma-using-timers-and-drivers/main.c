@@ -355,7 +355,7 @@ int main(void)
     // Configure UART
     uart_config();
     // Print welcome message
-    printf("\033[2J\033[;HMPU nRF52 EasyDMA drivers example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU nRF52 EasyDMA using timers and drivers example. Compiled @ %s\r\n", __TIME__);
     
     // Setup TWI. 
     twi_init();

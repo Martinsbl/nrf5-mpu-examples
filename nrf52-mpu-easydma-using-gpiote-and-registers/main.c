@@ -277,7 +277,7 @@ int main(void)
     nrf_gpio_range_cfg_output(LED_START, LED_STOP);
     // Initate UART and pring welcome message
     uart_config();
-    printf("\033[2J\033[;HMPU nRF52 EasyDMA register example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU nRF52 EasyDMA using GPIOTE and registers example. Compiled @ %s\r\n", __TIME__);
     
     // Initiate TWI
     twi_init();
