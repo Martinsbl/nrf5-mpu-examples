@@ -22,13 +22,24 @@
 #define UART_TX_BUF_SIZE 256
 #define UART_RX_BUF_SIZE 1
 
+
 /* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
 #define MPU_TWI_SCL_PIN 3
 #define MPU_TWI_SDA_PIN 4
 
-/* TWI buffer sizes. */
-#define TWIM_TX_BUF_SIZE 1
-#define TWIM_RX_BUF_SIZE 10
+
+/* The buffer length, TWIM_RX_BUF_LENGTH, defines how many samples will fit in the buffer. Each sample
+ * may contain accelerometer data and/or gyroscope data and/or temperature. What data to read is defined by 
+ * TWIM_RX_BUF_WIDTH and reigster address in p_tx_data.*/
+#define TWIM_RX_BUF_LENGTH  10
+
+
+/* The buffer width, TWIM_RX_BUF_WIDTH, defines how much data to read out for every sample. For example: 
+ * A buffer width of 6 and register read address MPU_REG_ACCEL_XOUT_H will read out accelerometer data only. 
+ * A buffer width of 14 and register read address MPU_REG_ACCEL_XOUT_H will read out all acceleromter, temperateure, and gyroscope data. 
+ * A buffer width of 6 and register start address MPU_REG_GYRO_XOUT_H will read out gyroscope data only. */
+#define TWIM_RX_BUF_WIDTH   6   
+
 
 /* The TWI instance to use to communicate with the MPU */
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
@@ -39,10 +50,14 @@ typedef struct ArrayList
     uint8_t buffer[6];
 }array_list_t;
 
-/* Declare a simple TX buffer holding the firs register in MPU we want to read from. */
-array_list_t p_rx_buffer[TWIM_RX_BUF_SIZE];
-/* Declare a MPU sensor data buffer */
-uint8_t p_tx_data[TWIM_TX_BUF_SIZE] = {MPU_REG_ACCEL_XOUT_H};
+/* Declare an RX buffer holding the sensor data we want in MPU we want to read from. 
+ * TWIM_RX_BUF_LENGTH defines how many samples of accelerometer data and/or gyroscope data and/or temperature
+ * data we want to read out. What kind of sensor values we read out is defined by the register address
+ * held in p_tx_data and the buffer width TWIM_RX_BUF_WIDTH.  */
+array_list_t p_rx_buffer[TWIM_RX_BUF_LENGTH];
+
+/* Declare a simple TX buffer holding the first register in MPU we want to read from. */
+uint8_t p_tx_data[1] = {MPU_REG_ACCEL_XOUT_H};
 
 volatile bool twi_transfers_complete = false;
 
@@ -60,7 +75,6 @@ void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context
 {
     nrf_drv_gpiote_out_toggle(LED_3);
     twi_transfers_complete = true;
-    //nrf_drv_twi_disable(&m_twi_instance);
     
     nrf_drv_twi_xfer_desc_t xfer = NRF_DRV_TWI_XFER_DESC_TXRX(MPU_ADDRESS, p_tx_data, sizeof(p_tx_data), (uint8_t*)p_rx_buffer, sizeof(p_rx_buffer) / 6);// sizeof(p_rx_buffer));
     
@@ -219,7 +233,7 @@ static void gpiote_init()
     APP_ERROR_CHECK(err_code);
     
     
-    nrf_drv_timer_extended_compare(&twi_transfer_counter_instance, (nrf_timer_cc_channel_t)0, TWIM_RX_BUF_SIZE, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, true);
+    nrf_drv_timer_extended_compare(&twi_transfer_counter_instance, (nrf_timer_cc_channel_t)0, TWIM_RX_BUF_LENGTH, NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK, true);
     
     err_code = nrf_drv_ppi_channel_alloc(&ppi_channel_twi_transfer_count);
     APP_ERROR_CHECK(err_code);
@@ -288,9 +302,9 @@ int main(void)
         }
         nrf_gpio_pin_clear(LED_4);
         // Clear terminal and print values
-        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_SIZE * i++);
+        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * i++);
         uint8_t *data;
-        for(uint8_t j = 0; j<TWIM_RX_BUF_SIZE; j++)
+        for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
         {
             data = (uint8_t*)&acc_values;
             for(uint8_t i = 0; i<6; i++)
