@@ -18,7 +18,8 @@ MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0.
 # Disclaimer
 <b>
  * The examples are not extensively tested and only meant as simple explanations and for inspiration. 
- * NO WARRANTY of ANY KIND is provided. *
+ * NO WARRANTY of ANY KIND is provided.
+ * There are probably several things that can be improved or added. E.g. the TWI transfer functions should be interrupt driven and not blocking like they are now. 
  </b>
 
 # MPUs
