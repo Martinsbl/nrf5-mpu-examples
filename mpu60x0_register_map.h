@@ -8,11 +8,6 @@
 #ifndef MPU60x0_REG_MAP_H
 #define MPU60x0_REG_MAP_H
 
-  // REPORTED NOT TO WORK!
-  // I ASSUME THE REGISTER MAP IS INCORRECT
-  // BUT I HAVEN'T HAD THE TIME TO LOOK INTO IT.
-  
-
 #include <stdbool.h>
 #include <stdint.h>
 
