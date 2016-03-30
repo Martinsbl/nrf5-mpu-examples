@@ -108,7 +108,7 @@ typedef struct
 /**@brief MPU driver accelerometer configuration structure. */
 typedef struct
 {
-#if defined(MPU9255)
+#if defined(MPU9255) || defined(MPU60x0)
     uint8_t                 :3;
 #else
     uint8_t accel_hpf       :3; // 3-bit unsigned value. Selects the Digital High Pass Filter configuration.
@@ -160,7 +160,7 @@ typedef struct
         .accel_config.ya_st             = 0,              \
         .accel_config.xa_st             = 0,              \
     }
-#else
+#elif defined(MPU9150)
 /**@brief MPU instance default configuration. */
 #define MPU_DEFAULT_CONFIG()                          \
     {                                                     \
@@ -174,6 +174,20 @@ typedef struct
         .accel_config.ya_st             = 0,              \
         .accel_config.xa_st             = 0,              \
     }
+#elif defined(MPU60x0)
+#define MPU_DEFAULT_CONFIG()                          \
+    {                                                     \
+        .smplrt_div                     = 7,              \
+        .sync_dlpf_gonfig.dlpf_cfg      = 1,              \
+        .sync_dlpf_gonfig.ext_sync_set  = 0,              \
+        .gyro_config.fs_sel             = GFS_2000DPS,    \
+        .accel_config.afs_sel           = AFS_16G,        \
+        .accel_config.za_st             = 0,              \
+        .accel_config.ya_st             = 0,              \
+        .accel_config.xa_st             = 0,              \
+    }    
+#else
+    #error "No/unknown MPU defined"
 #endif
  
 /**@brief MPU driver interrupt pin configuration structure. */    
@@ -331,6 +345,14 @@ uint32_t mpu_read_temp(temp_value_t * temp_values);
  */
 uint32_t mpu_read_int_source(uint8_t * int_source);
 
+/**@brief Function for configuring free fall interrupts 
+ *
+ * THIS FUNCTION DOES NOT WORK ON MPU60x0 and MPU9255 AS THEY DON'T HAVE THE
+ * THE SAME FREE FALL FUNCTIONALLITY AS THE MPU9150
+ * 
+ * @param[in]   uint16_t       Free fall threshold in mg
+ * @retval      uint8_t        Required free fall duration in ms
+ */
 #if defined(MPU9150)
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
 #endif

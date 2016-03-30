@@ -249,6 +249,7 @@ uint32_t mpu_read_int_source(uint8_t * int_source)
     return mpu_read_registers(MPU_REG_INT_STATUS, int_source, 1);
 }
 
+// Function does not work on MPU60x0 and MPU9255
 #if defined(MPU9150)
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
 {
