@@ -8,7 +8,8 @@ MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0.
 * nRF52 DK (PCA10040)
 * SDK 11.0.0
 * SoftDevice S132 V2.0.0 and S130 V2.0.0.
-* <b>note that the examples are not tested with PCA10036 or MPU6xxx series.</b>
+* <b>Not tested on, and reported <i>not</i> to work on MPU6050. Register map is probably wrong.</b> 
+* <b>Not tested on PCA10036</b>
 
 # How to use:
 * All examples are made for SDK 11.0.0. Other SDKs will not work. Download zip file and extract to "sdk_11.0.0_folder\examples"
