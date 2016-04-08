@@ -105,4 +105,4 @@
 #define MPU_REG_WHO_AM_I           0x75 // Dec 117, R,    - WHO_AM_I[6:1] -
 
 #endif // MPU9150_REG_MAP_H
-  
+
