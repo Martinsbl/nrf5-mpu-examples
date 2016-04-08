@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include "nrf_drv_twi.h"
 
-  #if defined(MPU60x0)
+#if defined(MPU60x0)
     #include "mpu60x0_register_map.h"
 #elif defined(MPU9150)
     #include "mpu9150_register_map.h"
