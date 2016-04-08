@@ -12,7 +12,6 @@
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
 #include "mpu.h"
-#include "mpu_register_map.h"
 #include "nrf_drv_gpiote.h"
 
 #if defined(MPU9255) || defined(MPU60x0) 

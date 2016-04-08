@@ -24,7 +24,6 @@
 #include "bsp.h"
 #include "bsp_btn_ble.h"
 #include "app_uart.h"
-#include "mpu_register_map.h"
 #include "mpu.h"
 #include "ble_mpu.h"
 #include "app_util_platform.h"

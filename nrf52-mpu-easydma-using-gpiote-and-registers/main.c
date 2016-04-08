@@ -11,7 +11,6 @@
 #include "app_uart.h"
 #include "bsp.h"
 #include "app_error.h"
-#include "mpu_register_map.h"
 #include "mpu.h"
 
 /*UART buffer sizes. */

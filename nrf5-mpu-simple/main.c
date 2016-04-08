@@ -12,7 +12,6 @@
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
 #include "mpu.h"
-#include "mpu_register_map.h"
 
 /* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
 #define MPU_TWI_SCL_PIN 1
