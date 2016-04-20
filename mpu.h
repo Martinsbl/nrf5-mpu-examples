@@ -1,5 +1,5 @@
  /* 
-  * The library are not extensively tested and only 
+  * The library is not extensively tested and only 
   * meant as a simple explanation and for inspiration. 
   * NO WARRANTY of ANY KIND is provided. 
   */
