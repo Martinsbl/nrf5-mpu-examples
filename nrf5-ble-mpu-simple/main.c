@@ -22,7 +22,6 @@
 #include "pstorage.h"
 #include "app_trace.h"
 #include "bsp.h"
-#include "bsp_btn_ble.h"
 #include "app_uart.h"
 #include "mpu.h"
 #include "ble_mpu.h"
@@ -70,8 +69,8 @@ static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID
 #define UART_RX_BUF_SIZE 1
 
 /*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN 1
-#define MPU_TWI_SDA_PIN 2
+#define MPU_TWI_SCL_PIN 3
+#define MPU_TWI_SDA_PIN 4
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
 ble_mpu_t m_mpu;
@@ -228,12 +227,7 @@ static void application_timers_start(void)
  */
 static void sleep_mode_enter(void)
 {
-    uint32_t err_code = bsp_indication_set(BSP_INDICATE_IDLE);
-    APP_ERROR_CHECK(err_code);
-
-    // Prepare wakeup buttons.
-    err_code = bsp_btn_ble_sleep_mode_prepare();
-    APP_ERROR_CHECK(err_code);
+    uint32_t err_code;
 
     // Go to system-off mode (this function will not return; wakeup will cause a reset).
     err_code = sd_power_system_off();
@@ -307,7 +301,6 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 {
     dm_ble_evt_handler(p_ble_evt);
     ble_conn_params_on_ble_evt(p_ble_evt);
-    bsp_btn_ble_on_ble_evt(p_ble_evt);
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
     ble_mpu_on_ble_evt(&m_mpu, p_ble_evt);
@@ -477,25 +470,6 @@ static void advertising_init(void)
 }
 
 
-/**@brief Function for initializing buttons and leds.
- *
- * @param[out] p_erase_bonds  Will be true if the clear bonding button was pressed to wake the application up.
- */
-static void buttons_leds_init(bool * p_erase_bonds)
-{
-    bsp_event_t startup_event;
-
-    uint32_t err_code = bsp_init(BSP_INIT_LED | BSP_INIT_BUTTONS,
-                                 APP_TIMER_TICKS(100, APP_TIMER_PRESCALER), 
-                                 bsp_event_handler);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_btn_ble_init(NULL, &startup_event);
-    APP_ERROR_CHECK(err_code);
-
-    *p_erase_bonds = (startup_event == BSP_EVENT_CLEAR_BONDING_DATA);
-}
-
 
 /**@brief Function for the Power manager.
  */
@@ -607,12 +581,12 @@ int main(void)
 {
     uint32_t err_code;
     bool erase_bonds;
+    LEDS_CONFIGURE(LEDS_MASK);
     uart_config();
     printf("\033[2J\033[;HMPU BLE simple example. Compiled @ %s\r\n", __TIME__);
 
     // Initialize.
     timers_init();
-    buttons_leds_init(&erase_bonds);
     ble_stack_init();
     device_manager_init(erase_bonds);
     gap_params_init();

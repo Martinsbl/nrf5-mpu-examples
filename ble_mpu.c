@@ -37,12 +37,7 @@ static uint32_t ble_char_accel_add(ble_mpu_t * p_mpu)
 {
     uint32_t   err_code = 0; // Variable to hold return codes from library and softdevice functions
     
-    ble_uuid_t          char_uuid;
-    // WATING FOR BUG FIX IN SDK 11 PRODUCTION VERSION TO BE ABLE TO CALL sd_ble_uuid_vs_add TWICE
-//    ble_uuid128_t       base_uuid = BLE_UUID_OUR_BASE_UUID;
-//    char_uuid.uuid = BLE_UUID_OUR_CHARACTERISTC_UUID;
-//    err_code = sd_ble_uuid_vs_add(&base_uuid, &char_uuid.type);
-//    APP_ERROR_CHECK(err_code);   
+    ble_uuid_t          char_uuid;   
     BLE_UUID_BLE_ASSIGN(char_uuid, BLE_UUID_ACCEL_CHARACTERISTC_UUID);
     
     ble_gatts_char_md_t char_md;
