@@ -14,6 +14,8 @@ iar/
 !*.hex
 !*.pdf
 !*.gitignore
+!*.emProject
+!*.lib
 JLinkLog.txt
 !hex/*
 nrf5-ble-mpu-app-twi-scheduler/
