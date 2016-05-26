@@ -1,0 +1,436 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"app_error.c"
+	.text
+.Ltext0:
+	.section	.text.app_error_handler,"ax",%progbits
+	.align	2
+	.global	app_error_handler
+	.thumb
+	.thumb_func
+	.type	app_error_handler, %function
+app_error_handler:
+.LFB169:
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{lr}
+.LCFI0:
+	sub	sp, sp, #20
+.LCFI1:
+	strh	r1, [sp, #4]	@ movhi
+	str	r2, [sp, #8]
+	str	r0, [sp, #12]
+	movw	r0, #16385
+	movs	r1, #0
+	add	r2, sp, #4
+	bl	app_error_fault_handler
+	add	sp, sp, #20
+.LCFI2:
+	@ sp needed
+	ldr	pc, [sp], #4
+.LFE169:
+	.size	app_error_handler, .-app_error_handler
+	.section	.text.app_error_handler_bare,"ax",%progbits
+	.align	2
+	.global	app_error_handler_bare
+	.thumb
+	.thumb_func
+	.type	app_error_handler_bare, %function
+app_error_handler_bare:
+.LFB170:
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{lr}
+.LCFI3:
+	sub	sp, sp, #20
+.LCFI4:
+	movs	r1, #0
+	strh	r1, [sp, #4]	@ movhi
+	str	r1, [sp, #8]
+	str	r0, [sp, #12]
+	movw	r0, #16385
+	add	r2, sp, #4
+	bl	app_error_fault_handler
+	add	sp, sp, #20
+.LCFI5:
+	@ sp needed
+	ldr	pc, [sp], #4
+.LFE170:
+	.size	app_error_handler_bare, .-app_error_handler_bare
+	.section	.text.app_error_save_and_stop,"ax",%progbits
+	.align	2
+	.global	app_error_save_and_stop
+	.thumb
+	.thumb_func
+	.type	app_error_save_and_stop, %function
+app_error_save_and_stop:
+.LFB171:
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	sub	sp, sp, #8
+.LCFI6:
+	movs	r3, #1
+	strb	r3, [sp, #7]
+	ldrb	r3, [sp, #7]	@ zero_extendqisi2
+	ldr	r3, .L12
+	str	r0, [r3]
+	str	r1, [r3, #4]
+	str	r2, [r3, #8]
+	movw	r3, #16385
+	cmp	r0, r3
+	beq	.L7
+	movw	r3, #16386
+	cmp	r0, r3
+	bne	.L6
+	ldr	r3, .L12
+	str	r2, [r3, #12]
+	ldr	r2, [r3, #12]
+	ldrh	r2, [r2]
+	str	r2, [r3, #24]
+	ldr	r2, [r3, #12]
+	ldr	r2, [r2, #4]
+	str	r2, [r3, #28]
+	b	.L6
+.L7:
+	ldr	r3, .L12
+	str	r2, [r3, #16]
+	ldr	r2, [r3, #16]
+	ldr	r2, [r2, #8]
+	str	r2, [r3, #20]
+	ldr	r2, [r3, #16]
+	ldrh	r2, [r2]
+	str	r2, [r3, #24]
+	ldr	r2, [r3, #16]
+	ldr	r2, [r2, #4]
+	str	r2, [r3, #28]
+.L6:
+.LBB6:
+.LBB7:
+@ 330 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmFunc.h" 1
+	cpsid i
+@ 0 "" 2
+	.thumb
+.L9:
+.LBE7:
+.LBE6:
+	ldrb	r3, [sp, #7]	@ zero_extendqisi2
+	tst	r3, #255
+	bne	.L9
+.LBB8:
+.LBB9:
+@ 319 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmFunc.h" 1
+	cpsie i
+@ 0 "" 2
+	.thumb
+.LBE9:
+.LBE8:
+	add	sp, sp, #8
+.LCFI7:
+	@ sp needed
+	bx	lr
+.L13:
+	.align	2
+.L12:
+	.word	.LANCHOR0
+.LFE171:
+	.size	app_error_save_and_stop, .-app_error_save_and_stop
+	.section	.bss.m_error_data.6497,"aw",%nobits
+	.align	2
+	.set	.LANCHOR0,. + 0
+	.type	m_error_data.6497, %object
+	.size	m_error_data.6497, 32
+m_error_data.6497:
+	.space	32
+	.weak	app_error_fault_handler
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB169
+	.4byte	.LFE169-.LFB169
+	.byte	0x4
+	.4byte	.LCFI0-.LFB169
+	.byte	0xe
+	.uleb128 0x4
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x4
+	.4byte	.LCFI2-.LCFI1
+	.byte	0xe
+	.uleb128 0x4
+	.align	2
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.4byte	.LFB170
+	.4byte	.LFE170-.LFB170
+	.byte	0x4
+	.4byte	.LCFI3-.LFB170
+	.byte	0xe
+	.uleb128 0x4
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI4-.LCFI3
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x4
+	.4byte	.LCFI5-.LCFI4
+	.byte	0xe
+	.uleb128 0x4
+	.align	2
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.4byte	.LFB171
+	.4byte	.LFE171-.LFB171
+	.byte	0x4
+	.4byte	.LCFI6-.LFB171
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	.LCFI7-.LCFI6
+	.byte	0xe
+	.uleb128 0
+	.align	2
+.LEFDE4:
+	.text
+.Letext0:
+	.file 1 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmFunc.h"
+	.file 2 "C:/Nordic_SDKs/11.0.0/examples/mpu/nrf5-mpu-fft/pca10040/arm5_no_packs/../../../../../components/libraries/util/app_error.c"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x7e
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF4
+	.byte	0x1
+	.4byte	.LASF5
+	.4byte	.Ldebug_ranges0+0
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF0
+	.byte	0x1
+	.2byte	0x148
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF1
+	.byte	0x1
+	.2byte	0x13d
+	.byte	0x3
+	.uleb128 0x3
+	.4byte	.LASF2
+	.byte	0x2
+	.byte	0x2e
+	.4byte	.LFB169
+	.4byte	.LFE169-.LFB169
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x3
+	.4byte	.LASF3
+	.byte	0x2
+	.byte	0x3c
+	.4byte	.LFB170
+	.4byte	.LFE170-.LFB170
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x4
+	.4byte	.LASF6
+	.byte	0x2
+	.byte	0x4a
+	.4byte	.LFB171
+	.4byte	.LFE171-.LFB171
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x5
+	.4byte	0x1d
+	.4byte	.LBB6
+	.4byte	.LBE6-.LBB6
+	.byte	0x2
+	.byte	0x75
+	.uleb128 0x5
+	.4byte	0x26
+	.4byte	.LBB8
+	.4byte	.LBE8-.LBB8
+	.byte	0x2
+	.byte	0x79
+	.byte	0
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x4
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x5
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x2c
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB169
+	.4byte	.LFE169-.LFB169
+	.4byte	.LFB170
+	.4byte	.LFE170-.LFB170
+	.4byte	.LFB171
+	.4byte	.LFE171-.LFB171
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LFB169
+	.4byte	.LFE169
+	.4byte	.LFB170
+	.4byte	.LFE170
+	.4byte	.LFB171
+	.4byte	.LFE171
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF6:
+	.ascii	"app_error_save_and_stop\000"
+.LASF4:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -fshort-enums -fno-common\000"
+.LASF0:
+	.ascii	"__disable_irq\000"
+.LASF3:
+	.ascii	"app_error_handler_bare\000"
+.LASF5:
+	.ascii	"C:/Nordic_SDKs/11.0.0/examples/mpu/nrf5-mpu-fft/pca"
+	.ascii	"10040/arm5_no_packs/../../../../../components/libra"
+	.ascii	"ries/util/app_error.c\000"
+.LASF2:
+	.ascii	"app_error_handler\000"
+.LASF1:
+	.ascii	"__enable_irq\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"

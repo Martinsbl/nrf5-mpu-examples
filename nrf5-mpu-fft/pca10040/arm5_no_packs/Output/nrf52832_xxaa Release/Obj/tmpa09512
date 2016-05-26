@@ -1,0 +1,3114 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"nrf_drv_twi.c"
+	.text
+.Ltext0:
+	.section	.text.twi_transfer,"ax",%progbits
+	.align	2
+	.thumb
+	.thumb_func
+	.type	twi_transfer, %function
+twi_transfer:
+.LFB203:
+	@ args = 8, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	push	{r4, r5, r6, r7}
+.LCFI0:
+	mov	r4, r0
+	ldrb	r5, [sp, #16]	@ zero_extendqisi2
+	ldrb	r0, [r1]	@ zero_extendqisi2
+	cmp	r0, #0
+	bne	.L2
+	ldrb	r7, [r2]	@ zero_extendqisi2
+.LBB198:
+.LBB199:
+	ldr	r6, [r4, #292]
+.LBE199:
+.LBE198:
+	cbz	r6, .L3
+.LBB200:
+.LBB201:
+	movs	r3, #0
+	str	r3, [r4, #292]
+.LBE201:
+.LBE200:
+.LBB202:
+.LBB203:
+	movs	r3, #1
+	str	r3, [r4, #20]
+.LBE203:
+.LBE202:
+	strb	r3, [r1]
+	b	.L4
+.L3:
+.LBB204:
+.LBB205:
+	ldr	r6, [r4, #284]
+.LBE205:
+.LBE204:
+	cbz	r6, .L5
+.LBB206:
+.LBB207:
+	movs	r6, #0
+	str	r6, [r4, #284]
+.LBE207:
+.LBE206:
+.LBB208:
+.LBB209:
+	ldr	r6, [r4, #292]
+.LBE209:
+.LBE208:
+	cbz	r6, .L6
+.LBB210:
+.LBB211:
+	movs	r3, #0
+	str	r3, [r4, #292]
+.LBE211:
+.LBE210:
+.LBB212:
+.LBB213:
+	movs	r3, #1
+	str	r3, [r4, #20]
+.LBE213:
+.LBE212:
+	strb	r3, [r1]
+	b	.L4
+.L6:
+.LBB214:
+.LBB215:
+	ldrb	r1, [r2]	@ zero_extendqisi2
+	cmp	r5, r1
+	bls	.L7
+.LBB216:
+.LBB217:
+	ldrb	r3, [r3, r1]	@ zero_extendqisi2
+	str	r3, [r4, #1308]
+.LBE217:
+.LBE216:
+	ldrb	r3, [r2]	@ zero_extendqisi2
+	adds	r3, r3, #1
+	strb	r3, [r2]
+	b	.L4
+.L7:
+	ldrb	r3, [sp, #20]	@ zero_extendqisi2
+	cbz	r3, .L9
+.LBB218:
+.LBB219:
+	movs	r3, #1
+	str	r3, [r4, #28]
+	b	.L17
+.L9:
+.LBE219:
+.LBE218:
+.LBB220:
+.LBB221:
+	movs	r3, #1
+	str	r3, [r4, #20]
+	b	.L4
+.L5:
+.LBE221:
+.LBE220:
+.LBE215:
+.LBE214:
+.LBB222:
+.LBB223:
+	ldr	r0, [r4, #264]
+.LBE223:
+.LBE222:
+	cbz	r0, .L4
+.LBB224:
+.LBB225:
+	movs	r0, #0
+	str	r0, [r4, #264]
+.LBE225:
+.LBE224:
+.LBB226:
+.LBB227:
+	ldr	r0, [r4, #292]
+.LBE227:
+.LBE226:
+	cbz	r0, .L11
+.LBB228:
+.LBB229:
+	movs	r3, #0
+	str	r3, [r4, #292]
+.LBE229:
+.LBE228:
+.LBB230:
+.LBB231:
+	movs	r3, #1
+	str	r3, [r4, #20]
+.LBE231:
+.LBE230:
+	strb	r3, [r1]
+	b	.L4
+.L11:
+.LBB232:
+.LBB233:
+	ldrb	r1, [r2]	@ zero_extendqisi2
+	cmp	r5, r1
+	bls	.L4
+.LBB234:
+.LBB235:
+	ldr	r0, [r4, #1304]
+	strb	r0, [r3, r1]
+.LBE235:
+.LBE234:
+	ldrb	r3, [r2]	@ zero_extendqisi2
+	adds	r3, r3, #1
+	uxtb	r3, r3
+	strb	r3, [r2]
+	subs	r2, r5, #1
+	cmp	r3, r2
+	bne	.L12
+.LBB236:
+.LBB237:
+	movs	r3, #2
+	str	r3, [r4, #512]
+	b	.L13
+.L12:
+.LBE237:
+.LBE236:
+	cmp	r5, r3
+	beq	.L4
+.L13:
+.LBB238:
+.LBB239:
+	movs	r3, #1
+	str	r3, [r4, #32]
+.L4:
+.LBE239:
+.LBE238:
+.LBE233:
+.LBE232:
+	cmp	r7, r5
+	bne	.L15
+.L14:
+.LBB240:
+.LBB241:
+	ldr	r3, [r4, #260]
+.LBE241:
+.LBE240:
+	cbz	r3, .L16
+.LBB242:
+.LBB243:
+	movs	r0, #0
+	str	r0, [r4, #260]
+.LBE243:
+.LBE242:
+	b	.L17
+.L15:
+	movs	r0, #1
+	b	.L17
+.L16:
+	movs	r0, #1
+	b	.L17
+.L2:
+.LBB244:
+.LBB245:
+	movs	r3, #0
+	str	r3, [r4, #292]
+.LBE245:
+.LBE244:
+.LBB246:
+.LBB247:
+	str	r3, [r4, #284]
+.LBE247:
+.LBE246:
+.LBB248:
+.LBB249:
+	str	r3, [r4, #264]
+	b	.L14
+.L17:
+.LBE249:
+.LBE248:
+	pop	{r4, r5, r6, r7}
+.LCFI1:
+	bx	lr
+.LFE203:
+	.size	twi_transfer, .-twi_transfer
+	.section	.text.twi_rx_start_transfer,"ax",%progbits
+	.align	2
+	.thumb
+	.thumb_func
+	.type	twi_rx_start_transfer, %function
+twi_rx_start_transfer:
+.LFB205:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+.LCFI2:
+	sub	sp, sp, #8
+.LCFI3:
+.LBB250:
+.LBB251:
+	movs	r4, #0
+	str	r4, [r1, #260]
+.LBE251:
+.LBE250:
+.LBB252:
+.LBB253:
+	str	r4, [r1, #292]
+.LBE253:
+.LBE252:
+.LBB254:
+.LBB255:
+	str	r4, [r1, #284]
+.LBE255:
+.LBE254:
+.LBB256:
+.LBB257:
+	str	r4, [r1, #264]
+.LBE257:
+.LBE256:
+	strb	r4, [r0, #38]
+	strb	r4, [r0, #35]
+	cmp	r3, #1
+.LBB258:
+.LBB259:
+	ite	eq
+	moveq	r4, #2
+.LBE259:
+.LBE258:
+.LBB260:
+.LBB261:
+	movne	r4, #1
+	str	r4, [r1, #512]
+.LBE261:
+.LBE260:
+.LBB262:
+.LBB263:
+	movs	r4, #1
+	str	r4, [r1, #32]
+.LBE263:
+.LBE262:
+.LBB264:
+.LBB265:
+	str	r4, [r1]
+.LBE265:
+.LBE264:
+	ldr	r4, [r0]
+	cbz	r4, .L22
+	movw	r3, #646
+	str	r3, [r0, #8]
+	ldr	r3, [r0, #8]
+.LBB266:
+.LBB267:
+	str	r3, [r1, #772]
+.LBE267:
+.LBE266:
+	movs	r0, #0
+	b	.L23
+.L22:
+	mov	r6, r3
+	mov	r7, r2
+	mov	r8, r1
+	mov	r5, r0
+	add	r10, r0, #35
+	add	r9, r0, #38
+	movs	r4, #0
+.L25:
+	str	r6, [sp]
+	str	r4, [sp, #4]
+	mov	r0, r8
+	mov	r1, r10
+	mov	r2, r9
+	mov	r3, r7
+	bl	twi_transfer
+	cmp	r0, #0
+	bne	.L25
+	ldrb	r3, [r5, #35]	@ zero_extendqisi2
+	cmp	r3, #0
+	ite	eq
+	moveq	r0, #0
+	movne	r0, #3
+.L23:
+	add	sp, sp, #8
+.LCFI4:
+	@ sp needed
+	pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+.LFE205:
+	.size	twi_rx_start_transfer, .-twi_rx_start_transfer
+	.section	.text.twi_tx_start_transfer,"ax",%progbits
+	.align	2
+	.thumb
+	.thumb_func
+	.type	twi_tx_start_transfer, %function
+twi_tx_start_transfer:
+.LFB204:
+	@ args = 4, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+.LCFI5:
+	sub	sp, sp, #8
+.LCFI6:
+	ldrb	r7, [sp, #40]	@ zero_extendqisi2
+.LBB292:
+.LBB293:
+	movs	r4, #0
+	str	r4, [r1, #260]
+.LBE293:
+.LBE292:
+.LBB294:
+.LBB295:
+	str	r4, [r1, #292]
+.LBE295:
+.LBE294:
+.LBB296:
+.LBB297:
+	str	r4, [r1, #284]
+.LBE297:
+.LBE296:
+.LBB298:
+.LBB299:
+	str	r4, [r1, #264]
+.LBE299:
+.LBE298:
+.LBB300:
+.LBB301:
+	str	r4, [r1, #512]
+.LBE301:
+.LBE300:
+	strb	r4, [r0, #38]
+	strb	r4, [r0, #35]
+.LBB302:
+.LBB303:
+	movs	r4, #1
+	str	r4, [r1, #32]
+.LBE303:
+.LBE302:
+.LBB304:
+.LBB305:
+	str	r4, [r1, #8]
+.LBE305:
+.LBE304:
+.LBB306:
+.LBB307:
+	ldrb	r4, [r0, #38]	@ zero_extendqisi2
+	cmp	r3, r4
+	bls	.L29
+.LBB308:
+.LBB309:
+	ldrb	r4, [r2, r4]	@ zero_extendqisi2
+	str	r4, [r1, #1308]
+.LBE309:
+.LBE308:
+	ldrb	r4, [r0, #38]	@ zero_extendqisi2
+	adds	r4, r4, #1
+	strb	r4, [r0, #38]
+	b	.L30
+.L29:
+	cbz	r7, .L31
+.LBB310:
+.LBB311:
+	movs	r4, #1
+	str	r4, [r1, #28]
+	b	.L30
+.L31:
+.LBE311:
+.LBE310:
+.LBB312:
+.LBB313:
+	movs	r4, #1
+	str	r4, [r1, #20]
+.L30:
+.LBE313:
+.LBE312:
+.LBE307:
+.LBE306:
+	ldr	r4, [r0]
+	cbz	r4, .L32
+	movw	r3, #646
+	str	r3, [r0, #8]
+	ldr	r3, [r0, #8]
+.LBB314:
+.LBB315:
+	str	r3, [r1, #772]
+.LBE315:
+.LBE314:
+	movs	r0, #0
+	b	.L33
+.L32:
+	mov	r6, r3
+	mov	r8, r2
+	mov	r4, r1
+	mov	r5, r0
+	add	r10, r0, #35
+	add	r9, r0, #38
+.L35:
+	str	r6, [sp]
+	str	r7, [sp, #4]
+	mov	r0, r4
+	mov	r1, r10
+	mov	r2, r9
+	mov	r3, r8
+	bl	twi_transfer
+	cmp	r0, #0
+	bne	.L35
+	ldrb	r3, [r5, #35]	@ zero_extendqisi2
+	cmp	r3, #0
+	ite	eq
+	moveq	r0, #0
+	movne	r0, #3
+.L33:
+	add	sp, sp, #8
+.LCFI7:
+	@ sp needed
+	pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+.LFE204:
+	.size	twi_tx_start_transfer, .-twi_tx_start_transfer
+	.section	.text.nrf_drv_twi_init,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_init
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_init, %function
+nrf_drv_twi_init:
+.LFB197:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r3, r4, r5, r6, r7, lr}
+.LCFI8:
+	mov	lr, r0
+	ldrb	r5, [r0, #4]	@ zero_extendqisi2
+	add	r4, r5, r5, lsl #2
+	ldr	r0, .L49
+	add	r0, r0, r4, lsl #3
+	ldrb	r0, [r0, #34]	@ zero_extendqisi2
+	cmp	r0, #0
+	bne	.L46
+	cbnz	r1, .L40
+	ldr	r1, .L49+4
+	add	r1, r1, r5, lsl #4
+.L40:
+	ldr	r6, .L49
+	add	r4, r5, r5, lsl #2
+	lsls	r4, r4, #3
+	adds	r0, r6, r4
+	str	r2, [r6, r4]
+	str	r3, [r0, #4]
+	movs	r3, #0
+	str	r3, [r0, #8]
+	strb	r3, [r0, #37]
+	strb	r3, [r0, #36]
+.LBB348:
+.LBB349:
+	ldr	r2, [r1]
+	mov	r3, #1342177280
+	add	r2, r2, #448
+	movw	r0, #1548
+	str	r0, [r3, r2, lsl #2]
+	ldr	r2, [r1, #4]
+	add	r2, r2, #448
+	str	r0, [r3, r2, lsl #2]
+.LBB350:
+.LBB351:
+	movs	r2, #1
+	ldr	r0, [r1]
+	lsl	r0, r2, r0
+	str	r0, [r3, #1288]
+.LBE351:
+.LBE350:
+.LBB352:
+.LBB353:
+	ldr	r0, [r1, #4]
+	lsls	r2, r2, r0
+	str	r2, [r3, #1288]
+.LBE353:
+.LBE352:
+	ldr	r2, [r1]
+	add	r2, r2, #448
+	movw	r0, #1549
+	str	r0, [r3, r2, lsl #2]
+	ldr	r2, [r1, #4]
+	add	r2, r2, #448
+	str	r0, [r3, r2, lsl #2]
+.LBB354:
+.LBB355:
+	movs	r0, #4
+@ 166 "../../../../../components/drivers_nrf/delay/nrf_delay.h" 1
+	1:
+ SUBS r0, r0, #1
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ BNE 1b
+
+@ 0 "" 2
+	.thumb
+.LBE355:
+.LBE354:
+.LBB356:
+.LBB357:
+.LBB358:
+	ldr	r3, [r3, #1296]
+	ldr	r2, [r1, #4]
+	lsrs	r3, r3, r2
+.LBE358:
+.LBE357:
+	tst	r3, #1
+	bne	.L41
+	movs	r2, #0
+.LBB360:
+.LBB361:
+	movs	r7, #1
+	mov	r4, #1342177280
+	movs	r6, #4
+	b	.L42
+.L44:
+.LBE361:
+.LBE360:
+.LBB363:
+.LBB359:
+	ldr	r3, [r4, #1296]
+	ldr	r0, [r1, #4]
+	lsrs	r3, r3, r0
+.LBE359:
+.LBE363:
+	tst	r3, #1
+	beq	.L42
+	cmp	r2, #0
+	bne	.L43
+	b	.L41
+.L50:
+	.align	2
+.L49:
+	.word	.LANCHOR0
+	.word	.LANCHOR1
+.L42:
+.LBB364:
+.LBB362:
+	ldr	r3, [r1]
+	lsl	r3, r7, r3
+	str	r3, [r4, #1292]
+.LBE362:
+.LBE364:
+.LBB365:
+.LBB366:
+	mov	r0, r6
+@ 166 "../../../../../components/drivers_nrf/delay/nrf_delay.h" 1
+	1:
+ SUBS r0, r0, #1
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ BNE 1b
+
+@ 0 "" 2
+	.thumb
+.LBE366:
+.LBE365:
+.LBB367:
+.LBB368:
+	ldr	r3, [r1]
+	lsl	r3, r7, r3
+	str	r3, [r4, #1288]
+.LBE368:
+.LBE367:
+.LBB369:
+.LBB370:
+	mov	r0, r6
+@ 166 "../../../../../components/drivers_nrf/delay/nrf_delay.h" 1
+	1:
+ SUBS r0, r0, #1
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ BNE 1b
+
+@ 0 "" 2
+	.thumb
+.LBE370:
+.LBE369:
+	adds	r2, r2, #1
+	cmp	r2, #9
+	bne	.L44
+.L43:
+.LBE356:
+.LBB371:
+.LBB372:
+	movs	r3, #1
+	ldr	r2, [r1, #4]
+	lsl	r0, r3, r2
+	mov	r2, #1342177280
+	str	r0, [r2, #1292]
+.LBE372:
+.LBE371:
+.LBB373:
+.LBB374:
+	movs	r0, #4
+@ 166 "../../../../../components/drivers_nrf/delay/nrf_delay.h" 1
+	1:
+ SUBS r0, r0, #1
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ NOP
+ BNE 1b
+
+@ 0 "" 2
+	.thumb
+.LBE374:
+.LBE373:
+.LBB375:
+.LBB376:
+	ldr	r0, [r1, #4]
+	lsls	r3, r3, r0
+	str	r3, [r2, #1288]
+.L41:
+.LBE376:
+.LBE375:
+.LBE349:
+.LBE348:
+	ldr	r3, [r1]
+	mov	r2, #1342177280
+	add	r3, r3, #448
+	movw	r0, #1548
+	str	r0, [r2, r3, lsl #2]
+	ldr	r3, [r1, #4]
+	add	r3, r3, #448
+	str	r0, [r2, r3, lsl #2]
+.LBB377:
+	ldr	r3, [lr]
+	ldr	r0, [r1]
+	ldr	r2, [r1, #4]
+.LBB378:
+.LBB379:
+	str	r0, [r3, #1288]
+	str	r2, [r3, #1292]
+.LBE379:
+.LBE378:
+	ldr	r2, [r1, #8]
+.LBB380:
+.LBB381:
+	str	r2, [r3, #1316]
+.LBE381:
+.LBE380:
+.LBE377:
+	add	r3, r5, r5, lsl #2
+	ldr	r2, .L51
+	ldr	r3, [r2, r3, lsl #3]
+	cbz	r3, .L45
+.LBB382:
+.LBB383:
+	ldr	r0, [lr]
+.LBE383:
+.LBE382:
+	sbfx	r0, r0, #12, #8
+	ldrb	r1, [r1, #12]	@ zero_extendqisi2
+	bl	nrf_drv_common_irq_enable
+.L45:
+	add	r5, r5, r5, lsl #2
+	ldr	r3, .L51
+	add	r5, r3, r5, lsl #3
+	movs	r3, #1
+	strb	r3, [r5, #34]
+	movs	r0, #0
+	pop	{r3, r4, r5, r6, r7, pc}
+.L46:
+	movs	r0, #8
+	pop	{r3, r4, r5, r6, r7, pc}
+.L52:
+	.align	2
+.L51:
+	.word	.LANCHOR0
+.LFE197:
+	.size	nrf_drv_twi_init, .-nrf_drv_twi_init
+	.section	.text.nrf_drv_twi_enable,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_enable
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_enable, %function
+nrf_drv_twi_enable:
+.LFB199:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldrb	r3, [r0, #4]	@ zero_extendqisi2
+.LBB384:
+	ldr	r2, [r0]
+.LBB385:
+.LBB386:
+	movs	r1, #5
+	str	r1, [r2, #1280]
+.LBE386:
+.LBE385:
+.LBE384:
+	add	r3, r3, r3, lsl #2
+	ldr	r2, .L54
+	add	r3, r2, r3, lsl #3
+	movs	r2, #2
+	strb	r2, [r3, #34]
+	bx	lr
+.L55:
+	.align	2
+.L54:
+	.word	.LANCHOR0
+.LFE199:
+	.size	nrf_drv_twi_enable, .-nrf_drv_twi_enable
+	.section	.text.nrf_drv_twi_disable,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_disable
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_disable, %function
+nrf_drv_twi_disable:
+.LFB200:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldrb	r3, [r0, #4]	@ zero_extendqisi2
+.LBB387:
+	ldr	r2, [r0]
+.LBB388:
+.LBB389:
+	mov	r1, #-1
+	str	r1, [r2, #776]
+.LBE389:
+.LBE388:
+.LBB390:
+.LBB391:
+	ldr	r1, [r2, #512]
+	movs	r1, #0
+	str	r1, [r2, #512]
+.LBE391:
+.LBE390:
+.LBB392:
+.LBB393:
+	str	r1, [r2, #1280]
+.LBE393:
+.LBE392:
+.LBE387:
+	add	r3, r3, r3, lsl #2
+	ldr	r2, .L57
+	add	r3, r2, r3, lsl #3
+	movs	r2, #1
+	strb	r2, [r3, #34]
+	bx	lr
+.L58:
+	.align	2
+.L57:
+	.word	.LANCHOR0
+.LFE200:
+	.size	nrf_drv_twi_disable, .-nrf_drv_twi_disable
+	.section	.text.nrf_drv_twi_uninit,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_uninit
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_uninit, %function
+nrf_drv_twi_uninit:
+.LFB198:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, lr}
+.LCFI9:
+	ldrb	r4, [r0, #4]	@ zero_extendqisi2
+	add	r2, r4, r4, lsl #2
+	ldr	r3, .L62
+	ldr	r3, [r3, r2, lsl #3]
+	cbz	r3, .L60
+.LBB394:
+.LBB395:
+	ldr	r3, [r0]
+	lsrs	r3, r3, #12
+.LBE395:
+.LBE394:
+.LBB396:
+.LBB397:
+.LBB398:
+	sxtb	r2, r3
+	lsrs	r2, r2, #5
+	and	r3, r3, #31
+	movs	r1, #1
+	lsls	r1, r1, r3
+	add	r3, r2, #32
+	ldr	r2, .L62+4
+	str	r1, [r2, r3, lsl #2]
+.L60:
+.LBE398:
+.LBE397:
+.LBE396:
+	bl	nrf_drv_twi_disable
+	add	r4, r4, r4, lsl #2
+	ldr	r3, .L62
+	add	r4, r3, r4, lsl #3
+	movs	r3, #0
+	strb	r3, [r4, #34]
+	pop	{r4, pc}
+.L63:
+	.align	2
+.L62:
+	.word	.LANCHOR0
+	.word	-536813312
+.LFE198:
+	.size	nrf_drv_twi_uninit, .-nrf_drv_twi_uninit
+	.section	.text.nrf_drv_twi_xfer,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_xfer
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_xfer, %function
+nrf_drv_twi_xfer:
+.LFB207:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, r7, lr}
+.LCFI10:
+	sub	sp, sp, #12
+.LCFI11:
+	ldrb	r4, [r0, #4]	@ zero_extendqisi2
+	tst	r2, #3
+	bne	.L70
+	ldr	r5, [r0]
+.LBB407:
+.LBB408:
+.LBB409:
+.LBB410:
+	mov	r3, #-1
+	str	r3, [r5, #776]
+.LBE410:
+.LBE409:
+	add	r3, r4, r4, lsl #2
+	ldr	r0, .L75
+	add	r3, r0, r3, lsl #3
+	adds	r3, r3, #32
+	ldrb	r3, [r3, #4]	@ zero_extendqisi2
+	tst	r3, #255
+	beq	.L66
+	add	r4, r4, r4, lsl #2
+	add	r4, r0, r4, lsl #3
+	ldr	r3, [r4, #8]
+.LBB411:
+.LBB412:
+	str	r3, [r5, #772]
+.LBE412:
+.LBE411:
+	movs	r0, #17
+	b	.L65
+.L66:
+	eor	r6, r2, #4
+	ubfx	r6, r6, #2, #1
+	add	r3, r4, r4, lsl #2
+	ldr	r0, .L75
+	add	r3, r0, r3, lsl #3
+	strb	r6, [r3, #36]
+	tst	r2, #8
+	bne	.L71
+	mov	r7, r2
+	mov	r3, r1
+.LBE408:
+.LBE407:
+	add	r6, r4, r4, lsl #2
+	add	r6, r0, r6, lsl #3
+.LBB417:
+.LBB415:
+	str	r7, [r6, #24]
+	add	lr, r6, #12
+	ldmia	r1, {r0, r1, r2}
+	stmia	lr, {r0, r1, r2}
+	ldrb	r2, [r3, #2]	@ zero_extendqisi2
+	strb	r2, [r6, #32]
+	ldr	r2, [r3, #4]
+	str	r2, [r6, #28]
+.LBB413:
+.LBB414:
+	ldrb	r2, [r3, #1]	@ zero_extendqisi2
+	str	r2, [r5, #1416]
+.LBE414:
+.LBE413:
+	ldrb	r2, [r3]	@ zero_extendqisi2
+	cmp	r2, #1
+	beq	.L67
+	cbnz	r2, .L72
+	ubfx	r1, r7, #5, #1
+	b	.L68
+.L72:
+	movs	r1, #1
+.L68:
+	add	r2, r4, r4, lsl #2
+	ldr	r0, .L75
+	add	r2, r0, r2, lsl #3
+	strb	r1, [r2, #33]
+	ldr	r2, [r3, #4]
+	ldrb	r3, [r3, #2]	@ zero_extendqisi2
+	str	r1, [sp]
+	mov	r0, r6
+	mov	r1, r5
+	bl	twi_tx_start_transfer
+	b	.L69
+.L67:
+	add	r2, r4, r4, lsl #2
+	ldr	r1, .L75
+	add	r2, r1, r2, lsl #3
+	movs	r1, #0
+	strb	r1, [r2, #33]
+	mov	r0, r6
+	mov	r1, r5
+	ldr	r2, [r3, #4]
+	ldrb	r3, [r3, #2]	@ zero_extendqisi2
+	bl	twi_rx_start_transfer
+.L69:
+	add	r3, r4, r4, lsl #2
+	ldr	r2, .L75
+	ldr	r3, [r2, r3, lsl #3]
+	cbnz	r3, .L65
+	add	r4, r4, r4, lsl #2
+	add	r4, r2, r4, lsl #3
+	movs	r2, #0
+	strb	r2, [r4, #36]
+	b	.L65
+.L70:
+.LBE415:
+.LBE417:
+	movs	r0, #6
+	b	.L65
+.L71:
+.LBB418:
+.LBB416:
+	movs	r0, #6
+.L65:
+.LBE416:
+.LBE418:
+	add	sp, sp, #12
+.LCFI12:
+	@ sp needed
+	pop	{r4, r5, r6, r7, pc}
+.L76:
+	.align	2
+.L75:
+	.word	.LANCHOR0
+.LFE207:
+	.size	nrf_drv_twi_xfer, .-nrf_drv_twi_xfer
+	.section	.text.nrf_drv_twi_tx,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_tx
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_tx, %function
+nrf_drv_twi_tx:
+.LFB208:
+	@ args = 4, pretend = 0, frame = 16
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, lr}
+.LCFI13:
+	sub	sp, sp, #16
+.LCFI14:
+	movs	r4, #0
+	str	r4, [sp, #4]
+	str	r4, [sp, #12]
+	strb	r1, [sp, #5]
+	strb	r3, [sp, #6]
+	str	r2, [sp, #8]
+	ldrb	r3, [sp, #24]	@ zero_extendqisi2
+	cmp	r3, r4
+	add	r1, sp, #4
+	ite	ne
+	movne	r2, #32
+	moveq	r2, r4
+	bl	nrf_drv_twi_xfer
+	add	sp, sp, #16
+.LCFI15:
+	@ sp needed
+	pop	{r4, pc}
+.LFE208:
+	.size	nrf_drv_twi_tx, .-nrf_drv_twi_tx
+	.section	.text.nrf_drv_twi_rx,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_rx
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_rx, %function
+nrf_drv_twi_rx:
+.LFB209:
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, lr}
+.LCFI16:
+	sub	sp, sp, #20
+.LCFI17:
+	movs	r4, #0
+	str	r4, [sp, #4]
+	str	r4, [sp, #12]
+	movs	r5, #1
+	strb	r5, [sp, #4]
+	strb	r1, [sp, #5]
+	strb	r3, [sp, #6]
+	str	r2, [sp, #8]
+	add	r1, sp, #4
+	mov	r2, r4
+	bl	nrf_drv_twi_xfer
+	add	sp, sp, #20
+.LCFI18:
+	@ sp needed
+	pop	{r4, r5, pc}
+.LFE209:
+	.size	nrf_drv_twi_rx, .-nrf_drv_twi_rx
+	.section	.text.nrf_drv_twi_data_count_get,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_data_count_get
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_data_count_get, %function
+nrf_drv_twi_data_count_get:
+.LFB210:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldrb	r3, [r0, #4]	@ zero_extendqisi2
+	add	r3, r3, r3, lsl #2
+	ldr	r2, .L84
+	add	r3, r2, r3, lsl #3
+	ldrb	r0, [r3, #38]	@ zero_extendqisi2
+	bx	lr
+.L85:
+	.align	2
+.L84:
+	.word	.LANCHOR0
+.LFE210:
+	.size	nrf_drv_twi_data_count_get, .-nrf_drv_twi_data_count_get
+	.section	.text.nrf_drv_twi_start_task_get,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_start_task_get
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_start_task_get, %function
+nrf_drv_twi_start_task_get:
+.LFB211:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldr	r0, [r0]
+	cmp	r1, #1
+	ite	ne
+	movne	r3, #8
+	moveq	r3, #0
+	add	r0, r0, r3
+	bx	lr
+.LFE211:
+	.size	nrf_drv_twi_start_task_get, .-nrf_drv_twi_start_task_get
+	.section	.text.nrf_drv_twi_stopped_event_get,"ax",%progbits
+	.align	2
+	.global	nrf_drv_twi_stopped_event_get
+	.thumb
+	.thumb_func
+	.type	nrf_drv_twi_stopped_event_get, %function
+nrf_drv_twi_stopped_event_get:
+.LFB212:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+.LBB419:
+.LBB420:
+	ldr	r0, [r0]
+.LBE420:
+.LBE419:
+	add	r0, r0, #260
+	bx	lr
+.LFE212:
+	.size	nrf_drv_twi_stopped_event_get, .-nrf_drv_twi_stopped_event_get
+	.section	.text.SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler,"ax",%progbits
+	.align	2
+	.global	SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler
+	.thumb
+	.thumb_func
+	.type	SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler, %function
+SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler:
+.LFB214:
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, lr}
+.LCFI19:
+	sub	sp, sp, #24
+.LCFI20:
+.LBB427:
+.LBB428:
+	ldr	r2, .L101
+	ldr	r3, [r2, #28]
+	ldrb	r1, [r2, #32]	@ zero_extendqisi2
+	str	r1, [sp]
+	ldrb	r1, [r2, #33]	@ zero_extendqisi2
+	str	r1, [sp, #4]
+	ldr	r0, .L101+4
+	add	r1, r2, #35
+	adds	r2, r2, #38
+	bl	twi_transfer
+	cmp	r0, #0
+	bne	.L90
+	ldr	r3, .L101
+	ldrb	r3, [r3, #35]	@ zero_extendqisi2
+	cmp	r3, #0
+	bne	.L92
+	ldr	r3, .L101
+	ldrb	r1, [r3, #12]	@ zero_extendqisi2
+	subs	r3, r1, #2
+	uxtb	r3, r3
+	cmp	r3, #1
+	bhi	.L93
+	ldr	r3, .L101
+	ldr	r2, [r3, #28]
+	ldr	r3, [r3, #16]
+	cmp	r2, r3
+	bne	.L93
+	ldr	r0, .L101
+	ldr	r2, [r0, #20]
+	str	r2, [r0, #28]
+	ldrb	r3, [r0, #15]	@ zero_extendqisi2
+	strb	r3, [r0, #32]
+	ldr	r4, [r0, #24]
+	ubfx	r4, r4, #5, #1
+	strb	r4, [r0, #33]
+	cmp	r1, #3
+	bne	.L94
+	str	r4, [sp]
+	ldr	r1, .L101+4
+	bl	twi_tx_start_transfer
+	b	.L90
+.L94:
+	ldr	r0, .L101
+	ldr	r1, .L101+4
+	bl	twi_rx_start_transfer
+	b	.L90
+.L97:
+.LBB429:
+.LBB430:
+	movs	r3, #1
+	strb	r3, [sp, #8]
+	b	.L95
+.L99:
+	tst	r3, #4
+	itt	ne
+	movne	r3, #2
+	strbne	r3, [sp, #8]
+.L95:
+.LBE430:
+	ldr	r3, .L101
+	movs	r2, #0
+	strb	r2, [r3, #36]
+	ldr	r3, [r3, #24]
+	tst	r3, #4
+	bne	.L90
+	ldr	r3, .L101
+	ldr	r2, [r3]
+	add	r0, sp, #8
+	ldr	r1, [r3, #4]
+	blx	r2
+	b	.L90
+.L93:
+	ldr	r3, .L101+8
+	ldmia	r3, {r0, r1, r2}
+	add	r3, sp, #24
+	stmdb	r3, {r0, r1, r2}
+	movs	r3, #0
+	strb	r3, [sp, #8]
+	b	.L95
+.L92:
+	ldr	r3, .L101+8
+	ldmia	r3, {r0, r1, r2}
+	add	r3, sp, #24
+	stmdb	r3, {r0, r1, r2}
+.LBB433:
+.LBB431:
+.LBB432:
+	ldr	r2, .L101+4
+	ldr	r3, [r2, #1220]
+	str	r3, [r2, #1220]
+.LBE432:
+.LBE431:
+	tst	r3, #2
+	bne	.L97
+	b	.L99
+.L90:
+.LBE433:
+.LBE429:
+.LBE428:
+.LBE427:
+	add	sp, sp, #24
+.LCFI21:
+	@ sp needed
+	pop	{r4, pc}
+.L102:
+	.align	2
+.L101:
+	.word	.LANCHOR0
+	.word	1073754112
+	.word	.LANCHOR0+12
+.LFE214:
+	.size	SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler, .-SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler
+	.section	.rodata.m_default_config,"a",%progbits
+	.align	2
+	.set	.LANCHOR1,. + 0
+	.type	m_default_config, %object
+	.size	m_default_config, 16
+m_default_config:
+	.word	27
+	.word	26
+	.word	26738688
+	.byte	6
+	.space	3
+	.section	.bss.m_cb,"aw",%nobits
+	.align	2
+	.set	.LANCHOR0,. + 0
+	.type	m_cb, %object
+	.size	m_cb, 40
+m_cb:
+	.space	40
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB203
+	.4byte	.LFE203-.LFB203
+	.byte	0x4
+	.4byte	.LCFI0-.LFB203
+	.byte	0xe
+	.uleb128 0x10
+	.byte	0x84
+	.uleb128 0x4
+	.byte	0x85
+	.uleb128 0x3
+	.byte	0x86
+	.uleb128 0x2
+	.byte	0x87
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0xc7
+	.byte	0xc6
+	.byte	0xc5
+	.byte	0xc4
+	.byte	0xe
+	.uleb128 0
+	.align	2
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.4byte	.LFB205
+	.4byte	.LFE205-.LFB205
+	.byte	0x4
+	.4byte	.LCFI2-.LFB205
+	.byte	0xe
+	.uleb128 0x20
+	.byte	0x84
+	.uleb128 0x8
+	.byte	0x85
+	.uleb128 0x7
+	.byte	0x86
+	.uleb128 0x6
+	.byte	0x87
+	.uleb128 0x5
+	.byte	0x88
+	.uleb128 0x4
+	.byte	0x89
+	.uleb128 0x3
+	.byte	0x8a
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xe
+	.uleb128 0x28
+	.byte	0x4
+	.4byte	.LCFI4-.LCFI3
+	.byte	0xe
+	.uleb128 0x20
+	.align	2
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.4byte	.LFB204
+	.4byte	.LFE204-.LFB204
+	.byte	0x4
+	.4byte	.LCFI5-.LFB204
+	.byte	0xe
+	.uleb128 0x20
+	.byte	0x84
+	.uleb128 0x8
+	.byte	0x85
+	.uleb128 0x7
+	.byte	0x86
+	.uleb128 0x6
+	.byte	0x87
+	.uleb128 0x5
+	.byte	0x88
+	.uleb128 0x4
+	.byte	0x89
+	.uleb128 0x3
+	.byte	0x8a
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI6-.LCFI5
+	.byte	0xe
+	.uleb128 0x28
+	.byte	0x4
+	.4byte	.LCFI7-.LCFI6
+	.byte	0xe
+	.uleb128 0x20
+	.align	2
+.LEFDE4:
+.LSFDE6:
+	.4byte	.LEFDE6-.LASFDE6
+.LASFDE6:
+	.4byte	.Lframe0
+	.4byte	.LFB197
+	.4byte	.LFE197-.LFB197
+	.byte	0x4
+	.4byte	.LCFI8-.LFB197
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x83
+	.uleb128 0x6
+	.byte	0x84
+	.uleb128 0x5
+	.byte	0x85
+	.uleb128 0x4
+	.byte	0x86
+	.uleb128 0x3
+	.byte	0x87
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE6:
+.LSFDE8:
+	.4byte	.LEFDE8-.LASFDE8
+.LASFDE8:
+	.4byte	.Lframe0
+	.4byte	.LFB199
+	.4byte	.LFE199-.LFB199
+	.align	2
+.LEFDE8:
+.LSFDE10:
+	.4byte	.LEFDE10-.LASFDE10
+.LASFDE10:
+	.4byte	.Lframe0
+	.4byte	.LFB200
+	.4byte	.LFE200-.LFB200
+	.align	2
+.LEFDE10:
+.LSFDE12:
+	.4byte	.LEFDE12-.LASFDE12
+.LASFDE12:
+	.4byte	.Lframe0
+	.4byte	.LFB198
+	.4byte	.LFE198-.LFB198
+	.byte	0x4
+	.4byte	.LCFI9-.LFB198
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x84
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE12:
+.LSFDE14:
+	.4byte	.LEFDE14-.LASFDE14
+.LASFDE14:
+	.4byte	.Lframe0
+	.4byte	.LFB207
+	.4byte	.LFE207-.LFB207
+	.byte	0x4
+	.4byte	.LCFI10-.LFB207
+	.byte	0xe
+	.uleb128 0x14
+	.byte	0x84
+	.uleb128 0x5
+	.byte	0x85
+	.uleb128 0x4
+	.byte	0x86
+	.uleb128 0x3
+	.byte	0x87
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI11-.LCFI10
+	.byte	0xe
+	.uleb128 0x20
+	.byte	0x4
+	.4byte	.LCFI12-.LCFI11
+	.byte	0xe
+	.uleb128 0x14
+	.align	2
+.LEFDE14:
+.LSFDE16:
+	.4byte	.LEFDE16-.LASFDE16
+.LASFDE16:
+	.4byte	.Lframe0
+	.4byte	.LFB208
+	.4byte	.LFE208-.LFB208
+	.byte	0x4
+	.4byte	.LCFI13-.LFB208
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x84
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI14-.LCFI13
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x4
+	.4byte	.LCFI15-.LCFI14
+	.byte	0xe
+	.uleb128 0x8
+	.align	2
+.LEFDE16:
+.LSFDE18:
+	.4byte	.LEFDE18-.LASFDE18
+.LASFDE18:
+	.4byte	.Lframe0
+	.4byte	.LFB209
+	.4byte	.LFE209-.LFB209
+	.byte	0x4
+	.4byte	.LCFI16-.LFB209
+	.byte	0xe
+	.uleb128 0xc
+	.byte	0x84
+	.uleb128 0x3
+	.byte	0x85
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI17-.LCFI16
+	.byte	0xe
+	.uleb128 0x20
+	.byte	0x4
+	.4byte	.LCFI18-.LCFI17
+	.byte	0xe
+	.uleb128 0xc
+	.align	2
+.LEFDE18:
+.LSFDE20:
+	.4byte	.LEFDE20-.LASFDE20
+.LASFDE20:
+	.4byte	.Lframe0
+	.4byte	.LFB210
+	.4byte	.LFE210-.LFB210
+	.align	2
+.LEFDE20:
+.LSFDE22:
+	.4byte	.LEFDE22-.LASFDE22
+.LASFDE22:
+	.4byte	.Lframe0
+	.4byte	.LFB211
+	.4byte	.LFE211-.LFB211
+	.align	2
+.LEFDE22:
+.LSFDE24:
+	.4byte	.LEFDE24-.LASFDE24
+.LASFDE24:
+	.4byte	.Lframe0
+	.4byte	.LFB212
+	.4byte	.LFE212-.LFB212
+	.align	2
+.LEFDE24:
+.LSFDE26:
+	.4byte	.LEFDE26-.LASFDE26
+.LASFDE26:
+	.4byte	.Lframe0
+	.4byte	.LFB214
+	.4byte	.LFE214-.LFB214
+	.byte	0x4
+	.4byte	.LCFI19-.LFB214
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x84
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI20-.LCFI19
+	.byte	0xe
+	.uleb128 0x20
+	.byte	0x4
+	.4byte	.LCFI21-.LCFI20
+	.byte	0xe
+	.uleb128 0x8
+	.align	2
+.LEFDE26:
+	.text
+.Letext0:
+	.file 1 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cm4.h"
+	.file 2 "../../../../../components/drivers_nrf/hal/nrf_gpio.h"
+	.file 3 "../../../../../components/drivers_nrf/delay/nrf_delay.h"
+	.file 4 "../../../../../components/drivers_nrf/hal/nrf_twi.h"
+	.file 5 "../../../../../components/drivers_nrf/common/nrf_drv_common.h"
+	.file 6 "C:/Nordic_SDKs/11.0.0/examples/mpu/nrf5-mpu-fft/pca10040/arm5_no_packs/../../../../../components/drivers_nrf/twi_master/nrf_drv_twi.c"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x70b
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF42
+	.byte	0x1
+	.4byte	.LASF43
+	.4byte	.LASF44
+	.4byte	.Ldebug_ranges0+0x50
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF0
+	.byte	0x1
+	.2byte	0x5e3
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF1
+	.byte	0x2
+	.2byte	0x220
+	.byte	0x3
+	.uleb128 0x3
+	.4byte	.LASF2
+	.byte	0x3
+	.byte	0xa3
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF3
+	.byte	0x2
+	.2byte	0x24c
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF4
+	.byte	0x2
+	.2byte	0x22a
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF5
+	.byte	0x4
+	.2byte	0x185
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF6
+	.byte	0x4
+	.2byte	0x11d
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF7
+	.byte	0x4
+	.2byte	0x180
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF8
+	.byte	0x4
+	.2byte	0x18a
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF9
+	.byte	0x4
+	.2byte	0x129
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF10
+	.byte	0x4
+	.2byte	0x12f
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF11
+	.byte	0x4
+	.2byte	0x147
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF12
+	.byte	0x4
+	.2byte	0x14d
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF13
+	.byte	0x4
+	.2byte	0x17b
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF14
+	.byte	0x4
+	.2byte	0x171
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF15
+	.byte	0x4
+	.2byte	0x163
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF16
+	.byte	0x4
+	.2byte	0x16b
+	.byte	0x3
+	.uleb128 0x3
+	.4byte	.LASF17
+	.byte	0x5
+	.byte	0xb5
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF18
+	.byte	0x4
+	.2byte	0x159
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF19
+	.byte	0x4
+	.2byte	0x141
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF20
+	.byte	0x4
+	.2byte	0x15e
+	.byte	0x3
+	.uleb128 0x3
+	.4byte	.LASF21
+	.byte	0x5
+	.byte	0xa6
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF22
+	.byte	0x4
+	.2byte	0x123
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF23
+	.byte	0x4
+	.2byte	0x135
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF24
+	.byte	0x6
+	.2byte	0x125
+	.byte	0x1
+	.uleb128 0x2
+	.4byte	.LASF25
+	.byte	0x6
+	.2byte	0x13f
+	.byte	0x1
+	.uleb128 0x4
+	.4byte	.LASF26
+	.byte	0x6
+	.2byte	0x157
+	.4byte	.LFB203
+	.4byte	.LFE203-.LFB203
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x2c9
+	.uleb128 0x5
+	.4byte	0x7a
+	.4byte	.LBB198
+	.4byte	.LBE198-.LBB198
+	.byte	0x6
+	.2byte	0x16f
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB200
+	.4byte	.LBE200-.LBB200
+	.byte	0x6
+	.2byte	0x171
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB202
+	.4byte	.LBE202-.LBB202
+	.byte	0x6
+	.2byte	0x172
+	.uleb128 0x5
+	.4byte	0x7a
+	.4byte	.LBB204
+	.4byte	.LBE204-.LBB204
+	.byte	0x6
+	.2byte	0x177
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB206
+	.4byte	.LBE206-.LBB206
+	.byte	0x6
+	.2byte	0x179
+	.uleb128 0x5
+	.4byte	0x7a
+	.4byte	.LBB208
+	.4byte	.LBE208-.LBB208
+	.byte	0x6
+	.2byte	0x17a
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB210
+	.4byte	.LBE210-.LBB210
+	.byte	0x6
+	.2byte	0x17c
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB212
+	.4byte	.LBE212-.LBB212
+	.byte	0x6
+	.2byte	0x17d
+	.uleb128 0x6
+	.4byte	0xf6
+	.4byte	.LBB214
+	.4byte	.LBE214-.LBB214
+	.byte	0x6
+	.2byte	0x182
+	.4byte	0x1e3
+	.uleb128 0x5
+	.4byte	0x4d
+	.4byte	.LBB216
+	.4byte	.LBE216-.LBB216
+	.byte	0x6
+	.2byte	0x12d
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB218
+	.4byte	.LBE218-.LBB218
+	.byte	0x6
+	.2byte	0x134
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB220
+	.4byte	.LBE220-.LBB220
+	.byte	0x6
+	.2byte	0x139
+	.byte	0
+	.uleb128 0x5
+	.4byte	0x7a
+	.4byte	.LBB222
+	.4byte	.LBE222-.LBB222
+	.byte	0x6
+	.2byte	0x188
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB224
+	.4byte	.LBE224-.LBB224
+	.byte	0x6
+	.2byte	0x18a
+	.uleb128 0x5
+	.4byte	0x7a
+	.4byte	.LBB226
+	.4byte	.LBE226-.LBB226
+	.byte	0x6
+	.2byte	0x18b
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB228
+	.4byte	.LBE228-.LBB228
+	.byte	0x6
+	.2byte	0x18d
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB230
+	.4byte	.LBE230-.LBB230
+	.byte	0x6
+	.2byte	0x18e
+	.uleb128 0x6
+	.4byte	0xff
+	.4byte	.LBB232
+	.4byte	.LBE232-.LBB232
+	.byte	0x6
+	.2byte	0x193
+	.4byte	0x278
+	.uleb128 0x5
+	.4byte	0x5f
+	.4byte	.LBB234
+	.4byte	.LBE234-.LBB234
+	.byte	0x6
+	.2byte	0x146
+	.uleb128 0x5
+	.4byte	0x68
+	.4byte	.LBB236
+	.4byte	.LBE236-.LBB236
+	.byte	0x6
+	.2byte	0x14c
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB238
+	.4byte	.LBE238-.LBB238
+	.byte	0x6
+	.2byte	0x153
+	.byte	0
+	.uleb128 0x5
+	.4byte	0x7a
+	.4byte	.LBB240
+	.4byte	.LBE240-.LBB240
+	.byte	0x6
+	.2byte	0x198
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB242
+	.4byte	.LBE242-.LBB242
+	.byte	0x6
+	.2byte	0x19a
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB244
+	.4byte	.LBE244-.LBB244
+	.byte	0x6
+	.2byte	0x16b
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB246
+	.4byte	.LBE246-.LBB246
+	.byte	0x6
+	.2byte	0x16c
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB248
+	.4byte	.LBE248-.LBB248
+	.byte	0x6
+	.2byte	0x16d
+	.byte	0
+	.uleb128 0x7
+	.4byte	.LASF27
+	.byte	0x6
+	.2byte	0x1cd
+	.4byte	.LFB205
+	.4byte	.LFE205-.LFB205
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x370
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB250
+	.4byte	.LBE250-.LBB250
+	.byte	0x6
+	.2byte	0x1d4
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB252
+	.4byte	.LBE252-.LBB252
+	.byte	0x6
+	.2byte	0x1d5
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB254
+	.4byte	.LBE254-.LBB254
+	.byte	0x6
+	.2byte	0x1d6
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB256
+	.4byte	.LBE256-.LBB256
+	.byte	0x6
+	.2byte	0x1d7
+	.uleb128 0x5
+	.4byte	0x68
+	.4byte	.LBB258
+	.4byte	.LBE258-.LBB258
+	.byte	0x6
+	.2byte	0x1de
+	.uleb128 0x5
+	.4byte	0x68
+	.4byte	.LBB260
+	.4byte	.LBE260-.LBB260
+	.byte	0x6
+	.2byte	0x1e2
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB262
+	.4byte	.LBE262-.LBB262
+	.byte	0x6
+	.2byte	0x1e5
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB264
+	.4byte	.LBE264-.LBB264
+	.byte	0x6
+	.2byte	0x1e6
+	.uleb128 0x5
+	.4byte	0x83
+	.4byte	.LBB266
+	.4byte	.LBE266-.LBB266
+	.byte	0x6
+	.2byte	0x1ee
+	.byte	0
+	.uleb128 0x7
+	.4byte	.LASF28
+	.byte	0x6
+	.2byte	0x1a1
+	.4byte	.LFB204
+	.4byte	.LFE204-.LFB204
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x44c
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB292
+	.4byte	.LBE292-.LBB292
+	.byte	0x6
+	.2byte	0x1a9
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB294
+	.4byte	.LBE294-.LBB294
+	.byte	0x6
+	.2byte	0x1aa
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB296
+	.4byte	.LBE296-.LBB296
+	.byte	0x6
+	.2byte	0x1ab
+	.uleb128 0x5
+	.4byte	0x71
+	.4byte	.LBB298
+	.4byte	.LBE298-.LBB298
+	.byte	0x6
+	.2byte	0x1ac
+	.uleb128 0x5
+	.4byte	0x68
+	.4byte	.LBB300
+	.4byte	.LBE300-.LBB300
+	.byte	0x6
+	.2byte	0x1ad
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB302
+	.4byte	.LBE302-.LBB302
+	.byte	0x6
+	.2byte	0x1b3
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB304
+	.4byte	.LBE304-.LBB304
+	.byte	0x6
+	.2byte	0x1b4
+	.uleb128 0x6
+	.4byte	0xf6
+	.4byte	.LBB306
+	.4byte	.LBE306-.LBB306
+	.byte	0x6
+	.2byte	0x1b6
+	.4byte	0x43b
+	.uleb128 0x5
+	.4byte	0x4d
+	.4byte	.LBB308
+	.4byte	.LBE308-.LBB308
+	.byte	0x6
+	.2byte	0x12d
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB310
+	.4byte	.LBE310-.LBB310
+	.byte	0x6
+	.2byte	0x134
+	.uleb128 0x5
+	.4byte	0x56
+	.4byte	.LBB312
+	.4byte	.LBE312-.LBB312
+	.byte	0x6
+	.2byte	0x139
+	.byte	0
+	.uleb128 0x5
+	.4byte	0x83
+	.4byte	.LBB314
+	.4byte	.LBE314-.LBB314
+	.byte	0x6
+	.2byte	0x1be
+	.byte	0
+	.uleb128 0x3
+	.4byte	.LASF29
+	.byte	0x6
+	.byte	0x6f
+	.byte	0x1
+	.uleb128 0x8
+	.4byte	.LASF30
+	.byte	0x6
+	.byte	0x94
+	.4byte	.LFB197
+	.4byte	.LFE197-.LFB197
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x550
+	.uleb128 0x9
+	.4byte	0x44c
+	.4byte	.LBB348
+	.4byte	.LBE348-.LBB348
+	.byte	0x6
+	.byte	0xb3
+	.4byte	0x522
+	.uleb128 0xa
+	.4byte	0x2a
+	.4byte	.LBB350
+	.4byte	.LBE350-.LBB350
+	.byte	0x6
+	.byte	0x75
+	.uleb128 0xa
+	.4byte	0x2a
+	.4byte	.LBB352
+	.4byte	.LBE352-.LBB352
+	.byte	0x6
+	.byte	0x76
+	.uleb128 0xa
+	.4byte	0x33
+	.4byte	.LBB354
+	.4byte	.LBE354-.LBB354
+	.byte	0x6
+	.byte	0x7b
+	.uleb128 0xb
+	.4byte	0x3b
+	.4byte	.LBB357
+	.4byte	.Ldebug_ranges0+0
+	.byte	0x6
+	.byte	0x7f
+	.uleb128 0xb
+	.4byte	0x44
+	.4byte	.LBB360
+	.4byte	.Ldebug_ranges0+0x18
+	.byte	0x6
+	.byte	0x8a
+	.uleb128 0xa
+	.4byte	0x33
+	.4byte	.LBB365
+	.4byte	.LBE365-.LBB365
+	.byte	0x6
+	.byte	0x8b
+	.uleb128 0xa
+	.4byte	0x2a
+	.4byte	.LBB367
+	.4byte	.LBE367-.LBB367
+	.byte	0x6
+	.byte	0x8c
+	.uleb128 0xa
+	.4byte	0x33
+	.4byte	.LBB369
+	.4byte	.LBE369-.LBB369
+	.byte	0x6
+	.byte	0x8d
+	.uleb128 0xa
+	.4byte	0x44
+	.4byte	.LBB371
+	.4byte	.LBE371-.LBB371
+	.byte	0x6
+	.byte	0x8f
+	.uleb128 0xa
+	.4byte	0x33
+	.4byte	.LBB373
+	.4byte	.LBE373-.LBB373
+	.byte	0x6
+	.byte	0x90
+	.uleb128 0xa
+	.4byte	0x2a
+	.4byte	.LBB375
+	.4byte	.LBE375-.LBB375
+	.byte	0x6
+	.byte	0x91
+	.byte	0
+	.uleb128 0xa
+	.4byte	0xa7
+	.4byte	.LBB378
+	.4byte	.LBE378-.LBB378
+	.byte	0x6
+	.byte	0xc3
+	.uleb128 0xa
+	.4byte	0xb0
+	.4byte	.LBB380
+	.4byte	.LBE380-.LBB380
+	.byte	0x6
+	.byte	0xc3
+	.uleb128 0xa
+	.4byte	0xb9
+	.4byte	.LBB382
+	.4byte	.LBE382-.LBB382
+	.byte	0x6
+	.byte	0xd2
+	.byte	0
+	.uleb128 0xc
+	.4byte	.LASF31
+	.byte	0x6
+	.byte	0xf7
+	.4byte	.LFB199
+	.4byte	.LFE199-.LFB199
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x576
+	.uleb128 0x5
+	.4byte	0xc1
+	.4byte	.LBB385
+	.4byte	.LBE385-.LBB385
+	.byte	0x6
+	.2byte	0x102
+	.byte	0
+	.uleb128 0xd
+	.4byte	.LASF32
+	.byte	0x6
+	.2byte	0x10c
+	.4byte	.LFB200
+	.4byte	.LFE200-.LFB200
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x5bd
+	.uleb128 0x5
+	.4byte	0x8c
+	.4byte	.LBB388
+	.4byte	.LBE388-.LBB388
+	.byte	0x6
+	.2byte	0x119
+	.uleb128 0x5
+	.4byte	0xca
+	.4byte	.LBB390
+	.4byte	.LBE390-.LBB390
+	.byte	0x6
+	.2byte	0x119
+	.uleb128 0x5
+	.4byte	0xd3
+	.4byte	.LBB392
+	.4byte	.LBE392-.LBB392
+	.byte	0x6
+	.2byte	0x119
+	.byte	0
+	.uleb128 0x8
+	.4byte	.LASF33
+	.byte	0x6
+	.byte	0xde
+	.4byte	.LFB198
+	.4byte	.LFE198-.LFB198
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x601
+	.uleb128 0xa
+	.4byte	0xb9
+	.4byte	.LBB394
+	.4byte	.LBE394-.LBB394
+	.byte	0x6
+	.byte	0xe9
+	.uleb128 0xe
+	.4byte	0xdc
+	.4byte	.LBB396
+	.4byte	.LBE396-.LBB396
+	.byte	0x6
+	.byte	0xe9
+	.uleb128 0xa
+	.4byte	0x21
+	.4byte	.LBB397
+	.4byte	.LBE397-.LBB397
+	.byte	0x5
+	.byte	0xa8
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.4byte	.LASF34
+	.byte	0x6
+	.2byte	0x1fd
+	.byte	0x3
+	.uleb128 0xf
+	.4byte	.LASF35
+	.byte	0x6
+	.2byte	0x2ca
+	.4byte	.LFB207
+	.4byte	.LFE207-.LFB207
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x662
+	.uleb128 0x10
+	.4byte	0x601
+	.4byte	.LBB407
+	.4byte	.Ldebug_ranges0+0x30
+	.byte	0x6
+	.2byte	0x2d9
+	.uleb128 0x5
+	.4byte	0x8c
+	.4byte	.LBB409
+	.4byte	.LBE409-.LBB409
+	.byte	0x6
+	.2byte	0x205
+	.uleb128 0x5
+	.4byte	0x83
+	.4byte	.LBB411
+	.4byte	.LBE411-.LBB411
+	.byte	0x6
+	.2byte	0x209
+	.uleb128 0x5
+	.4byte	0x95
+	.4byte	.LBB413
+	.4byte	.LBE413-.LBB413
+	.byte	0x6
+	.2byte	0x21a
+	.byte	0
+	.byte	0
+	.uleb128 0x11
+	.4byte	.LASF36
+	.byte	0x6
+	.2byte	0x2e4
+	.4byte	.LFB208
+	.4byte	.LFE208-.LFB208
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x11
+	.4byte	.LASF37
+	.byte	0x6
+	.2byte	0x2ef
+	.4byte	.LFB209
+	.4byte	.LFE209-.LFB209
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x12
+	.4byte	.LASF38
+	.byte	0x6
+	.2byte	0x2f8
+	.4byte	.LFB210
+	.4byte	.LFE210-.LFB210
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x12
+	.4byte	.LASF39
+	.byte	0x6
+	.2byte	0x304
+	.4byte	.LFB211
+	.4byte	.LFE211-.LFB211
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0xd
+	.4byte	.LASF40
+	.byte	0x6
+	.2byte	0x312
+	.4byte	.LFB212
+	.4byte	.LFE212-.LFB212
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x6d1
+	.uleb128 0x5
+	.4byte	0xed
+	.4byte	.LBB419
+	.4byte	.LBE419-.LBB419
+	.byte	0x6
+	.2byte	0x318
+	.byte	0
+	.uleb128 0x2
+	.4byte	.LASF41
+	.byte	0x6
+	.2byte	0x37a
+	.byte	0x1
+	.uleb128 0x13
+	.4byte	.LASF45
+	.byte	0x6
+	.2byte	0x3b7
+	.4byte	.LFB214
+	.4byte	.LFE214-.LFB214
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x14
+	.4byte	0x6d1
+	.4byte	.LBB427
+	.4byte	.LBE427-.LBB427
+	.byte	0x6
+	.2byte	0x3bc
+	.uleb128 0x5
+	.4byte	0x9e
+	.4byte	.LBB431
+	.4byte	.LBE431-.LBB431
+	.byte	0x6
+	.2byte	0x39c
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x1b
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x4
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x5
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0x5
+	.byte	0
+	.byte	0
+	.uleb128 0x6
+	.uleb128 0x1d
+	.byte	0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0x5
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x7
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x8
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x9
+	.uleb128 0x1d
+	.byte	0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0xa
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0xb
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x52
+	.uleb128 0x1
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0xc
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0xd
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0xe
+	.uleb128 0x1d
+	.byte	0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0xf
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x10
+	.uleb128 0x1d
+	.byte	0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x52
+	.uleb128 0x1
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0x5
+	.byte	0
+	.byte	0
+	.uleb128 0x11
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x12
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x13
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x14
+	.uleb128 0x1d
+	.byte	0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0x5
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x84
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB203
+	.4byte	.LFE203-.LFB203
+	.4byte	.LFB205
+	.4byte	.LFE205-.LFB205
+	.4byte	.LFB204
+	.4byte	.LFE204-.LFB204
+	.4byte	.LFB197
+	.4byte	.LFE197-.LFB197
+	.4byte	.LFB199
+	.4byte	.LFE199-.LFB199
+	.4byte	.LFB200
+	.4byte	.LFE200-.LFB200
+	.4byte	.LFB198
+	.4byte	.LFE198-.LFB198
+	.4byte	.LFB207
+	.4byte	.LFE207-.LFB207
+	.4byte	.LFB208
+	.4byte	.LFE208-.LFB208
+	.4byte	.LFB209
+	.4byte	.LFE209-.LFB209
+	.4byte	.LFB210
+	.4byte	.LFE210-.LFB210
+	.4byte	.LFB211
+	.4byte	.LFE211-.LFB211
+	.4byte	.LFB212
+	.4byte	.LFE212-.LFB212
+	.4byte	.LFB214
+	.4byte	.LFE214-.LFB214
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LBB357
+	.4byte	.LBE357
+	.4byte	.LBB363
+	.4byte	.LBE363
+	.4byte	0
+	.4byte	0
+	.4byte	.LBB360
+	.4byte	.LBE360
+	.4byte	.LBB364
+	.4byte	.LBE364
+	.4byte	0
+	.4byte	0
+	.4byte	.LBB407
+	.4byte	.LBE407
+	.4byte	.LBB417
+	.4byte	.LBE417
+	.4byte	.LBB418
+	.4byte	.LBE418
+	.4byte	0
+	.4byte	0
+	.4byte	.LFB203
+	.4byte	.LFE203
+	.4byte	.LFB205
+	.4byte	.LFE205
+	.4byte	.LFB204
+	.4byte	.LFE204
+	.4byte	.LFB197
+	.4byte	.LFE197
+	.4byte	.LFB199
+	.4byte	.LFE199
+	.4byte	.LFB200
+	.4byte	.LFE200
+	.4byte	.LFB198
+	.4byte	.LFE198
+	.4byte	.LFB207
+	.4byte	.LFE207
+	.4byte	.LFB208
+	.4byte	.LFE208
+	.4byte	.LFB209
+	.4byte	.LFE209
+	.4byte	.LFB210
+	.4byte	.LFE210
+	.4byte	.LFB211
+	.4byte	.LFE211
+	.4byte	.LFB212
+	.4byte	.LFE212
+	.4byte	.LFB214
+	.4byte	.LFE214
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF22:
+	.ascii	"nrf_twi_task_address_get\000"
+.LASF24:
+	.ascii	"twi_send_byte\000"
+.LASF19:
+	.ascii	"nrf_twi_shorts_disable\000"
+.LASF1:
+	.ascii	"nrf_gpio_pin_set\000"
+.LASF10:
+	.ascii	"nrf_twi_event_check\000"
+.LASF45:
+	.ascii	"SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler\000"
+.LASF28:
+	.ascii	"twi_tx_start_transfer\000"
+.LASF20:
+	.ascii	"nrf_twi_disable\000"
+.LASF44:
+	.ascii	"C:\\Nordic_SDKs\\11.0.0\\examples\\mpu\\nrf5-mpu-ff"
+	.ascii	"t\\pca10040\\arm5_no_packs\000"
+.LASF21:
+	.ascii	"nrf_drv_common_irq_disable\000"
+.LASF43:
+	.ascii	"C:/Nordic_SDKs/11.0.0/examples/mpu/nrf5-mpu-fft/pca"
+	.ascii	"10040/arm5_no_packs/../../../../../components/drive"
+	.ascii	"rs_nrf/twi_master/nrf_drv_twi.c\000"
+.LASF7:
+	.ascii	"nrf_twi_rxd_get\000"
+.LASF23:
+	.ascii	"nrf_twi_event_address_get\000"
+.LASF32:
+	.ascii	"nrf_drv_twi_disable\000"
+.LASF8:
+	.ascii	"nrf_twi_shorts_set\000"
+.LASF15:
+	.ascii	"nrf_twi_pins_set\000"
+.LASF12:
+	.ascii	"nrf_twi_int_disable\000"
+.LASF37:
+	.ascii	"nrf_drv_twi_rx\000"
+.LASF39:
+	.ascii	"nrf_drv_twi_start_task_get\000"
+.LASF31:
+	.ascii	"nrf_drv_twi_enable\000"
+.LASF6:
+	.ascii	"nrf_twi_task_trigger\000"
+.LASF29:
+	.ascii	"twi_clear_bus\000"
+.LASF36:
+	.ascii	"nrf_drv_twi_tx\000"
+.LASF25:
+	.ascii	"twi_receive_byte\000"
+.LASF38:
+	.ascii	"nrf_drv_twi_data_count_get\000"
+.LASF16:
+	.ascii	"nrf_twi_frequency_set\000"
+.LASF2:
+	.ascii	"nrf_delay_us\000"
+.LASF5:
+	.ascii	"nrf_twi_txd_set\000"
+.LASF30:
+	.ascii	"nrf_drv_twi_init\000"
+.LASF11:
+	.ascii	"nrf_twi_int_enable\000"
+.LASF13:
+	.ascii	"nrf_twi_address_set\000"
+.LASF4:
+	.ascii	"nrf_gpio_pin_clear\000"
+.LASF26:
+	.ascii	"twi_transfer\000"
+.LASF17:
+	.ascii	"nrf_drv_get_IRQn\000"
+.LASF41:
+	.ascii	"irq_handler_twi\000"
+.LASF42:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -fshort-enums -fno-common\000"
+.LASF18:
+	.ascii	"nrf_twi_enable\000"
+.LASF40:
+	.ascii	"nrf_drv_twi_stopped_event_get\000"
+.LASF3:
+	.ascii	"nrf_gpio_pin_read\000"
+.LASF27:
+	.ascii	"twi_rx_start_transfer\000"
+.LASF0:
+	.ascii	"NVIC_DisableIRQ\000"
+.LASF34:
+	.ascii	"twi_xfer\000"
+.LASF35:
+	.ascii	"nrf_drv_twi_xfer\000"
+.LASF33:
+	.ascii	"nrf_drv_twi_uninit\000"
+.LASF9:
+	.ascii	"nrf_twi_event_clear\000"
+.LASF14:
+	.ascii	"nrf_twi_errorsrc_get_and_clear\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"

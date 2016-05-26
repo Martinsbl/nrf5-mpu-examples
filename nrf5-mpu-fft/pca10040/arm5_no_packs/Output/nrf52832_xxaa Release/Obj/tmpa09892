@@ -1,0 +1,761 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"system_nrf52.c"
+	.section	.init,"ax",%progbits
+
+.Ltext0:
+	.section	.init.SystemCoreClockUpdate,"ax",%progbits
+	.align	2
+	.global	SystemCoreClockUpdate
+	.thumb
+	.thumb_func
+	.type	SystemCoreClockUpdate, %function
+SystemCoreClockUpdate:
+.LFB124:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldr	r2, .L2
+	ldr	r3, .L2+4
+	str	r2, [r3]
+	bx	lr
+.L3:
+	.align	2
+.L2:
+	.word	64000000
+	.word	.LANCHOR0
+.LFE124:
+	.size	SystemCoreClockUpdate, .-SystemCoreClockUpdate
+	.section	.init.SystemInit,"ax",%progbits
+	.align	2
+	.global	SystemInit
+	.thumb
+	.thumb_func
+	.type	SystemInit, %function
+SystemInit:
+.LFB125:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+.LBB32:
+.LBB33:
+	ldr	r3, .L34
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #6
+	bne	.L5
+	ldr	r3, .L34+4
+	ldr	r3, [r3]
+	tst	r3, #15
+	bne	.L6
+	ldr	r3, .L34+8
+	ldr	r3, [r3]
+	and	r3, r3, #240
+	cmp	r3, #48
+	bne	.L7
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L6
+	b	.L8
+.L7:
+	cmp	r3, #64
+	bne	.L9
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L6
+	b	.L8
+.L9:
+	cmp	r3, #80
+	bne	.L6
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L6
+.L8:
+.LBE33:
+.LBE32:
+	ldr	r3, .L34+16
+	ldr	r3, [r3]
+	ubfx	r3, r3, #13, #3
+	ldr	r2, .L34+20
+	str	r3, [r2]
+.LBB34:
+.LBB35:
+	ldr	r3, .L34
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #6
+	bne	.L10
+.L6:
+	ldr	r3, .L34+4
+	ldr	r3, [r3]
+	tst	r3, #15
+	bne	.L11
+	ldr	r3, .L34+8
+	ldr	r3, [r3]
+	and	r3, r3, #240
+	cmp	r3, #48
+	bne	.L11
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L11
+	b	.L12
+.L5:
+.LBE35:
+.LBE34:
+.LBB36:
+.LBB37:
+	ldr	r3, .L34
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #6
+	bne	.L13
+.L11:
+	ldr	r3, .L34+4
+	ldr	r3, [r3]
+	tst	r3, #15
+	bne	.L14
+	ldr	r3, .L34+8
+	ldr	r3, [r3]
+	and	r3, r3, #240
+	cmp	r3, #48
+	bne	.L15
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L14
+	b	.L16
+.L15:
+	cmp	r3, #64
+	bne	.L17
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L14
+	b	.L16
+.L17:
+	cmp	r3, #80
+	bne	.L14
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L14
+.L16:
+.LBE37:
+.LBE36:
+	mov	r3, #1073741824
+	movs	r2, #0
+	str	r2, [r3, #268]
+	str	r2, [r3, #272]
+	str	r2, [r3, #1336]
+.L10:
+.LBB38:
+.LBB39:
+	ldr	r3, .L34
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #6
+	bne	.L18
+.L14:
+	ldr	r3, .L34+4
+	ldr	r3, [r3]
+	tst	r3, #15
+	bne	.L19
+	ldr	r3, .L34+8
+	ldr	r3, [r3]
+	and	r3, r3, #240
+	cmp	r3, #48
+	bne	.L19
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	bne	.L19
+	b	.L20
+.L13:
+.LBE39:
+.LBE38:
+.LBB40:
+.LBB41:
+	ldr	r3, .L34
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #6
+	bne	.L18
+.L19:
+	ldr	r3, .L34+4
+	ldr	r3, [r3]
+	tst	r3, #15
+	bne	.L18
+	ldr	r3, .L34+8
+	ldr	r3, [r3]
+	and	r3, r3, #240
+	cmp	r3, #80
+	bne	.L18
+	ldr	r3, .L34+12
+	ldr	r3, [r3]
+	tst	r3, #240
+	beq	.L21
+.L18:
+.LBE41:
+.LBE40:
+	ldr	r2, .L34+24
+	ldr	r3, [r2, #136]
+	orr	r3, r3, #15728640
+	str	r3, [r2, #136]
+.LBB42:
+.LBB43:
+@ 445 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmInstr.h" 1
+	dsb
+@ 0 "" 2
+	.thumb
+.LBE43:
+.LBE42:
+.LBB44:
+.LBB45:
+@ 434 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmInstr.h" 1
+	isb
+@ 0 "" 2
+	.thumb
+.LBE45:
+.LBE44:
+	mov	r3, #268439552
+	ldr	r3, [r3, #512]
+	cmp	r3, #0
+	blt	.L22
+	mov	r3, #268439552
+	ldr	r3, [r3, #516]
+	cmp	r3, #0
+	bge	.L23
+.L22:
+	movs	r2, #1
+	ldr	r3, .L34+28
+	str	r2, [r3, #1284]
+.L24:
+	ldr	r2, [r3, #1024]
+	cmp	r2, #0
+	beq	.L24
+	movs	r2, #21
+	mov	r3, #268439552
+	str	r2, [r3, #512]
+	ldr	r3, .L34+28
+.L25:
+	ldr	r2, [r3, #1024]
+	cmp	r2, #0
+	beq	.L25
+	movs	r2, #21
+	mov	r3, #268439552
+	str	r2, [r3, #516]
+	ldr	r3, .L34+28
+.L26:
+	ldr	r2, [r3, #1024]
+	cmp	r2, #0
+	beq	.L26
+	movs	r2, #0
+	ldr	r3, .L34+28
+	str	r2, [r3, #1284]
+.L27:
+	ldr	r2, [r3, #1024]
+	cmp	r2, #0
+	beq	.L27
+.LBB46:
+.LBB47:
+.LBB48:
+.LBB49:
+@ 445 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmInstr.h" 1
+	dsb
+@ 0 "" 2
+	.thumb
+.LBE49:
+.LBE48:
+	ldr	r1, .L34+24
+	ldr	r2, [r1, #12]
+	and	r2, r2, #1792
+	ldr	r3, .L34+32
+	orrs	r3, r3, r2
+	str	r3, [r1, #12]
+.LBB50:
+.LBB51:
+@ 445 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmInstr.h" 1
+	dsb
+@ 0 "" 2
+	.thumb
+.L28:
+	b	.L28
+.L23:
+.LBE51:
+.LBE50:
+.LBE47:
+.LBE46:
+.LBB52:
+.LBB53:
+	ldr	r2, .L34+36
+	ldr	r3, .L34+40
+	str	r2, [r3]
+	bx	lr
+.L12:
+.LBE53:
+.LBE52:
+	ldr	r2, .L34+44
+	ldr	r3, [r2, #12]
+	bic	r3, r3, #16777216
+	str	r3, [r2, #12]
+	b	.L5
+.L20:
+	movs	r2, #3
+	ldr	r3, .L34+48
+	str	r2, [r3]
+	b	.L13
+.L21:
+	mov	r2, #268435456
+	ldr	r1, [r2, #1028]
+	ldr	r3, .L34+52
+	str	r1, [r3, #1312]
+	ldr	r1, [r2, #1032]
+	str	r1, [r3, #1316]
+	ldr	r1, [r2, #1036]
+	str	r1, [r3, #1320]
+	ldr	r1, [r2, #1040]
+	str	r1, [r3, #1324]
+	ldr	r1, [r2, #1044]
+	str	r1, [r3, #1328]
+	ldr	r1, [r2, #1048]
+	str	r1, [r3, #1332]
+	ldr	r1, [r2, #1052]
+	str	r1, [r3, #1344]
+	ldr	r1, [r2, #1056]
+	str	r1, [r3, #1348]
+	ldr	r1, [r2, #1060]
+	str	r1, [r3, #1352]
+	ldr	r1, [r2, #1064]
+	str	r1, [r3, #1356]
+	ldr	r1, [r2, #1068]
+	str	r1, [r3, #1360]
+	ldr	r1, [r2, #1072]
+	str	r1, [r3, #1364]
+	ldr	r1, [r2, #1076]
+	str	r1, [r3, #1376]
+	ldr	r1, [r2, #1080]
+	str	r1, [r3, #1380]
+	ldr	r1, [r2, #1084]
+	str	r1, [r3, #1384]
+	ldr	r1, [r2, #1088]
+	str	r1, [r3, #1388]
+	ldr	r2, [r2, #1092]
+	str	r2, [r3, #1392]
+	b	.L18
+.L35:
+	.align	2
+.L34:
+	.word	-268431392
+	.word	-268431388
+	.word	-268431384
+	.word	-268431380
+	.word	268436036
+	.word	1073743164
+	.word	-536810240
+	.word	1073864704
+	.word	100270084
+	.word	64000000
+	.word	.LANCHOR0
+	.word	-536810000
+	.word	1073743264
+	.word	1073790976
+.LFE125:
+	.size	SystemInit, .-SystemInit
+	.global	SystemCoreClock
+	.section	.data.SystemCoreClock,"aw",%progbits
+	.align	2
+	.set	.LANCHOR0,. + 0
+	.type	SystemCoreClock, %object
+	.size	SystemCoreClock, 4
+SystemCoreClock:
+	.word	64000000
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB124
+	.4byte	.LFE124-.LFB124
+	.align	2
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.4byte	.LFB125
+	.4byte	.LFE125-.LFB125
+	.align	2
+.LEFDE2:
+	.section	.init,"ax",%progbits
+
+.Letext0:
+	.file 1 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmInstr.h"
+	.file 2 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/nRF/CMSIS/Device/Source/system_nrf52.c"
+	.file 3 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cm4.h"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x132
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF8
+	.byte	0x1
+	.4byte	.LASF9
+	.4byte	.Ldebug_ranges0+0
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF0
+	.byte	0x1
+	.2byte	0x1bb
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF1
+	.byte	0x1
+	.2byte	0x1b0
+	.byte	0x3
+	.uleb128 0x3
+	.4byte	.LASF10
+	.byte	0x2
+	.byte	0x37
+	.byte	0x1
+	.uleb128 0x4
+	.4byte	0x2f
+	.4byte	.LFB124
+	.4byte	.LFE124-.LFB124
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x5
+	.4byte	.LASF2
+	.byte	0x2
+	.byte	0xb0
+	.byte	0x1
+	.uleb128 0x5
+	.4byte	.LASF3
+	.byte	0x2
+	.byte	0xc5
+	.byte	0x1
+	.uleb128 0x5
+	.4byte	.LASF4
+	.byte	0x2
+	.byte	0xd2
+	.byte	0x1
+	.uleb128 0x5
+	.4byte	.LASF5
+	.byte	0x2
+	.byte	0xe7
+	.byte	0x1
+	.uleb128 0x5
+	.4byte	.LASF6
+	.byte	0x2
+	.byte	0xf4
+	.byte	0x1
+	.uleb128 0x2
+	.4byte	.LASF7
+	.byte	0x3
+	.2byte	0x681
+	.byte	0x3
+	.uleb128 0x6
+	.4byte	.LASF11
+	.byte	0x2
+	.byte	0x3c
+	.4byte	.LFB125
+	.4byte	.LFE125-.LFB125
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x7
+	.4byte	0x46
+	.4byte	.LBB32
+	.4byte	.LBE32-.LBB32
+	.byte	0x2
+	.byte	0x40
+	.uleb128 0x7
+	.4byte	0x4e
+	.4byte	.LBB34
+	.4byte	.LBE34-.LBB34
+	.byte	0x2
+	.byte	0x46
+	.uleb128 0x7
+	.4byte	0x56
+	.4byte	.LBB36
+	.4byte	.LBE36-.LBB36
+	.byte	0x2
+	.byte	0x4c
+	.uleb128 0x7
+	.4byte	0x5e
+	.4byte	.LBB38
+	.4byte	.LBE38-.LBB38
+	.byte	0x2
+	.byte	0x54
+	.uleb128 0x7
+	.4byte	0x66
+	.4byte	.LBB40
+	.4byte	.LBE40-.LBB40
+	.byte	0x2
+	.byte	0x5a
+	.uleb128 0x7
+	.4byte	0x1d
+	.4byte	.LBB42
+	.4byte	.LBE42-.LBB42
+	.byte	0x2
+	.byte	0x73
+	.uleb128 0x7
+	.4byte	0x26
+	.4byte	.LBB44
+	.4byte	.LBE44-.LBB44
+	.byte	0x2
+	.byte	0x74
+	.uleb128 0x8
+	.4byte	0x6e
+	.4byte	.LBB46
+	.4byte	.LBE46-.LBB46
+	.byte	0x2
+	.byte	0x94
+	.4byte	0x125
+	.uleb128 0x9
+	.4byte	0x1d
+	.4byte	.LBB48
+	.4byte	.LBE48-.LBB48
+	.byte	0x3
+	.2byte	0x683
+	.uleb128 0x9
+	.4byte	0x1d
+	.4byte	.LBB50
+	.4byte	.LBE50-.LBB50
+	.byte	0x3
+	.2byte	0x688
+	.byte	0
+	.uleb128 0x7
+	.4byte	0x2f
+	.4byte	.LBB52
+	.4byte	.LBE52-.LBB52
+	.byte	0x2
+	.byte	0xac
+	.byte	0
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x4
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x5
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x6
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x7
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x8
+	.uleb128 0x1d
+	.byte	0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x9
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0x5
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x24
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB124
+	.4byte	.LFE124-.LFB124
+	.4byte	.LFB125
+	.4byte	.LFE125-.LFB125
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LFB124
+	.4byte	.LFE124
+	.4byte	.LFB125
+	.4byte	.LFE125
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF0:
+	.ascii	"__DSB\000"
+.LASF1:
+	.ascii	"__ISB\000"
+.LASF2:
+	.ascii	"errata_31\000"
+.LASF3:
+	.ascii	"errata_32\000"
+.LASF7:
+	.ascii	"NVIC_SystemReset\000"
+.LASF4:
+	.ascii	"errata_36\000"
+.LASF8:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -mtext=.init -mrodata=.init_ro"
+	.ascii	"data -fshort-enums -fno-common\000"
+.LASF10:
+	.ascii	"SystemCoreClockUpdate\000"
+.LASF9:
+	.ascii	"C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded "
+	.ascii	"Studio/v2/packages/nRF/CMSIS/Device/Source/system_n"
+	.ascii	"rf52.c\000"
+.LASF5:
+	.ascii	"errata_37\000"
+.LASF11:
+	.ascii	"SystemInit\000"
+.LASF6:
+	.ascii	"errata_66\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"

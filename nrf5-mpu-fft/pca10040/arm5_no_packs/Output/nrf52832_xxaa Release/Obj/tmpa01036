@@ -1,0 +1,418 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"arm_rfft_fast_f32.c"
+	.text
+.Ltext0:
+	.section	.text.stage_rfft_f32,"ax",%progbits
+	.align	2
+	.global	stage_rfft_f32
+	.thumb
+	.thumb_func
+	.type	stage_rfft_f32, %function
+stage_rfft_f32:
+.LFB139:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	push	{r4}
+.LCFI0:
+	ldr	r3, [r0, #20]
+	ldrh	r4, [r0]
+	subs	r4, r4, #1
+	flds	s15, [r1]
+	fadds	s15, s15, s15
+	flds	s14, [r1, #4]
+	fadds	s14, s14, s14
+	fadds	s13, s15, s14
+	fconsts	s12, #96
+	fmuls	s13, s13, s12
+	fsts	s13, [r2]
+	fsubs	s15, s15, s14
+	fmuls	s15, s15, s12
+	fsts	s15, [r2, #4]
+	adds	r3, r3, #16
+	adds	r2, r2, #16
+	add	r0, r1, #16
+	add	r1, r1, r4, lsl #3
+	subs	r1, r1, #8
+	fcpys	s7, s12
+.L2:
+	flds	s13, [r1, #12]
+	flds	s8, [r1, #8]
+	flds	s12, [r0, #-8]
+	flds	s15, [r0, #-4]
+	flds	s11, [r3, #-8]
+	flds	s10, [r3, #-4]
+	fsubs	s14, s8, s12
+	fadds	s9, s13, s15
+	fadds	s12, s12, s8
+	fmuls	s8, s11, s14
+	fadds	s12, s12, s8
+	fmuls	s8, s10, s9
+	fadds	s12, s12, s8
+	fmuls	s12, s12, s7
+	fsts	s12, [r2, #-8]
+	fsubs	s13, s15, s13
+	fmuls	s14, s10, s14
+	fadds	s14, s13, s14
+	fmuls	s15, s11, s9
+	fsubs	s15, s14, s15
+	fmuls	s15, s15, s7
+	fsts	s15, [r2, #-4]
+	adds	r3, r3, #8
+	adds	r2, r2, #8
+	adds	r0, r0, #8
+	subs	r1, r1, #8
+	subs	r4, r4, #1
+	bne	.L2
+	ldr	r4, [sp], #4
+.LCFI1:
+	bx	lr
+.LFE139:
+	.size	stage_rfft_f32, .-stage_rfft_f32
+	.section	.text.merge_rfft_f32,"ax",%progbits
+	.align	2
+	.global	merge_rfft_f32
+	.thumb
+	.thumb_func
+	.type	merge_rfft_f32, %function
+merge_rfft_f32:
+.LFB140:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	push	{r4, r5}
+.LCFI2:
+	ldr	r4, [r0, #20]
+	ldrh	r5, [r0]
+	subs	r5, r5, #1
+	flds	s15, [r1]
+	flds	s12, [r1, #4]
+	fadds	s14, s15, s12
+	fconsts	s13, #96
+	fmuls	s14, s14, s13
+	fsts	s14, [r2]
+	fsubs	s15, s15, s12
+	fmuls	s15, s15, s13
+	fsts	s15, [r2, #4]
+	lsls	r3, r5, #3
+	cbz	r5, .L5
+	add	r0, r4, #16
+	adds	r2, r2, #16
+	add	r4, r1, #16
+	subs	r3, r3, #8
+	add	r1, r1, r3
+	fcpys	s7, s13
+.L7:
+	flds	s13, [r1, #12]
+	flds	s8, [r1, #8]
+	flds	s12, [r4, #-8]
+	flds	s15, [r4, #-4]
+	flds	s11, [r0, #-8]
+	flds	s10, [r0, #-4]
+	fsubs	s14, s12, s8
+	fadds	s9, s15, s13
+	fadds	s12, s12, s8
+	fmuls	s8, s11, s14
+	fsubs	s12, s12, s8
+	fmuls	s8, s10, s9
+	fsubs	s12, s12, s8
+	fmuls	s12, s12, s7
+	fsts	s12, [r2, #-8]
+	fsubs	s13, s15, s13
+	fmuls	s14, s10, s14
+	fadds	s14, s13, s14
+	fmuls	s15, s11, s9
+	fsubs	s15, s14, s15
+	fmuls	s15, s15, s7
+	fsts	s15, [r2, #-4]
+	adds	r0, r0, #8
+	adds	r2, r2, #8
+	adds	r4, r4, #8
+	subs	r1, r1, #8
+	subs	r5, r5, #1
+	bne	.L7
+.L5:
+	pop	{r4, r5}
+.LCFI3:
+	bx	lr
+.LFE140:
+	.size	merge_rfft_f32, .-merge_rfft_f32
+	.section	.text.arm_rfft_fast_f32,"ax",%progbits
+	.align	2
+	.global	arm_rfft_fast_f32
+	.thumb
+	.thumb_func
+	.type	arm_rfft_fast_f32, %function
+arm_rfft_fast_f32:
+.LFB141:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r3, r4, r5, r6, r7, lr}
+.LCFI4:
+	mov	r4, r0
+	mov	r5, r1
+	mov	r6, r2
+	ldrh	r2, [r0, #16]
+	lsrs	r2, r2, #1
+	strh	r2, [r0]	@ movhi
+	cbz	r3, .L11
+	mov	r7, r3
+	mov	r2, r6
+	bl	merge_rfft_f32
+	mov	r0, r4
+	mov	r1, r6
+	mov	r2, r7
+	movs	r3, #1
+	bl	arm_cfft_f32
+	pop	{r3, r4, r5, r6, r7, pc}
+.L11:
+	movs	r2, #0
+	movs	r3, #1
+	bl	arm_cfft_f32
+	mov	r0, r4
+	mov	r1, r5
+	mov	r2, r6
+	bl	stage_rfft_f32
+	pop	{r3, r4, r5, r6, r7, pc}
+.LFE141:
+	.size	arm_rfft_fast_f32, .-arm_rfft_fast_f32
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB139
+	.4byte	.LFE139-.LFB139
+	.byte	0x4
+	.4byte	.LCFI0-.LFB139
+	.byte	0xe
+	.uleb128 0x4
+	.byte	0x84
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0xc4
+	.byte	0xe
+	.uleb128 0
+	.align	2
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.4byte	.LFB140
+	.4byte	.LFE140-.LFB140
+	.byte	0x4
+	.4byte	.LCFI2-.LFB140
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x84
+	.uleb128 0x2
+	.byte	0x85
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xc5
+	.byte	0xc4
+	.byte	0xe
+	.uleb128 0
+	.align	2
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.4byte	.LFB141
+	.4byte	.LFE141-.LFB141
+	.byte	0x4
+	.4byte	.LCFI4-.LFB141
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x83
+	.uleb128 0x6
+	.byte	0x84
+	.uleb128 0x5
+	.byte	0x85
+	.uleb128 0x4
+	.byte	0x86
+	.uleb128 0x3
+	.byte	0x87
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE4:
+	.text
+.Letext0:
+	.file 1 "C:/Keil_v5/ARM/Pack/ARM/CMSIS/4.5.0/CMSIS/DSP_Lib/Source/TransformFunctions/arm_rfft_fast_f32.c"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x4e
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF3
+	.byte	0x1
+	.4byte	.LASF4
+	.4byte	.Ldebug_ranges0+0
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF0
+	.byte	0x1
+	.byte	0x2b
+	.4byte	.LFB139
+	.4byte	.LFE139-.LFB139
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x2
+	.4byte	.LASF1
+	.byte	0x1
+	.byte	0x81
+	.4byte	.LFB140
+	.4byte	.LFE140-.LFB140
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x3
+	.4byte	.LASF2
+	.byte	0x1
+	.2byte	0x144
+	.4byte	.LFB141
+	.4byte	.LFE141-.LFB141
+	.uleb128 0x1
+	.byte	0x9c
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x2c
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB139
+	.4byte	.LFE139-.LFB139
+	.4byte	.LFB140
+	.4byte	.LFE140-.LFB140
+	.4byte	.LFB141
+	.4byte	.LFE141-.LFB141
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LFB139
+	.4byte	.LFE139
+	.4byte	.LFB140
+	.4byte	.LFE140
+	.4byte	.LFB141
+	.4byte	.LFE141
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF4:
+	.ascii	"C:/Keil_v5/ARM/Pack/ARM/CMSIS/4.5.0/CMSIS/DSP_Lib/S"
+	.ascii	"ource/TransformFunctions/arm_rfft_fast_f32.c\000"
+.LASF3:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -fshort-enums -fno-common\000"
+.LASF2:
+	.ascii	"arm_rfft_fast_f32\000"
+.LASF1:
+	.ascii	"merge_rfft_f32\000"
+.LASF0:
+	.ascii	"stage_rfft_f32\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"

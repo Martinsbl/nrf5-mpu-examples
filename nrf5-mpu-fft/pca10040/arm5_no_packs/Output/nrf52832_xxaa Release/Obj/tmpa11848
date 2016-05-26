@@ -1,0 +1,396 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"SEGGER_RTT_SES.c"
+	.text
+.Ltext0:
+	.section	.text.printf,"ax",%progbits
+	.align	2
+	.global	printf
+	.thumb
+	.thumb_func
+	.type	printf, %function
+printf:
+.LFB0:
+	@ args = 4, pretend = 16, frame = 136
+	@ frame_needed = 0, uses_anonymous_args = 1
+	push	{r0, r1, r2, r3}
+.LCFI0:
+	push	{r4, lr}
+.LCFI1:
+	sub	sp, sp, #136
+.LCFI2:
+	add	r3, sp, #144
+	ldr	r2, [r3], #4
+	str	r3, [sp, #4]
+	add	r0, sp, #8
+	movs	r1, #128
+	bl	vsnprintf
+	mov	r4, r0
+	movs	r0, #0
+	add	r1, sp, #8
+	mov	r2, r4
+	bl	SEGGER_RTT_Write
+	mov	r0, r4
+	add	sp, sp, #136
+.LCFI3:
+	@ sp needed
+	pop	{r4, lr}
+.LCFI4:
+	add	sp, sp, #16
+.LCFI5:
+	bx	lr
+.LFE0:
+	.size	printf, .-printf
+	.section	.text.puts,"ax",%progbits
+	.align	2
+	.global	puts
+	.thumb
+	.thumb_func
+	.type	puts, %function
+puts:
+.LFB1:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r3, lr}
+.LCFI6:
+	mov	r1, r0
+	movs	r0, #0
+	bl	SEGGER_RTT_WriteString
+	pop	{r3, pc}
+.LFE1:
+	.size	puts, .-puts
+	.section	.text.__putchar,"ax",%progbits
+	.align	2
+	.global	__putchar
+	.thumb
+	.thumb_func
+	.type	__putchar, %function
+__putchar:
+.LFB2:
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{lr}
+.LCFI7:
+	sub	sp, sp, #12
+.LCFI8:
+	add	r1, sp, #8
+	str	r0, [r1, #-4]!
+	movs	r0, #0
+	movs	r2, #1
+	bl	SEGGER_RTT_Write
+	ldr	r0, [sp, #4]
+	add	sp, sp, #12
+.LCFI9:
+	@ sp needed
+	ldr	pc, [sp], #4
+.LFE2:
+	.size	__putchar, .-__putchar
+	.section	.text.__getchar,"ax",%progbits
+	.align	2
+	.global	__getchar
+	.thumb
+	.thumb_func
+	.type	__getchar, %function
+__getchar:
+.LFB3:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r3, lr}
+.LCFI10:
+	bl	SEGGER_RTT_WaitKey
+	pop	{r3, pc}
+.LFE3:
+	.size	__getchar, .-__getchar
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB0
+	.4byte	.LFE0-.LFB0
+	.byte	0x4
+	.4byte	.LCFI0-.LFB0
+	.byte	0xe
+	.uleb128 0x10
+	.byte	0x80
+	.uleb128 0x4
+	.byte	0x81
+	.uleb128 0x3
+	.byte	0x82
+	.uleb128 0x2
+	.byte	0x83
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI1-.LCFI0
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x84
+	.uleb128 0x6
+	.byte	0x8e
+	.uleb128 0x5
+	.byte	0x4
+	.4byte	.LCFI2-.LCFI1
+	.byte	0xe
+	.uleb128 0xa0
+	.byte	0x4
+	.4byte	.LCFI3-.LCFI2
+	.byte	0xe
+	.uleb128 0x18
+	.byte	0x4
+	.4byte	.LCFI4-.LCFI3
+	.byte	0xce
+	.byte	0xc4
+	.byte	0xe
+	.uleb128 0x10
+	.byte	0x4
+	.4byte	.LCFI5-.LCFI4
+	.byte	0xc3
+	.byte	0xc2
+	.byte	0xc1
+	.byte	0xc0
+	.byte	0xe
+	.uleb128 0
+	.align	2
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.4byte	.LFB1
+	.4byte	.LFE1-.LFB1
+	.byte	0x4
+	.4byte	.LCFI6-.LFB1
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x83
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.4byte	.LFB2
+	.4byte	.LFE2-.LFB2
+	.byte	0x4
+	.4byte	.LCFI7-.LFB2
+	.byte	0xe
+	.uleb128 0x4
+	.byte	0x8e
+	.uleb128 0x1
+	.byte	0x4
+	.4byte	.LCFI8-.LCFI7
+	.byte	0xe
+	.uleb128 0x10
+	.byte	0x4
+	.4byte	.LCFI9-.LCFI8
+	.byte	0xe
+	.uleb128 0x4
+	.align	2
+.LEFDE4:
+.LSFDE6:
+	.4byte	.LEFDE6-.LASFDE6
+.LASFDE6:
+	.4byte	.Lframe0
+	.4byte	.LFB3
+	.4byte	.LFE3-.LFB3
+	.byte	0x4
+	.4byte	.LCFI10-.LFB3
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x83
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE6:
+	.text
+.Letext0:
+	.file 1 "C:/Program Files (x86)/SEGGER/SEGGER Embedded Studio 2.20/include/stdio.h"
+	.file 2 "C:/Program Files (x86)/SEGGER/SEGGER Embedded Studio 2.20/include/__libc.h"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x5f
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF4
+	.byte	0x1
+	.4byte	.LASF5
+	.4byte	.Ldebug_ranges0+0
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF0
+	.byte	0x1
+	.2byte	0x19d
+	.4byte	.LFB0
+	.4byte	.LFE0-.LFB0
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x3
+	.4byte	.LASF1
+	.byte	0x1
+	.byte	0x43
+	.4byte	.LFB1
+	.4byte	.LFE1-.LFB1
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x3
+	.4byte	.LASF2
+	.byte	0x2
+	.byte	0x18
+	.4byte	.LFB2
+	.4byte	.LFE2-.LFB2
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x3
+	.4byte	.LASF3
+	.byte	0x2
+	.byte	0x17
+	.4byte	.LFB3
+	.4byte	.LFE3-.LFB3
+	.uleb128 0x1
+	.byte	0x9c
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x34
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB0
+	.4byte	.LFE0-.LFB0
+	.4byte	.LFB1
+	.4byte	.LFE1-.LFB1
+	.4byte	.LFB2
+	.4byte	.LFE2-.LFB2
+	.4byte	.LFB3
+	.4byte	.LFE3-.LFB3
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LFB0
+	.4byte	.LFE0
+	.4byte	.LFB1
+	.4byte	.LFE1
+	.4byte	.LFB2
+	.4byte	.LFE2
+	.4byte	.LFB3
+	.4byte	.LFE3
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF3:
+	.ascii	"__getchar\000"
+.LASF4:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -fshort-enums -fno-common\000"
+.LASF0:
+	.ascii	"printf\000"
+.LASF5:
+	.ascii	"C:/Program Files (x86)/SEGGER/SEGGER Embedded Studi"
+	.ascii	"o 2.20/samples/SEGGER_RTT_SES.c\000"
+.LASF2:
+	.ascii	"__putchar\000"
+.LASF1:
+	.ascii	"puts\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"

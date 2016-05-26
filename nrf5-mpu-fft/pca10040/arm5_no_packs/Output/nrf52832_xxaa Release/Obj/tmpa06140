@@ -1,0 +1,191 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"arm_sin_f32.c"
+	.text
+.Ltext0:
+	.section	.text.arm_sin_f32,"ax",%progbits
+	.align	2
+	.global	arm_sin_f32
+	.thumb
+	.thumb_func
+	.type	arm_sin_f32, %function
+arm_sin_f32:
+.LFB139:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	flds	s14, .L8
+	fmuls	s14, s0, s14
+	ftosizs	s15, s14
+	fcmpezs	s0
+	fmstat
+	bpl	.L2
+	fmrs	r3, s15	@ int
+	subs	r3, r3, #1
+	fmsr	s15, r3	@ int
+.L2:
+	fsitos	s15, s15
+	fsubs	s15, s14, s15
+	flds	s14, .L8+4
+	fmuls	s15, s15, s14
+	fcmpes	s15, s14
+	fmstat
+	it	ge
+	fsubsge	s15, s15, s14
+	ftouizs	s14, s15
+	fmrs	r3, s14	@ int
+	ubfx	r3, r3, #0, #9
+	fmsr	s14, r3	@ int
+	fuitos	s0, s14
+	fsubs	s15, s15, s0
+	fconsts	s0, #112
+	fsubs	s0, s0, s15
+	ldr	r2, .L8+8
+	add	r1, r2, r3, lsl #2
+	flds	s14, [r1]
+	fmuls	s0, s0, s14
+	flds	s14, [r1, #4]
+	fmuls	s15, s15, s14
+	fadds	s0, s0, s15
+	bx	lr
+.L9:
+	.align	2
+.L8:
+	.word	1042479491
+	.word	1140850688
+	.word	sinTable_f32
+.LFE139:
+	.size	arm_sin_f32, .-arm_sin_f32
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB139
+	.4byte	.LFE139-.LFB139
+	.align	2
+.LEFDE0:
+	.text
+.Letext0:
+	.file 1 "C:/Keil_v5/ARM/Pack/ARM/CMSIS/4.5.0/CMSIS/DSP_Lib/Source/FastMathFunctions/arm_sin_f32.c"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x2b
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF0
+	.byte	0x1
+	.4byte	.LASF1
+	.4byte	.Ldebug_ranges0+0
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF2
+	.byte	0x1
+	.byte	0x54
+	.4byte	.LFB139
+	.4byte	.LFE139-.LFB139
+	.uleb128 0x1
+	.byte	0x9c
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x1c
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB139
+	.4byte	.LFE139-.LFB139
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LFB139
+	.4byte	.LFE139
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF0:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -fshort-enums -fno-common\000"
+.LASF1:
+	.ascii	"C:/Keil_v5/ARM/Pack/ARM/CMSIS/4.5.0/CMSIS/DSP_Lib/S"
+	.ascii	"ource/FastMathFunctions/arm_sin_f32.c\000"
+.LASF2:
+	.ascii	"arm_sin_f32\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"

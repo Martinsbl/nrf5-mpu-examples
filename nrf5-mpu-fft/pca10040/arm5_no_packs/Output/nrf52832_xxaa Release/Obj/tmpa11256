@@ -1,0 +1,404 @@
+	.syntax unified
+	.cpu cortex-m4
+	.eabi_attribute 27, 1
+	.eabi_attribute 28, 1
+	.fpu fpv4-sp-d16
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 1
+	.eabi_attribute 30, 1
+	.eabi_attribute 34, 1
+	.eabi_attribute 18, 4
+	.thumb
+	.file	"app_util_platform.c"
+	.text
+.Ltext0:
+	.section	.text.app_util_disable_irq,"ax",%progbits
+	.align	2
+	.global	app_util_disable_irq
+	.thumb
+	.thumb_func
+	.type	app_util_disable_irq, %function
+app_util_disable_irq:
+.LFB143:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+.LBB6:
+.LBB7:
+@ 330 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmFunc.h" 1
+	cpsid i
+@ 0 "" 2
+	.thumb
+.LBE7:
+.LBE6:
+	ldr	r2, .L2
+	ldr	r3, [r2]
+	adds	r3, r3, #1
+	str	r3, [r2]
+	bx	lr
+.L3:
+	.align	2
+.L2:
+	.word	.LANCHOR0
+.LFE143:
+	.size	app_util_disable_irq, .-app_util_disable_irq
+	.section	.text.app_util_enable_irq,"ax",%progbits
+	.align	2
+	.global	app_util_enable_irq
+	.thumb
+	.thumb_func
+	.type	app_util_enable_irq, %function
+app_util_enable_irq:
+.LFB144:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldr	r2, .L6
+	ldr	r3, [r2]
+	subs	r3, r3, #1
+	str	r3, [r2]
+	cbnz	r3, .L4
+.LBB8:
+.LBB9:
+@ 319 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmFunc.h" 1
+	cpsie i
+@ 0 "" 2
+	.thumb
+.L4:
+	bx	lr
+.L7:
+	.align	2
+.L6:
+	.word	.LANCHOR0
+.LBE9:
+.LBE8:
+.LFE144:
+	.size	app_util_enable_irq, .-app_util_enable_irq
+	.section	.text.app_util_critical_region_enter,"ax",%progbits
+	.align	2
+	.global	app_util_critical_region_enter
+	.thumb
+	.thumb_func
+	.type	app_util_critical_region_enter, %function
+app_util_critical_region_enter:
+.LFB145:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r3, lr}
+.LCFI0:
+	bl	app_util_disable_irq
+	pop	{r3, pc}
+.LFE145:
+	.size	app_util_critical_region_enter, .-app_util_critical_region_enter
+	.section	.text.app_util_critical_region_exit,"ax",%progbits
+	.align	2
+	.global	app_util_critical_region_exit
+	.thumb
+	.thumb_func
+	.type	app_util_critical_region_exit, %function
+app_util_critical_region_exit:
+.LFB146:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r3, lr}
+.LCFI1:
+	bl	app_util_enable_irq
+	pop	{r3, pc}
+.LFE146:
+	.size	app_util_critical_region_exit, .-app_util_critical_region_exit
+	.section	.bss.m_in_critical_region,"aw",%nobits
+	.align	2
+	.set	.LANCHOR0,. + 0
+	.type	m_in_critical_region, %object
+	.size	m_in_critical_region, 4
+m_in_critical_region:
+	.space	4
+	.section	.debug_frame,"",%progbits
+.Lframe0:
+	.4byte	.LECIE0-.LSCIE0
+.LSCIE0:
+	.4byte	0xffffffff
+	.byte	0x3
+	.ascii	"\000"
+	.uleb128 0x1
+	.sleb128 -4
+	.uleb128 0xe
+	.byte	0xc
+	.uleb128 0xd
+	.uleb128 0
+	.align	2
+.LECIE0:
+.LSFDE0:
+	.4byte	.LEFDE0-.LASFDE0
+.LASFDE0:
+	.4byte	.Lframe0
+	.4byte	.LFB143
+	.4byte	.LFE143-.LFB143
+	.align	2
+.LEFDE0:
+.LSFDE2:
+	.4byte	.LEFDE2-.LASFDE2
+.LASFDE2:
+	.4byte	.Lframe0
+	.4byte	.LFB144
+	.4byte	.LFE144-.LFB144
+	.align	2
+.LEFDE2:
+.LSFDE4:
+	.4byte	.LEFDE4-.LASFDE4
+.LASFDE4:
+	.4byte	.Lframe0
+	.4byte	.LFB145
+	.4byte	.LFE145-.LFB145
+	.byte	0x4
+	.4byte	.LCFI0-.LFB145
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x83
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE4:
+.LSFDE6:
+	.4byte	.LEFDE6-.LASFDE6
+.LASFDE6:
+	.4byte	.Lframe0
+	.4byte	.LFB146
+	.4byte	.LFE146-.LFB146
+	.byte	0x4
+	.4byte	.LCFI1-.LFB146
+	.byte	0xe
+	.uleb128 0x8
+	.byte	0x83
+	.uleb128 0x2
+	.byte	0x8e
+	.uleb128 0x1
+	.align	2
+.LEFDE6:
+	.text
+.Letext0:
+	.file 1 "C:/Users/mabo/AppData/Local/SEGGER/SEGGER Embedded Studio/v2/packages/CMSIS_4/CMSIS/Include/core_cmFunc.h"
+	.file 2 "C:/Nordic_SDKs/11.0.0/examples/mpu/nrf5-mpu-fft/pca10040/arm5_no_packs/../../../../../components/libraries/util/app_util_platform.c"
+	.section	.debug_info,"",%progbits
+.Ldebug_info0:
+	.4byte	0x98
+	.2byte	0x4
+	.4byte	.Ldebug_abbrev0
+	.byte	0x4
+	.uleb128 0x1
+	.4byte	.LASF6
+	.byte	0x1
+	.4byte	.LASF7
+	.4byte	.Ldebug_ranges0+0
+	.4byte	0
+	.uleb128 0x2
+	.4byte	.LASF0
+	.byte	0x1
+	.2byte	0x148
+	.byte	0x3
+	.uleb128 0x2
+	.4byte	.LASF1
+	.byte	0x1
+	.2byte	0x13d
+	.byte	0x3
+	.uleb128 0x3
+	.4byte	.LASF2
+	.byte	0x2
+	.byte	0x11
+	.4byte	.LFB143
+	.4byte	.LFE143-.LFB143
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x54
+	.uleb128 0x4
+	.4byte	0x1d
+	.4byte	.LBB6
+	.4byte	.LBE6-.LBB6
+	.byte	0x2
+	.byte	0x13
+	.byte	0
+	.uleb128 0x3
+	.4byte	.LASF3
+	.byte	0x2
+	.byte	0x17
+	.4byte	.LFB144
+	.4byte	.LFE144-.LFB144
+	.uleb128 0x1
+	.byte	0x9c
+	.4byte	0x79
+	.uleb128 0x4
+	.4byte	0x26
+	.4byte	.LBB8
+	.4byte	.LBE8-.LBB8
+	.byte	0x2
+	.byte	0x1c
+	.byte	0
+	.uleb128 0x5
+	.4byte	.LASF4
+	.byte	0x2
+	.byte	0x20
+	.4byte	.LFB145
+	.4byte	.LFE145-.LFB145
+	.uleb128 0x1
+	.byte	0x9c
+	.uleb128 0x5
+	.4byte	.LASF5
+	.byte	0x2
+	.byte	0x2e
+	.4byte	.LFB146
+	.4byte	.LFE146-.LFB146
+	.uleb128 0x1
+	.byte	0x9c
+	.byte	0
+	.section	.debug_abbrev,"",%progbits
+.Ldebug_abbrev0:
+	.uleb128 0x1
+	.uleb128 0x11
+	.byte	0x1
+	.uleb128 0x25
+	.uleb128 0xe
+	.uleb128 0x13
+	.uleb128 0xb
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x55
+	.uleb128 0x17
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x2
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x20
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x4
+	.uleb128 0x1d
+	.byte	0
+	.uleb128 0x31
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x58
+	.uleb128 0xb
+	.uleb128 0x59
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x5
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.byte	0
+	.section	.debug_aranges,"",%progbits
+	.4byte	0x34
+	.2byte	0x2
+	.4byte	.Ldebug_info0
+	.byte	0x4
+	.byte	0
+	.2byte	0
+	.2byte	0
+	.4byte	.LFB143
+	.4byte	.LFE143-.LFB143
+	.4byte	.LFB144
+	.4byte	.LFE144-.LFB144
+	.4byte	.LFB145
+	.4byte	.LFE145-.LFB145
+	.4byte	.LFB146
+	.4byte	.LFE146-.LFB146
+	.4byte	0
+	.4byte	0
+	.section	.debug_ranges,"",%progbits
+.Ldebug_ranges0:
+	.4byte	.LFB143
+	.4byte	.LFE143
+	.4byte	.LFB144
+	.4byte	.LFE144
+	.4byte	.LFB145
+	.4byte	.LFE145
+	.4byte	.LFB146
+	.4byte	.LFE146
+	.4byte	0
+	.4byte	0
+	.section	.debug_line,"",%progbits
+.Ldebug_line0:
+	.section	.debug_str,"MS",%progbits,1
+.LASF5:
+	.ascii	"app_util_critical_region_exit\000"
+.LASF6:
+	.ascii	"GNU C 4.9.3 20150529 (release) [ARM/embedded-4_9-br"
+	.ascii	"anch revision 227977] -fmessage-length=0 -mtp=soft "
+	.ascii	"-mcpu=cortex-m4 -mlittle-endian -mfloat-abi=hard -m"
+	.ascii	"fpu=fpv4-sp-d16 -mthumb -g1 -gpubnames -std=gnu99 -"
+	.ascii	"O1 -fno-dwarf2-cfi-asm -fno-builtin -ffunction-sect"
+	.ascii	"ions -fdata-sections -fshort-enums -fno-common\000"
+.LASF2:
+	.ascii	"app_util_disable_irq\000"
+.LASF7:
+	.ascii	"C:/Nordic_SDKs/11.0.0/examples/mpu/nrf5-mpu-fft/pca"
+	.ascii	"10040/arm5_no_packs/../../../../../components/libra"
+	.ascii	"ries/util/app_util_platform.c\000"
+.LASF3:
+	.ascii	"app_util_enable_irq\000"
+.LASF0:
+	.ascii	"__disable_irq\000"
+.LASF4:
+	.ascii	"app_util_critical_region_enter\000"
+.LASF1:
+	.ascii	"__enable_irq\000"
+	.ident	"GCC: (GNU) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]"
