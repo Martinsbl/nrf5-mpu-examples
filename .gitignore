@@ -26,3 +26,4 @@ scripts/
 legacy/
 dmp/
 nrf5-mpu-simple-app-twi/
+nrf5-mpu-fft/
