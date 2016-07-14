@@ -300,11 +300,11 @@ int main(void)
         // Wait for new available data 
         while(twi_transfers_complete == false)
         {
-            // Enter System ON sleep mode
-            __WFE();
             // Make sure any pending events are cleared
             __SEV();
             __WFE();
+            // Enter System ON sleep mode
+            __WFE();           
         }
         nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
         // Print header with total number of samples received

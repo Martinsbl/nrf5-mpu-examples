@@ -377,11 +377,11 @@ int main(void)
         nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
         while(twi_transfers_complete == false)
         {
-            // Enter System ON sleep mode
-            __WFE();
             // Make sure any pending events are cleared
             __SEV();
             __WFE();
+            // Enter System ON sleep mode
+            __WFE();           
         }
         nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
         
