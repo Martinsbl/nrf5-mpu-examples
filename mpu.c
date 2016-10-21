@@ -77,28 +77,12 @@ static uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
     xfer_desc.primary_length = length + 1;
     xfer_desc.p_primary_buf = buffer;
 
-    // Transfering
+    // Transferring
     err_code = nrf_drv_twi_xfer(m_twi_instance, &xfer_desc, 0);
 
     while((!twi_tx_done) && --timeout);
     if(!timeout) return NRF_ERROR_TIMEOUT;
     twi_tx_done = false;
-
-//    twi_tx_done = false;
-//    err_code = nrf_drv_twi_tx(m_twi_instance, MPU_ADDRESS, &reg, 1, true);
-//    if(err_code != NRF_SUCCESS) return err_code;
-//
-//    while((!twi_tx_done) && timeout--);
-//    if(!timeout) return NRF_ERROR_TIMEOUT;
-//    twi_tx_done = false;
-//
-//    err_code = nrf_drv_twi_tx(m_twi_instance, MPU_ADDRESS, p_data, length, false);
-//    if(err_code != NRF_SUCCESS) return err_code;
-//
-//    timeout = MPU_TWI_TIMEOUT;
-//    while((!twi_tx_done) && timeout--);
-//    if(!timeout) return NRF_ERROR_TIMEOUT;
-//    twi_tx_done = false;
 
     return err_code;
 }
