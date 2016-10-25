@@ -23,7 +23,6 @@ void mpu_spi_event_handler(const nrf_drv_spi_evt_t *evt)
 {
     if(evt->type == NRF_DRV_SPI_EVENT_DONE)
     {
-        nrf_gpio_pin_toggle(24);
         spi_tx_done = true;
     }
     else
@@ -32,13 +31,18 @@ void mpu_spi_event_handler(const nrf_drv_spi_evt_t *evt)
     }
 }
 
-
+/**@brief Function to merge a register and a buffer of data
+ */
 static void buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     new_buffer[0] = reg;
     memcpy((new_buffer + 1), p_data, length);
 }
 
+
+/**@brief Function to write a series of bytes. The function merges 
+ * the register and the data.
+ */
 static uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     uint32_t err_code;
@@ -55,7 +59,7 @@ static uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
     
     buffer_merger(merged_buffer, reg, p_data, length + 1);
     
-    err_code = nrf_drv_spi_transfer(m_spi_instance, p_data, length + 1, NULL, 0);
+    err_code = nrf_drv_spi_transfer(m_spi_instance, merged_buffer, length + 1, NULL, 0);
     if(err_code != NRF_SUCCESS) return err_code;
 
 
@@ -201,7 +205,7 @@ uint32_t mpu_read_int_source(uint8_t * int_source)
     return mpu_read_registers(MPU_REG_INT_STATUS, int_source, 1);
 }
 
-// Function does not work on MPU60x0 and MPU9255
+// Function does not work on MPU60x0 or MPU9255
 #if defined(MPU9150)
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
 {
