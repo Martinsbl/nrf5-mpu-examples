@@ -122,7 +122,7 @@
 #endif
 
 /* SPI */
-#define SPI0_ENABLED 0
+#define SPI0_ENABLED 1
 
 #if (SPI0_ENABLED == 1)
 #define SPI0_USE_EASY_DMA 0
@@ -219,7 +219,7 @@
 #endif //NRF52
 #endif
 
-#define TWI0_ENABLED 1
+#define TWI0_ENABLED 0
 
 #if (TWI0_ENABLED == 1)
 #define TWI0_CONFIG_FREQUENCY    NRF_TWI_FREQ_100K

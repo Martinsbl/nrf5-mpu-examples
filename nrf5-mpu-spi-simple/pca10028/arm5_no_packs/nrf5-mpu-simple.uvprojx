@@ -373,7 +373,7 @@
               <MiscControls></MiscControls>
               <Define>BSP_DEFINES_ONLY BOARD_PCA10028 NRF51 MPU60x0 DEBUG TWI0_USE_EASY_DMA = 0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\twi_sensor_pca10028;..\..\config;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..</IncludePath>
+              <IncludePath>..\..\config\twi_sensor_pca10028;..\..\config;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\drivers_nrf\spi_master;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -422,9 +422,9 @@
               <FilePath>..\..\main.c</FilePath>
             </File>
             <File>
-              <FileName>mpu.c</FileName>
+              <FileName>drv_mpu_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\mpu.c</FilePath>
+              <FilePath>..\..\..\drv_mpu_spi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -462,14 +462,14 @@
               <FilePath>..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
             </File>
             <File>
-              <FileName>nrf_drv_twi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</FilePath>
-            </File>
-            <File>
               <FileName>nrf_drv_uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\components\drivers_nrf\spi_master\nrf_drv_spi.c</FilePath>
             </File>
           </Files>
         </Group>
