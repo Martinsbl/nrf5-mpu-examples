@@ -14,10 +14,10 @@
 #include "drv_mpu_spi.h"
 
 /* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
-#define MPU_SPI_MISO_PIN 28
-#define MPU_SPI_MOSI_PIN 4  // MPU 
-#define MPU_SPI_SCL_PIN 3   // MPU SCLK
-#define MPU_SPI_CS_PIN 29    // MPU nCS
+#define MPU_SPI_MISO_PIN    28 // MPU SDO
+#define MPU_SPI_MOSI_PIN    4  // MPU SDI
+#define MPU_SPI_SCL_PIN     3  // MPU SCLK
+#define MPU_SPI_CS_PIN      29 // MPU nCS
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
