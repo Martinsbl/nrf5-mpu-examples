@@ -1,3 +1,4 @@
+# WORK IN PROGRESS. NOT TESTED ON ALL DEV KITS AND MPUs
 # Examples for nRF51 & nRF52 and MPUxxxx
 MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0. 
 
@@ -11,9 +12,9 @@ MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0.
 * <b>Not tested on PCA10036 and MPU60x0</b>
 
 # How to use:
-* All examples are made for SDK 11.0.0. Other SDKs will not work. Download zip file and extract to "sdk_11.0.0_folder\examples"
+* All examples are made for SDK 11.0.0. Other SDKs will not work. Download the zip file and extract to "sdk_11.0.0_folder\examples". Or just clone it  to the same folder. 
 * Define your MPU in Keil's "Target Options -> C/C++". Use define "MPU9255", "MPU9150", or "MPU60x0".
-* Remember to define the correct TWI pins and interrupt pins. The defines are located in main.c.
+* Remember to define the correct TWI, SPI pins, and/or interrupt pins. The SPI and TWI pin defines are located in the nrf_drv_mpu_xxi.c files. 
 
 # Disclaimer
  * The examples are not extensively tested and only meant as simple explanations and for inspiration. 
