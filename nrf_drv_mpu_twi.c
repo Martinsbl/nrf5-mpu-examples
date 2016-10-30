@@ -17,6 +17,7 @@
 #define MPU_TWI_SDA_PIN 2
 
 
+#define MPU_TWI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
 #define MPU_TWI_TIMEOUT 		5000 
 #define MPU_ADDRESS     		0x68 
 
@@ -24,6 +25,8 @@
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 volatile static bool twi_tx_done = false;
 volatile static bool twi_rx_done = false;
+
+uint8_t twi_tx_buffer[MPU_TWI_BUFFER_SIZE];
 
 
 static void nrf_drv_mpu_twi_event_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
@@ -105,15 +108,14 @@ uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
     uint32_t timeout = MPU_TWI_TIMEOUT;
 
     // Merging MPU register address and p_data into one buffer.
-    uint8_t buffer[20];
-    buffer_merger(buffer, reg, p_data, length);
+    buffer_merger(twi_tx_buffer, reg, p_data, length);
 
     // Setting up transfer
     nrf_drv_twi_xfer_desc_t xfer_desc;
     xfer_desc.address = MPU_ADDRESS;
     xfer_desc.type = NRF_DRV_TWI_XFER_TX;
     xfer_desc.primary_length = length + 1;
-    xfer_desc.p_primary_buf = buffer;
+    xfer_desc.p_primary_buf = twi_tx_buffer;
 
     // Transferring
     err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer_desc, 0);

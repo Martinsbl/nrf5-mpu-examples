@@ -96,7 +96,6 @@ int main(void)
     mpu_setup();
     
     
-    
     accel_values_t acc_values;
     uint32_t sample_number = 0;
     while(1)

@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "nrf_drv_spi.h"
-#include "nrf_drv_mpu_spi.h"
+#include "nrf_drv_mpu.h"
 #include "app_util_platform.h"
 #include "nrf_gpio.h"
 
@@ -25,8 +25,10 @@
 #define MPU_SPI_READ_BIT        0x80
 #define MPU_SPI_TIMEOUT         5000 
 
+
 static const nrf_drv_spi_t m_spi_instance = NRF_DRV_SPI_INSTANCE(0);
 volatile static bool spi_tx_done = false;
+
 
 uint8_t spi_tx_buffer[MPU_SPI_BUFFER_SIZE];
 uint8_t spi_rx_buffer[MPU_SPI_BUFFER_SIZE];

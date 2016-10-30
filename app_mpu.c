@@ -11,16 +11,7 @@
 #include "mpu_register_map.h"
 #include "nrf_gpio.h"
 #include "nrf_drv_mpu.h"
-
-// Choose TWI or SPI drivers
-#if defined(USE_TWI_MPU_DRIVERS)
-#include "nrf_drv_twi.h"
-#elif defined(USE_SPI_MPU_DRIVERS)
-#include "nrf_drv_spi.h"
-#else
-#warning "Remember to define which driver to use"
-#endif
-
+#include "nrf_error.h"
 
 
 
