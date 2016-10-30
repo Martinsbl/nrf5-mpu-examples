@@ -92,7 +92,7 @@ int main(void)
 	LEDS_CONFIGURE(LEDS_MASK);
 	LEDS_OFF(LEDS_MASK);
     uart_config();
-    printf("\033[2J\033[;HMPU simple example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU TWI simple example. Compiled @ %s\r\n", __TIME__);
     mpu_setup();
        
     

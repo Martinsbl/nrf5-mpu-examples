@@ -255,22 +255,6 @@ typedef struct
  */
 uint32_t mpu_init(void);
 
-/**@brief Function for reading an arbitrary register
- *
- * @param[in]   reg             Register to write
- * @param[in]   data            Value
- * @retval      uint32_t        Error code
- */
-uint32_t mpu_write_register(uint8_t reg, uint8_t data);
-
-/**@brief Function for reading arbitrary register(s)
- *
- * @param[in]   reg             Register to read
- * @param[in]   p_data          Pointer to place to store value(s)
- * @param[in]   length          Number of registers to read
- * @retval      uint32_t        Error code
- */
-uint32_t mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length);
     
 
 /**@brief Function for basic configuring of the MPU

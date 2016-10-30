@@ -8,13 +8,18 @@
 #include <stdint.h>
 #include <string.h>
 #include "nrf_drv_twi.h"
-#include "nrf_drv_mpu_twi.h"
+#include "nrf_drv_mpu.h"
 #include "app_util_platform.h"
 #include "nrf_gpio.h"
 
 /* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
 #define MPU_TWI_SCL_PIN 1
 #define MPU_TWI_SDA_PIN 2
+
+
+#define MPU_TWI_TIMEOUT 		5000 
+#define MPU_ADDRESS     		0x68 
+
 
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 volatile static bool twi_tx_done = false;

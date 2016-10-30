@@ -10,24 +10,17 @@
 #include "app_mpu.h"
 #include "mpu_register_map.h"
 #include "nrf_gpio.h"
+#include "nrf_drv_mpu.h"
 
 // Choose TWI or SPI drivers
 #if defined(USE_TWI_MPU_DRIVERS)
 #include "nrf_drv_twi.h"
-#include "nrf_drv_mpu_twi.h"
 #elif defined(USE_SPI_MPU_DRIVERS)
 #include "nrf_drv_spi.h"
-#include "nrf_drv_mpu_spi.h"
-#elif
+#else
 #warning "Remember to define which driver to use"
 #endif
 
-
-
-uint32_t mpu_driver_init(void)
-{
-	return nrf_drv_mpu_init(); // Initialize spi or twi driver dependent on what is defined for project
-}
 
 
 
@@ -62,6 +55,7 @@ uint32_t mpu_init(void)
 {
     uint32_t err_code;
 	
+	// Initate TWI or SPI driver dependent on what is defined from the project
 	err_code = nrf_drv_mpu_init();
     if(err_code != NRF_SUCCESS) return err_code;
 
