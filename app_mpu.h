@@ -4,38 +4,31 @@
   * NO WARRANTY of ANY KIND is provided. 
   */
 
-#ifndef MPU_H
-#define MPU_H
+#ifndef APP_MPU_H__
+#define APP_MPU_H__
 
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "nrf_drv_twi.h"
 
 #if defined(MPU60x0)
     #include "mpu60x0_register_map.h"
+	#define MPU_MG_PR_LSB_FF_THR    1
 #elif defined(MPU9150)
     #include "mpu9150_register_map.h"
+	#define MPU_MG_PR_LSB_FF_THR    32
 #elif defined(MPU9255)
     #include "mpu9255_register_map.h"
+	#define MPU_MG_PR_LSB_FF_THR    4
 #else 
     #error "No MPU defined. Please define MPU in Target Options C/C++ Defines"
 #endif
 
-#define MPU_TWI_TIMEOUT 5000 
-#define MPU_ADDRESS     0x68 
-
-#define MPU_MPU_BASE_NUM    0x4000
+#define MPU_MPU_BASE_NUM    	0x4000
 #define MPU_SUCCESS             (MPU_MPU_BASE_NUM + 0)
 #define MPU_BAD_PARAMETER       (MPU_MPU_BASE_NUM + 1)
+#define MPU_TIMEOUT	        	(MPU_MPU_BASE_NUM + 2)
 
-#if defined(MPU9150)
-    #define MPU_MG_PR_LSB_FF_THR    32
-#elif defined(MPU9255)
-    #define MPU_MG_PR_LSB_FF_THR    4
-#elif defined(MPU60x0)
-    #define MPU_MG_PR_LSB_FF_THR    1
-#endif
 
 /**@brief Enum defining Accelerometer's Full Scale range posibillities in Gs. */
 enum accel_range {
@@ -249,13 +242,6 @@ typedef struct
     .ff_en          = 0,    \
 }
  
-/**@brief Event handler used to pass TWI events from main application to the MPU library
- *
- * @param[in]   evt             TWI driver event
- * @retval      uint32_t        Error code
- */
-void mpu_twi_event_handler(const nrf_drv_twi_evt_t *evt);
-  
 
 /**@brief Function for initiating MPU and MPU library
  * 
@@ -265,10 +251,9 @@ void mpu_twi_event_handler(const nrf_drv_twi_evt_t *evt);
  * The reset will revert the signal path analog to digital converters and filters to their power up
  * configurations.
  *
- * @param[in]   p_instance      Instance of nRF5x TWI module
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_init(nrf_drv_twi_t const * const p_instance);
+uint32_t mpu_init(void);
 
 /**@brief Function for reading an arbitrary register
  *
@@ -367,7 +352,7 @@ uint32_t mpu_read_int_source(uint8_t * int_source);
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
 #endif
 
-#endif /* MPU_H */
+#endif /* APP_MPU_H__ */
 
 /**
   @}

@@ -9,18 +9,13 @@
 #include "app_util_platform.h"
 #include "app_uart.h"
 #include "app_error.h"
-#include "nrf_drv_twi.h"
 #include "nrf_delay.h"
-#include "mpu.h"
+#include "app_mpu.h"
 
-/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
-#define MPU_TWI_SCL_PIN 1
-#define MPU_TWI_SDA_PIN 2
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
 #define UART_RX_BUF_SIZE 1
-static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
 /**
  * @brief UART events handler.
@@ -72,41 +67,12 @@ static void uart_config(void)
 }
 
 
-/**
- * @brief TWI events handler.
- */
-void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
-{   
-    // Pass TWI events down to the MPU driver.
-    mpu_twi_event_handler(p_event);
-}
-
-/**
- * @brief TWI initialization.
- * Just the usual way. Nothing special here
- */
-void twi_init(void)
-{
-    ret_code_t err_code;
-    
-    const nrf_drv_twi_config_t twi_mpu_config = {
-       .scl                = MPU_TWI_SCL_PIN,
-       .sda                = MPU_TWI_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_400K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
-    };
-    
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
-    APP_ERROR_CHECK(err_code);
-    
-    nrf_drv_twi_enable(&m_twi_instance);
-}
 
 void mpu_setup(void)
 {
     ret_code_t ret_code;
     // Initiate MPU driver with TWI instance handler
-    ret_code = mpu_init(&m_twi_instance);
+    ret_code = mpu_init();
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
@@ -123,12 +89,12 @@ void mpu_setup(void)
 int main(void)
 {    
     uint32_t err_code;
+	LEDS_CONFIGURE(LEDS_MASK);
+	LEDS_OFF(LEDS_MASK);
     uart_config();
     printf("\033[2J\033[;HMPU simple example. Compiled @ %s\r\n", __TIME__);
-    twi_init();
     mpu_setup();
-    
-    
+       
     
     accel_values_t acc_values;
     uint32_t sample_number = 0;
@@ -139,8 +105,10 @@ int main(void)
         APP_ERROR_CHECK(err_code);
         // Clear terminal and print values
         printf("\033[3;1HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
+		nrf_gpio_pin_toggle(LED_1);
         nrf_delay_ms(250);
     }
 }
 
 /** @} */
+
