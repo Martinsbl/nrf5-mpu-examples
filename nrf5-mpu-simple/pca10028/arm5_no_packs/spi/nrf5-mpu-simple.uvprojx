@@ -32,7 +32,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>..\..\..\..\..\SVD\nrf51.xml</SFDFile>
+          <SFDFile>..\..\..\..\..\..\SVD\nrf51.xml</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -333,9 +333,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>BSP_DEFINES_ONLY BOARD_PCA10028 NRF51 MPU9255 DEBUG TWI0_USE_EASY_DMA = 0</Define>
+              <Define>BSP_DEFINES_ONLY BOARD_PCA10028 NRF51 MPU9255 DEBUG SPI0_USE_EASY_DMA = 0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\twi_sensor_pca10028;..\..\config;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..</IncludePath>
+              <IncludePath>..\..\..\config\spi_sensor_pca10028;..\..\..\config;..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\components\drivers_nrf\spi_master;..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\components\toolchain;..\..\..\..\..\bsp;..\..;..\..\..\..</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -382,17 +382,17 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\main.c</FilePath>
+              <FilePath>..\..\..\main.c</FilePath>
             </File>
             <File>
               <FileName>app_mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\app_mpu.c</FilePath>
+              <FilePath>..\..\..\..\app_mpu.c</FilePath>
             </File>
             <File>
-              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileName>nrf_drv_mpu_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\nrf_drv_mpu_twi.c</FilePath>
+              <FilePath>..\..\..\..\nrf_drv_mpu_spi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -402,12 +402,12 @@
             <File>
               <FileName>Abstract.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\Abstract.txt</FilePath>
+              <FilePath>..\..\..\Abstract.txt</FilePath>
             </File>
             <File>
               <FileName>license.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\license.txt</FilePath>
+              <FilePath>..\..\..\license.txt</FilePath>
             </File>
           </Files>
         </Group>
@@ -417,27 +417,27 @@
             <File>
               <FileName>app_uart_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</FilePath>
             </File>
             <File>
               <FileName>nrf_delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
             </File>
             <File>
-              <FileName>nrf_drv_twi.c</FileName>
+              <FileName>nrf_drv_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\drivers_nrf\spi_master\nrf_drv_spi.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -447,32 +447,32 @@
             <File>
               <FileName>app_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
             </File>
             <File>
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
             </File>
             <File>
               <FileName>app_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
             </File>
             <File>
               <FileName>app_util_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
             </File>
             <File>
               <FileName>nrf_assert.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
             </File>
             <File>
               <FileName>retarget.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>
+              <FilePath>..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>
             </File>
           </Files>
         </Group>
