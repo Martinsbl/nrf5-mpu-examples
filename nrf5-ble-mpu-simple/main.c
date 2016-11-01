@@ -528,7 +528,7 @@ static void uart_config(void)
 void mpu_setup(void)
 {
     ret_code_t ret_code;
-    // Initiate MPU driver with TWI instance handler
+    // Initiate MPU driver
     ret_code = mpu_init();
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
@@ -548,8 +548,9 @@ int main(void)
     uint32_t err_code;
     bool erase_bonds;
     LEDS_CONFIGURE(LEDS_MASK);
+	LEDS_OFF(LEDS_MASK);
     uart_config();
-    printf("\033[2J\033[;HMPU TWI BLE simple example. Compiled @ %s.\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU BLE simple example. Compiled @ %s.\r\n", __TIME__);
 
     // Initialize.
     timers_init();

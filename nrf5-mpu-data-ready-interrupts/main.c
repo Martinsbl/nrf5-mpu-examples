@@ -9,21 +9,16 @@
 #include "app_util_platform.h"
 #include "app_uart.h"
 #include "app_error.h"
-#include "nrf_drv_twi.h"
 #include "nrf_delay.h"
-#include "mpu.h"
+#include "app_mpu.h"
 #include "nrf_drv_gpiote.h"
 
-/*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN     3
-#define MPU_TWI_SDA_PIN     4
-#define MPU_MPU_INT_PIN     28
+#define MPU_MPU_INT_PIN     3
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
 #define UART_RX_BUF_SIZE 1
 
-static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 volatile bool mpu_data_ready = false;
 
 /**
@@ -76,41 +71,11 @@ static void uart_config(void)
 }
 
 
-/**
- * @brief TWI events handler.
- */
-void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
-{   
-    // Pass TWI events down to the MPU driver.
-    mpu_twi_event_handler(p_event);
-}
-
-/**
- * @brief TWI initialization.
- * Just the usual way. Nothing special here
- */
-void twi_init(void)
-{
-    uint32_t err_code;
-    
-    const nrf_drv_twi_config_t twi_mpu_config = {
-       .scl                = MPU_TWI_SCL_PIN,
-       .sda                = MPU_TWI_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_400K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
-    };
-    
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
-    APP_ERROR_CHECK(err_code);
-    
-    nrf_drv_twi_enable(&m_twi_instance);
-}
-
 void mpu_setup(void)
 {
     uint32_t err_code;
-    // Initiate MPU driver with TWI instance handler
-    err_code = mpu_init(&m_twi_instance);
+    // Initiate MPU driver
+    err_code = mpu_init();
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
@@ -169,10 +134,10 @@ static void gpiote_init(void)
 int main(void)
 {
     uint32_t err_code;
-    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
+    LEDS_CONFIGURE(LEDS_MASK);
+	LEDS_OFF(LEDS_MASK);
     uart_config();
-    printf("\033[2J\033[;HMPU example with MPU generated data ready interrupts. Compiled @ %s\r\n", __TIME__);
-    twi_init();
+    printf("\033[2J\033[;HMPU example with MPU generated data ready interrupts. Compiled @ %s.\r\n", __TIME__);
     gpiote_init();
     mpu_setup();
     
@@ -181,7 +146,7 @@ int main(void)
         
     while(1)
     {
-        nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
+        nrf_gpio_pin_set(LED_4); // Turn off LED 4 when CPU is sleeping. 
         while(mpu_data_ready != true)
         {
             // Make sure any pending events are cleared
@@ -190,7 +155,7 @@ int main(void)
             // Enter System ON sleep mode
             __WFE();          
         }
-        nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
+        nrf_gpio_pin_clear(LED_4); // Light LED 4 when CPU is working
 
         err_code = mpu_read_accel(&acc_values);
         APP_ERROR_CHECK(err_code);
