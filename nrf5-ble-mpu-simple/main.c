@@ -23,9 +23,8 @@
 #include "app_trace.h"
 #include "bsp.h"
 #include "app_uart.h"
-#include "mpu.h"
+#include "app_mpu.h"
 #include "ble_mpu.h"
-#include "app_util_platform.h"
 
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1                                          /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
@@ -68,10 +67,6 @@ static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID
 #define UART_TX_BUF_SIZE 256
 #define UART_RX_BUF_SIZE 1
 
-/*Pins to connect MPU. */
-#define MPU_TWI_SCL_PIN 3
-#define MPU_TWI_SDA_PIN 4
-static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
 ble_mpu_t m_mpu;
 bool start_accel_update_flag = false;
@@ -529,41 +524,12 @@ static void uart_config(void)
 }
 
 
-/**
- * @brief TWI events handler.
- */
-void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
-{   
-    // Pass TWI events down to the MPU driver.
-    mpu_twi_event_handler(p_event);
-}
-
-/**
- * @brief TWI initialization.
- * Just the usual way. Nothing special here
- */
-void twi_setup(void)
-{
-    ret_code_t err_code;
-    
-    const nrf_drv_twi_config_t twi_mpu_config = {
-       .scl                = MPU_TWI_SCL_PIN,
-       .sda                = MPU_TWI_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_400K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
-    };
-    
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
-    APP_ERROR_CHECK(err_code);
-    
-    nrf_drv_twi_enable(&m_twi_instance);
-}
 
 void mpu_setup(void)
 {
     ret_code_t ret_code;
     // Initiate MPU driver with TWI instance handler
-    ret_code = mpu_init(&m_twi_instance);
+    ret_code = mpu_init();
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
@@ -583,7 +549,7 @@ int main(void)
     bool erase_bonds;
     LEDS_CONFIGURE(LEDS_MASK);
     uart_config();
-    printf("\033[2J\033[;HMPU BLE simple example. Compiled @ %s\r\n", __TIME__);
+    printf("\033[2J\033[;HMPU TWI BLE simple example. Compiled @ %s.\r\n", __TIME__);
 
     // Initialize.
     timers_init();
@@ -594,7 +560,6 @@ int main(void)
     services_init();
     conn_params_init();
     
-    twi_setup();
     mpu_setup();
     
 

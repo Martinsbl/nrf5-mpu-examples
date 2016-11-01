@@ -469,14 +469,19 @@
               </FileOption>
             </File>
             <File>
-              <FileName>mpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\mpu.c</FilePath>
-            </File>
-            <File>
               <FileName>ble_mpu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\ble_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\nrf_drv_mpu_twi.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\app_mpu.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2017,14 +2022,19 @@
               </FileOption>
             </File>
             <File>
-              <FileName>mpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\mpu.c</FilePath>
-            </File>
-            <File>
               <FileName>ble_mpu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\ble_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\nrf_drv_mpu_twi.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\app_mpu.c</FilePath>
             </File>
           </Files>
         </Group>

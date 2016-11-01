@@ -422,9 +422,14 @@
               <FilePath>..\..\main.c</FilePath>
             </File>
             <File>
-              <FileName>mpu.c</FileName>
+              <FileName>app_mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\mpu.c</FilePath>
+              <FilePath>..\..\..\app_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nrf_drv_mpu_twi.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -10,7 +10,7 @@
 #include "ble_mpu.h"
 #include "ble_srv_common.h"
 #include "app_error.h"
-#include "mpu.h"
+#include "app_mpu.h"
 
 
 void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t * p_ble_evt)
