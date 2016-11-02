@@ -13,11 +13,21 @@
 #include "nrf_gpio.h"
 
 
-/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
-#define MPU_SPI_MISO_PIN    3 // MPU SDO. 'SCL' on MPU breakout board silk screen
+/* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
+ * and therefore I have added a conditional statement defining different pins
+ * for each board. This is only for my own convenience and might be subject to changes as I devleop. 
+ */
+#if defined(BOARD_PCA10040)
+#define MPU_SPI_MISO_PIN    28 // MPU SDO. 'AD0' on MPU breakout board silk screen
+#define MPU_SPI_MOSI_PIN    4  // MPU SDI. 'SDA' on MPU breakout board silk screen
+#define MPU_SPI_SCL_PIN     3  // MPU SCLK. 'SCL' on MPU breakout board silk screen
+#define MPU_SPI_CS_PIN      29 // MPU nCS. 'NCS' on MPU breakout board silk screen
+#else // If PCA10028
+#define MPU_SPI_MISO_PIN    3 // MPU SDO. 'AD0' on MPU breakout board silk screen
 #define MPU_SPI_MOSI_PIN    2  // MPU SDI. 'SDA' on MPU breakout board silk screen
-#define MPU_SPI_SCL_PIN     1  // MPU SCLK. 'AD0' on MPU breakout board silk screen
+#define MPU_SPI_SCL_PIN     1  // MPU SCLK. 'SCL' on MPU breakout board silk screen
 #define MPU_SPI_CS_PIN      5 // MPU nCS. 'NCS' on MPU breakout board silk screen
+#endif
 
 
 #define MPU_SPI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
