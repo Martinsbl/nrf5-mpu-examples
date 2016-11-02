@@ -7,17 +7,17 @@
 
   <Targets>
     <Target>
-      <TargetName>nrf51422_xxac_s130</TargetName>
+      <TargetName>nrf52832_xxaa_s132</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060061::V5.06 update 1 (build 61)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
-          <Device>nRF51422_xxAC</Device>
+          <Device>nRF52832_xxAA</Device>
           <Vendor>Nordic Semiconductor</Vendor>
           <PackID>NordicSemiconductor.nRF_InternalDeviceFamilyPack.8.0.0</PackID>
           <PackURL>http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/</PackURL>
-          <Cpu>IROM(0x00000000,0x40000) IRAM(0x20000000,0x8000) CPUTYPE("Cortex-M0") CLOCK(16000000) ELITTLE</Cpu>
+          <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(64000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -32,7 +32,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>..\..\..\..\..\..\SVD\nrf51.xml</SFDFile>
+          <SFDFile>..\..\..\..\..\..\..\SVD\nrf52.xml</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -48,7 +48,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\_build\</OutputDirectory>
-          <OutputName>nrf51422_xxac_s130</OutputName>
+          <OutputName>nrf52832_xxaa_s132</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -113,9 +113,9 @@
           <SimDlgDll></SimDlgDll>
           <SimDlgDllArguments></SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
-          <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TARMCM1.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM0</TargetDlgDllArguments>
+          <TargetDllArguments>-MPU</TargetDllArguments>
+          <TargetDlgDll>TCM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pCM4</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -214,7 +214,7 @@
             <AdsLsxf>1</AdsLsxf>
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
-            <AdsCpuType>"Cortex-M0"</AdsCpuType>
+            <AdsCpuType>"Cortex-M4"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
@@ -223,7 +223,7 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>0</RvdsVP>
+            <RvdsVP>2</RvdsVP>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -284,12 +284,12 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x8000</Size>
+                <Size>0x10000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x40000</Size>
+                <Size>0x80000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -313,8 +313,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x1b000</StartAddress>
-                <Size>0x25000</Size>
+                <StartAddress>0x1c000</StartAddress>
+                <Size>0x64000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -339,7 +339,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20002080</StartAddress>
-                <Size>0x5f80</Size>
+                <Size>0xdf80</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -351,7 +351,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -371,9 +371,9 @@
             <vShortWch>0</vShortWch>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>BLE_STACK_SUPPORT_REQD BOARD_PCA10028 S130 NRF_LOG_USES_UART=1 NRF51 SOFTDEVICE_PRESENT SWI_DISABLE0 MPU9255</Define>
+              <Define>BLE_STACK_SUPPORT_REQD BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET S132 NRF_LOG_USES_UART=1 NRF52 SOFTDEVICE_PRESENT SWI_DISABLE0 DEBUG MPU9255</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\config\spi_config_pca10028;..\..\..\config;..\..\..\..\..\..\components\ble\ble_advertising;..\..\..\..\..\..\components\ble\ble_services\ble_nus;..\..\..\..\..\..\components\ble\common;..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\components\drivers_nrf\pstorage;..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\..\components\libraries\fstorage\config;..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\..\components\softdevice\s130\headers;..\..\..\..\..\..\components\softdevice\s130\headers\nrf51;..\..\..\..\..\..\components\toolchain;..\..\..\..\..\bsp;..\..\..\..\..\..\external\segger_rtt;..\..\..\..\..\..\components\drivers_nrf\spi_master;..\..\..\..</IncludePath>
+              <IncludePath>..\..\..\..\config\twi_config_pca10040;..\..\..\..\config;..\..\..\..\..\..\..\components\ble\ble_advertising;..\..\..\..\..\..\..\components\ble\ble_services\ble_nus;..\..\..\..\..\..\..\components\ble\common;..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\components\drivers_nrf\pstorage;..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\..\..\components\libraries\fstorage\config;..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\..\..\components\softdevice\s132\headers;..\..\..\..\..\..\..\components\softdevice\s132\headers\nrf52;..\..\..\..\..\..\..\components\toolchain;..\..\..\..\..\..\bsp;..\..\..\..\..\..\..\external\segger_rtt;..\..\..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -388,7 +388,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define> BLE_STACK_SUPPORT_REQD BOARD_PCA10028 S130 NRF_LOG_USES_UART=1 NRF51 SOFTDEVICE_PRESENT SWI_DISABLE0</Define>
+              <Define> BLE_STACK_SUPPORT_REQD BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET S132 NRF_LOG_USES_UART=1 NRF52 SOFTDEVICE_PRESENT SWI_DISABLE0</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -419,7 +419,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\main.c</FilePath>
+              <FilePath>..\..\..\..\main.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -469,14 +469,14 @@
               </FileOption>
             </File>
             <File>
-              <FileName>nrf_drv_mpu_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\nrf_drv_mpu_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>app_mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\app_mpu.c</FilePath>
+              <FilePath>..\..\..\..\..\app_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\nrf_drv_mpu_twi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -486,7 +486,7 @@
             <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\bsp\bsp.c</FilePath>
+              <FilePath>..\..\..\..\..\..\bsp\bsp.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -538,7 +538,7 @@
             <File>
               <FileName>bsp_btn_ble.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\bsp\bsp_btn_ble.c</FilePath>
+              <FilePath>..\..\..\..\..\..\bsp\bsp_btn_ble.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -590,27 +590,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Documentation</GroupName>
-          <Files>
-            <File>
-              <FileName>Abstract.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Abstract.txt</FilePath>
-            </File>
-            <File>
-              <FileName>license.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\license.txt</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>nRF_BLE</GroupName>
           <Files>
             <File>
               <FileName>ble_advdata.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\common\ble_advdata.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\common\ble_advdata.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -662,7 +647,7 @@
             <File>
               <FileName>ble_advertising.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\ble_advertising\ble_advertising.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\ble_advertising\ble_advertising.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -714,7 +699,7 @@
             <File>
               <FileName>ble_conn_params.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\common\ble_conn_params.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\common\ble_conn_params.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -766,7 +751,7 @@
             <File>
               <FileName>ble_nus.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\ble_services\ble_nus\ble_nus.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\ble_services\ble_nus\ble_nus.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -818,7 +803,7 @@
             <File>
               <FileName>ble_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\common\ble_srv_common.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\common\ble_srv_common.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -875,7 +860,7 @@
             <File>
               <FileName>app_uart_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -927,7 +912,7 @@
             <File>
               <FileName>nrf_delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -979,7 +964,7 @@
             <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1031,7 +1016,7 @@
             <File>
               <FileName>nrf_drv_gpiote.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1083,7 +1068,7 @@
             <File>
               <FileName>nrf_drv_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1135,7 +1120,7 @@
             <File>
               <FileName>pstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\pstorage\pstorage.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\pstorage\pstorage.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1185,9 +1170,9 @@
               </FileOption>
             </File>
             <File>
-              <FileName>nrf_drv_spi.c</FileName>
+              <FileName>nrf_drv_twi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\spi_master\nrf_drv_spi.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1197,7 +1182,7 @@
             <File>
               <FileName>app_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\button\app_button.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\button\app_button.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1249,7 +1234,7 @@
             <File>
               <FileName>app_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1301,7 +1286,7 @@
             <File>
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1353,7 +1338,7 @@
             <File>
               <FileName>app_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1405,7 +1390,7 @@
             <File>
               <FileName>app_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\timer\app_timer.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\timer\app_timer.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1457,7 +1442,7 @@
             <File>
               <FileName>app_util_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1509,7 +1494,7 @@
             <File>
               <FileName>fstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\fstorage\fstorage.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\fstorage\fstorage.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1561,7 +1546,7 @@
             <File>
               <FileName>nrf_assert.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1613,7 +1598,7 @@
             <File>
               <FileName>nrf_log.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\nrf_log.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\nrf_log.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1665,7 +1650,7 @@
             <File>
               <FileName>retarget.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1722,7 +1707,7 @@
             <File>
               <FileName>RTT_Syscalls_KEIL.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1774,7 +1759,7 @@
             <File>
               <FileName>SEGGER_RTT.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1826,7 +1811,7 @@
             <File>
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1881,9 +1866,9 @@
           <GroupName>nRF_SoftDevice</GroupName>
           <Files>
             <File>
-              <FileName>s130_nrf51_2.0.0_licence_agreement.txt</FileName>
+              <FileName>s132_nrf52_2.0.0_licence_agreement.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\..\..\..\components\softdevice\s130\doc\s130_nrf51_2.0.0_licence_agreement.txt</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\softdevice\s132\doc\s132_nrf52_2.0.0_licence_agreement.txt</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1907,7 +1892,7 @@
             <File>
               <FileName>softdevice_handler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -1967,16 +1952,16 @@
       </Groups>
     </Target>
     <Target>
-      <TargetName>flash_s130_nrf51_2.0.0_softdevice</TargetName>
+      <TargetName>flash_s132_nrf52_2.0.0_softdevice</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>nRF51422_xxAC</Device>
+          <Device>nRF52832_xxAA</Device>
           <Vendor>Nordic Semiconductor</Vendor>
           <PackID>NordicSemiconductor.nRF_InternalDeviceFamilyPack.8.0.0</PackID>
           <PackURL>http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/</PackURL>
-          <Cpu>IROM(0x00000000,0x40000) IRAM(0x20000000,0x8000) CPUTYPE("Cortex-M0") CLOCK(16000000) ELITTLE</Cpu>
+          <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(64000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -1991,7 +1976,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile></SFDFile>
+          <SFDFile>$$Device:nRF52832_xxAA$SVD\nrf52.xml</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -2006,8 +1991,8 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>..\..\..\..\..\..\components\softdevice\s130\hex\</OutputDirectory>
-          <OutputName>s130_nrf51_2.0.0_softdevice.hex</OutputName>
+          <OutputDirectory>..\..\..\..\..\..\..\components\softdevice\s132\hex\</OutputDirectory>
+          <OutputName>s132_nrf52_2.0.0_softdevice.hex</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -2072,9 +2057,9 @@
           <SimDlgDll></SimDlgDll>
           <SimDlgDllArguments></SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
-          <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TARMCM1.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM0</TargetDlgDllArguments>
+          <TargetDllArguments>-MPU</TargetDllArguments>
+          <TargetDlgDll>TCM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pCM4</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -2109,7 +2094,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>7</TargetSelection>
+          <TargetSelection>6</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -2173,7 +2158,7 @@
             <AdsLsxf>1</AdsLsxf>
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
-            <AdsCpuType>"Cortex-M0"</AdsCpuType>
+            <AdsCpuType>"Cortex-M4"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
@@ -2182,7 +2167,7 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>0</RvdsVP>
+            <RvdsVP>2</RvdsVP>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -2243,12 +2228,12 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x8000</Size>
+                <Size>0x10000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x40000</Size>
+                <Size>0x80000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -2272,8 +2257,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x1b000</StartAddress>
-                <Size>0x25000</Size>
+                <StartAddress>0x1c000</StartAddress>
+                <Size>0x64000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -2298,7 +2283,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20002080</StartAddress>
-                <Size>0x5f80</Size>
+                <Size>0xdf80</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -2332,7 +2317,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\config\ble_app_uart_s130_pca10028;..\..\..\config</IncludePath>
+              <IncludePath>..\..\..\..\config\ble_app_uart_s132_pca10040;..\..\..\..\config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2378,7 +2363,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\main.c</FilePath>
+              <FilePath>..\..\..\..\main.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2428,14 +2413,14 @@
               </FileOption>
             </File>
             <File>
-              <FileName>nrf_drv_mpu_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\nrf_drv_mpu_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>app_mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\app_mpu.c</FilePath>
+              <FilePath>..\..\..\..\..\app_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\nrf_drv_mpu_twi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2445,7 +2430,7 @@
             <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\bsp\bsp.c</FilePath>
+              <FilePath>..\..\..\..\..\..\bsp\bsp.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2497,7 +2482,7 @@
             <File>
               <FileName>bsp_btn_ble.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\bsp\bsp_btn_ble.c</FilePath>
+              <FilePath>..\..\..\..\..\..\bsp\bsp_btn_ble.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2549,27 +2534,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Documentation</GroupName>
-          <Files>
-            <File>
-              <FileName>Abstract.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\Abstract.txt</FilePath>
-            </File>
-            <File>
-              <FileName>license.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\..\license.txt</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>nRF_BLE</GroupName>
           <Files>
             <File>
               <FileName>ble_advdata.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\common\ble_advdata.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\common\ble_advdata.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2621,7 +2591,7 @@
             <File>
               <FileName>ble_advertising.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\ble_advertising\ble_advertising.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\ble_advertising\ble_advertising.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2673,7 +2643,7 @@
             <File>
               <FileName>ble_conn_params.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\common\ble_conn_params.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\common\ble_conn_params.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2725,7 +2695,7 @@
             <File>
               <FileName>ble_nus.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\ble_services\ble_nus\ble_nus.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\ble_services\ble_nus\ble_nus.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2777,7 +2747,7 @@
             <File>
               <FileName>ble_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\ble\common\ble_srv_common.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\ble\common\ble_srv_common.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2834,7 +2804,7 @@
             <File>
               <FileName>app_uart_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\uart\app_uart_fifo.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2886,7 +2856,7 @@
             <File>
               <FileName>nrf_delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\delay\nrf_delay.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2938,7 +2908,7 @@
             <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -2990,7 +2960,7 @@
             <File>
               <FileName>nrf_drv_gpiote.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3042,7 +3012,7 @@
             <File>
               <FileName>nrf_drv_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\uart\nrf_drv_uart.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3094,7 +3064,7 @@
             <File>
               <FileName>pstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\pstorage\pstorage.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\pstorage\pstorage.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3144,9 +3114,9 @@
               </FileOption>
             </File>
             <File>
-              <FileName>nrf_drv_spi.c</FileName>
+              <FileName>nrf_drv_twi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\drivers_nrf\spi_master\nrf_drv_spi.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\twi_master\nrf_drv_twi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3156,7 +3126,7 @@
             <File>
               <FileName>app_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\button\app_button.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\button\app_button.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3208,7 +3178,7 @@
             <File>
               <FileName>app_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\app_error.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3260,7 +3230,7 @@
             <File>
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3312,7 +3282,7 @@
             <File>
               <FileName>app_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3364,7 +3334,7 @@
             <File>
               <FileName>app_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\timer\app_timer.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\timer\app_timer.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3416,7 +3386,7 @@
             <File>
               <FileName>app_util_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3468,7 +3438,7 @@
             <File>
               <FileName>fstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\fstorage\fstorage.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\fstorage\fstorage.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3520,7 +3490,7 @@
             <File>
               <FileName>nrf_assert.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3572,7 +3542,7 @@
             <File>
               <FileName>nrf_log.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\util\nrf_log.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\util\nrf_log.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3624,7 +3594,7 @@
             <File>
               <FileName>retarget.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3681,7 +3651,7 @@
             <File>
               <FileName>RTT_Syscalls_KEIL.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\external\segger_rtt\RTT_Syscalls_KEIL.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3733,7 +3703,7 @@
             <File>
               <FileName>SEGGER_RTT.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3785,7 +3755,7 @@
             <File>
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\external\segger_rtt\SEGGER_RTT_printf.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3840,9 +3810,9 @@
           <GroupName>nRF_SoftDevice</GroupName>
           <Files>
             <File>
-              <FileName>s130_nrf51_2.0.0_licence_agreement.txt</FileName>
+              <FileName>s132_nrf52_2.0.0_licence_agreement.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\..\..\..\components\softdevice\s130\doc\s130_nrf51_2.0.0_licence_agreement.txt</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\softdevice\s132\doc\s132_nrf52_2.0.0_licence_agreement.txt</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -3866,7 +3836,7 @@
             <File>
               <FileName>softdevice_handler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
+              <FilePath>..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>0</UseCPPCompiler>
@@ -4062,12 +4032,12 @@
       </filter>
       <package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0">
         <targetInfos>
-          <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>
+          <targetInfo name="nrf52832_xxaa_s132" versionMatchMode="fixed"/>
         </targetInfos>
       </package>
       <package name="nRF_DeviceFamilyPack" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.5.0">
         <targetInfos>
-          <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>
+          <targetInfo name="nrf52832_xxaa_s132" versionMatchMode="fixed"/>
         </targetInfos>
       </package>
     </packages>
@@ -4076,35 +4046,35 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="CMSIS Core">
         <package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
         <targetInfos>
-          <targetInfo excluded="1" name="flash_s130_nrf51_2.0.0_softdevice"/>
-          <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>
+          <targetInfo excluded="1" name="flash_s132_nrf52_2.0.0_softdevice"/>
+          <targetInfo name="nrf52832_xxaa_s132" versionMatchMode="fixed"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.5.0" condition="nRF51 Series CMSIS Device">
         <package name="nRF_DeviceFamilyPack" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.5.0"/>
         <targetInfos>
-          <targetInfo excluded="1" name="flash_s130_nrf51_2.0.0_softdevice"/>
-          <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>
+          <targetInfo excluded="1" name="flash_s132_nrf52_2.0.0_softdevice"/>
+          <targetInfo name="nrf52832_xxaa_s132" versionMatchMode="fixed"/>
         </targetInfos>
       </component>
     </components>
     <files>
-      <file attr="config" category="source" condition="ARM Compiler" name="Device\Source\arm\arm_startup_nrf51.s" version="0.0.0">
-        <instance index="0">RTE\Device\nRF51422_xxAC\arm_startup_nrf51.s</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.5.0" condition="nRF51 Series CMSIS Device"/>
+      <file attr="config" category="source" condition="ARM Compiler" name="Device\Source\arm\arm_startup_nrf52.s" version="0.0.0">
+        <instance index="0">RTE\Device\nRF52832_xxAA\arm_startup_nrf52.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.5.0" condition="nRF52 Series CMSIS Device"/>
         <package license="License\license.txt" name="nRF_DeviceFamilyPack" schemaVersion="1.3" url="http://developer.nordicsemi.com/nRF5_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.5.0"/>
         <targetInfos>
-          <targetInfo excluded="1" name="flash_s130_nrf51_2.0.0_softdevice"/>
-          <targetInfo name="nrf51422_xxac_s130"/>
+          <targetInfo excluded="1" name="flash_s132_nrf52_2.0.0_softdevice"/>
+          <targetInfo name="nrf52832_xxaa_s132"/>
         </targetInfos>
       </file>
-      <file attr="config" category="source" name="Device\Source\system_nrf51.c" version="0.0.0">
-        <instance index="0">RTE\Device\nRF51422_xxAC\system_nrf51.c</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.5.0" condition="nRF51 Series CMSIS Device"/>
+      <file attr="config" category="source" name="Device\Source\system_nrf52.c" version="0.0.0">
+        <instance index="0">RTE\Device\nRF52832_xxAA\system_nrf52.c</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.5.0" condition="nRF52 Series CMSIS Device"/>
         <package license="License\license.txt" name="nRF_DeviceFamilyPack" schemaVersion="1.3" url="http://developer.nordicsemi.com/nRF5_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.5.0"/>
         <targetInfos>
-          <targetInfo excluded="1" name="flash_s130_nrf51_2.0.0_softdevice"/>
-          <targetInfo name="nrf51422_xxac_s130"/>
+          <targetInfo excluded="1" name="flash_s132_nrf52_2.0.0_softdevice"/>
+          <targetInfo name="nrf52832_xxaa_s132"/>
         </targetInfos>
       </file>
     </files>

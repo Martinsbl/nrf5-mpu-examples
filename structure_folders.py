@@ -2,7 +2,7 @@ import os
 from shutil import copyfile
 import subprocess
 
-working_directory = "C:\\Kode\\Nordic\\SDK_11\\examples\\mpu-test\\"
+working_directory = "C:\\Kode\\Nordic\\SDK_11\\examples\\nrf5-mpu-examples\\"
 
 # Copy project files into spi and twi folders.
 for root, dirs, files in os.walk(working_directory):
