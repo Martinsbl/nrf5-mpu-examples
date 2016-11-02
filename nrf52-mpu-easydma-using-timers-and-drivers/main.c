@@ -11,7 +11,7 @@
 #include "app_error.h"
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
-#include "mpu.h"
+#include "app_mpu.h"
 #include "nrf_drv_ppi.h"
 #include "nrf_drv_timer.h"
 #include "nrf_drv_gpiote.h"
@@ -22,9 +22,19 @@
 #define UART_RX_BUF_SIZE 1
 
 
-/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
+/* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
+ * and therefore I have added a conditional statement defining different pins
+ * for each board. This is only for my own convenience. 
+ */
+#if defined(BOARD_PCA10040)
 #define MPU_TWI_SCL_PIN 3
 #define MPU_TWI_SDA_PIN 4
+#else // Pins for PCA10028
+#define MPU_TWI_SCL_PIN 1
+#define MPU_TWI_SDA_PIN 2
+#endif
+
+#define MPU_ADDRESS     		0x68 
 
 
 /* The buffer length, TWIM_RX_BUF_LENGTH, defines how many samples will fit in the buffer. Each sample
@@ -39,9 +49,9 @@
  * A buffer width of 6 and register start address MPU_REG_GYRO_XOUT_H will read out gyroscope data only. */
 #define TWIM_RX_BUF_WIDTH   6   // Reading accelerometer only
 
-
 /* The TWI instance to use to communicate with the MPU */
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
+
 
 /* Define a type with a two dimensioanal array, TWIM_RX_BUF_WIDTH wide and TWIM_RX_BUF_LENGTH long, holding a list of MPU sensor data */
 typedef struct ArrayList
@@ -70,9 +80,6 @@ static nrf_drv_timer_t twi_transfer_counter_instance = NRF_DRV_TIMER_INSTANCE(1)
 
 
 
-
-
-
 // TWI transfer start handler. Not used
 void twi_start_timer_handler(nrf_timer_event_t event_type, void * p_context)
 {
@@ -81,10 +88,7 @@ void twi_start_timer_handler(nrf_timer_event_t event_type, void * p_context)
 
 // TWI transfer counter handler. 
 void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context)
-{
-    // Toggle LED to indicate TWIM_RX_BUF_LENGTH has been transferd
-    nrf_drv_gpiote_out_toggle(LED_3);
-    
+{    
     // Set flag to start printing of samples in main loop
     twi_transfers_complete = true;
     
@@ -153,37 +157,6 @@ static void uart_config(void)
 
 
 /**
- * @brief TWI events handler. This handler is only used during the MPU intialization routines. 
- * It is disabled when the MPU transfers with easyDMA are initated.
- */
-void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
-{   
-    // Pass TWI events down to the MPU driver.
-    mpu_twi_event_handler(p_event);
-}
-
-/**
- * @brief TWI initialization.
- * Just the usual way. Nothing special here
- */
-void twi_init(void)
-{
-    ret_code_t err_code;
-    
-    const nrf_drv_twi_config_t twi_mpu_config = {
-       .scl                = MPU_TWI_SCL_PIN,
-       .sda                = MPU_TWI_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_400K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
-    };
-    
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
-    APP_ERROR_CHECK(err_code);
-    
-    nrf_drv_twi_enable(&m_twi_instance);
-}
-
-/**
  * @brief MPU initialization.
  * Just the usual way. Nothing special here
  */
@@ -191,7 +164,7 @@ void mpu_setup(void)
 {
     ret_code_t ret_code;
     // Initiate MPU driver with TWI instance handler
-    ret_code = mpu_init(&m_twi_instance);
+    ret_code = mpu_init();
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
@@ -350,14 +323,13 @@ void twi_transfer_start()
 int main(void)
 {
     // Configure some LEDs
-    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
+    LEDS_CONFIGURE(LEDS_MASK);
+    LEDS_OFF(LEDS_MASK);
     // Configure UART
     uart_config();
     // Print welcome message
     printf("\033[2J\033[;HMPU nRF52 EasyDMA using timers and drivers example. Compiled @ %s\r\n", __TIME__);
     
-    // Setup TWI. 
-    twi_init();
     // Setup the MPU
     mpu_setup();
     
@@ -374,7 +346,7 @@ int main(void)
     
     while(1)
     {
-        nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
+        nrf_gpio_pin_set(LED_4); // Turn LED OFF when CPU is sleeping
         while(twi_transfers_complete == false)
         {
             // Make sure any pending events are cleared
@@ -383,7 +355,7 @@ int main(void)
             // Enter System ON sleep mode
             __WFE();           
         }
-        nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
+        nrf_gpio_pin_clear(LED_4); // Turn LED ON when CPU is working
         
         // Clear terminal
         printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * ++sample_nr);

@@ -371,7 +371,7 @@
             <vShortWch>0</vShortWch>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>BSP_DEFINES_ONLY BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET NRF52 MPU9150 DEBUG</Define>
+              <Define>BSP_DEFINES_ONLY BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET NRF52 MPU9255 DEBUG</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\config\twi_sensor_pca10040;..\..\config;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\config;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\uart;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..</IncludePath>
             </VariousControls>
@@ -422,9 +422,14 @@
               <FilePath>..\..\main.c</FilePath>
             </File>
             <File>
-              <FileName>mpu.c</FileName>
+              <FileName>app_mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\mpu.c</FilePath>
+              <FilePath>..\..\..\app_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_drv_mpu_twi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\nrf_drv_mpu_twi.c</FilePath>
             </File>
           </Files>
         </Group>
