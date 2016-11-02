@@ -12,6 +12,9 @@
 #include "app_util_platform.h"
 #include "nrf_gpio.h"
 
+#if defined(MPU9150)
+#error "MPU9150 does not support SPI"
+#endif
 
 /* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
  * and therefore I have added a conditional statement defining different pins

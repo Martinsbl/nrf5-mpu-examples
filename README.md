@@ -1,6 +1,6 @@
 # Examples for nRF51 & nRF52 and MPUxxxx
 MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0. 
-This repository includes MPU hardware drivers for SPI and TWI. The drivers are located in nrf_drv_mpu_spi.c and nrf_drv_mpu_twi.c respectively. A library is running on top of the drivers. The library is located in app_mpu.h/c. By using the library the hardware driver is transparent to the application and it is easy to switch between SPI and TWI. Each of the examples, except the nrf52 easydma examples, have project files to use with bot SPI and TWI. For example: "nrf5-mpu-simple\pca10028\arm5_no_packs\spi\nrf5-mpu-simple.uvprojx". 
+This repository includes MPU hardware drivers for SPI and TWI. The drivers are located in nrf_drv_mpu_spi.c and nrf_drv_mpu_twi.c respectively. A library is running on top of the drivers. The library is located in app_mpu.h/c. By using the library the hardware driver is transparent to the application and it is easy to switch between SPI and TWI. Each of the examples, except the nrf52 easydma examples, have project files to use with bot SPI and TWI. For example: "nrf5-mpu-simple\pca10028\arm5_no_packs\spi\nrf5-mpu-simple.uvprojx". <b>Note that MPU9150 does not support SPI</b>.
 
 # Tested on:
 * MPU9255
