@@ -11,17 +11,29 @@
 #include "app_uart.h"
 #include "bsp.h"
 #include "app_error.h"
-#include "mpu.h"
+#include "app_mpu.h"
 
 /*UART buffer sizes. */
 #define UART_TX_BUF_SIZE 256
 #define UART_RX_BUF_SIZE 1
 
 
-/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
+/* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
+ * and therefore I have added a conditional statement defining different pins
+ * for each board. This is only for my own convenience. 
+ */
+#if defined(BOARD_PCA10040)
 #define MPU_TWI_SCL_PIN 3
 #define MPU_TWI_SDA_PIN 4
-#define MPU_INT_PIN     28
+#define MPU_INT_PIN     30
+#else // Pins for PCA10028
+#define MPU_TWI_SCL_PIN 1
+#define MPU_TWI_SDA_PIN 2
+#define MPU_INT_PIN     5
+#endif
+
+
+#define MPU_ADDRESS     		0x68 
 
 /* The buffer length, TWIM_RX_BUF_LENGTH, defines how many samples will fit in the buffer. Each sample
  * may contain accelerometer data and/or gyroscope data and/or temperature. What data to read is defined by 
@@ -35,8 +47,6 @@
  * A buffer width of 6 and register start address MPU_REG_GYRO_XOUT_H will read out gyroscope data only. */
 #define TWIM_RX_BUF_WIDTH   6   // Reading accelerometer only
 
-// The TWI instance to use to communicate with the MPU 
-static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
 
 /* Define a type with a two dimensioanal array, TWIM_RX_BUF_WIDTH wide and TWIM_RX_BUF_LENGTH long, holding a list of MPU sensor data */
 typedef struct ArrayList
@@ -106,14 +116,6 @@ void uart_config(void)
     APP_ERROR_CHECK(err_code);
 }
 
-/**
- * @brief TWI events handler.
- */
-void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
-{   
-    // Pass TWI events down to the MPU driver. 
-    mpu_twi_event_handler(p_event);
-}
 
 
 /**
@@ -124,6 +126,9 @@ static void twi_with_easy_dma_setup()
 {
     // Disable the TWIM module while we reconfigure it
     NRF_TWIM0->ENABLE = TWIM_ENABLE_ENABLE_Disabled << TWIM_ENABLE_ENABLE_Pos;
+    NRF_TWIM0->SHORTS = 0;
+    NVIC_DisableIRQ(SPI0_TWI0_IRQn);
+    NVIC_ClearPendingIRQ(SPI0_TWI0_IRQn);
     
     // Configure a gpiote channel to generate an event on a polarity change from 
     // low to high generated the MPU interrupt pin.
@@ -131,6 +136,10 @@ static void twi_with_easy_dma_setup()
     NRF_GPIOTE->CONFIG[gpiote_ch_mpu_int_event] = ( (GPIOTE_CONFIG_MODE_Event   << GPIOTE_CONFIG_MODE_Pos) | 
                                                     (MPU_INT_PIN                << GPIOTE_CONFIG_PSEL_Pos) | 
                                                     (GPIOTE_CONFIG_POLARITY_LoToHi << GPIOTE_CONFIG_POLARITY_Pos));
+    
+    NRF_TWIM0->PSEL.SCL = MPU_TWI_SCL_PIN;
+    NRF_TWIM0->PSEL.SDA = MPU_TWI_SDA_PIN;
+    NRF_TWIM0->FREQUENCY = TWI_FREQUENCY_FREQUENCY_K400;
     
     // Load TWI TX buffer into TWI module. Set number of bytes to write pr transfer, max count, to one. 
     // Disable the EasyDMA list functionality for TWI TX.
@@ -219,26 +228,6 @@ void TIMER0_IRQHandler(void)
     twi_transfers_complete = true;  
 }
 
-/**
- * @brief TWI initialization.
- * Just the usual way. Nothing special here
- */
-void twi_init(void)
-{
-    ret_code_t err_code;
-    
-    const nrf_drv_twi_config_t twi_mpu_config = {
-       .scl                = MPU_TWI_SCL_PIN,
-       .sda                = MPU_TWI_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_400K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
-    };
-    
-    err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, twi_handler, NULL);
-    APP_ERROR_CHECK(err_code);
-    
-    nrf_drv_twi_enable(&m_twi_instance);
-}
 
 /**
  * @brief MPU initialization.
@@ -248,8 +237,8 @@ void mpu_setup()
 {
     uint32_t err_code;
     
-    // MPU9150 setup
-    err_code = mpu_init(&m_twi_instance);
+    // MPU setup
+    err_code = mpu_init();
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG();
     p_mpu_config.smplrt_div = 19;
@@ -274,12 +263,12 @@ void mpu_setup()
 int main(void)
 {
     nrf_gpio_range_cfg_output(LED_START, LED_STOP);
+    LEDS_CONFIGURE(LEDS_MASK);
+    LEDS_OFF(LEDS_MASK);
     // Initate UART and pring welcome message
     uart_config();
     printf("\033[2J\033[;HMPU nRF52 EasyDMA using GPIOTE and registers example. Compiled @ %s\r\n", __TIME__);
     
-    // Initiate TWI
-    twi_init();
     // Initiate the MPU with interrupt
     mpu_setup();
     
@@ -296,7 +285,7 @@ int main(void)
     
     while (true)
     {
-        nrf_gpio_pin_clear(LED_4); // Pin low when CPU is sleeping
+        nrf_gpio_pin_set(LED_4); // Turn LED OFF when CPU is sleeping
         // Wait for new available data 
         while(twi_transfers_complete == false)
         {
@@ -306,7 +295,7 @@ int main(void)
             // Enter System ON sleep mode
             __WFE();           
         }
-        nrf_gpio_pin_set(LED_4); // Pin high when CPU is working
+        nrf_gpio_pin_clear(LED_4); // Turn LED ON when CPU is working
         // Print header with total number of samples received
         printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * sample_nr++);
         
