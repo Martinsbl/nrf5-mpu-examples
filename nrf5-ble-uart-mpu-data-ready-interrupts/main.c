@@ -77,7 +77,7 @@ static ble_uuid_t                       m_adv_uuids[] = {{BLE_UUID_NUS_SERVICE, 
 #if defined(BOARD_PCA10040)
 #define MPU_MPU_INT_PIN     30
 #else // If PCA10028
-#define MPU_MPU_INT_PIN     5
+#define MPU_MPU_INT_PIN     4
 #endif
 
 volatile bool mpu_data_ready = false;

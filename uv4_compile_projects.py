@@ -2,7 +2,7 @@ import os
 from subprocess import call
 
 
-project_rootdir = "C:\\Kode\\Nordic\\SDK_11\\examples\\mpu-test\\"
+project_rootdir = "C:\\Kode\\Nordic\\SDK_11\\examples\\nrf5-mpu-examples\\"
 keil_dir = "C:\\Keil_v5\\UV4\\"
 logfile_dir = "C:\\Kode\\Nordic\\SDK_11\\examples\\mpu-test\\log_files\\"
 
@@ -20,7 +20,7 @@ for subdir, dirs, files in os.walk(project_rootdir):
                 logfile = file + "_nrf51"
             else:
                 logfile = file + "_Unknown device"
-            #print("Compiling: " + logfile)
+            print("\nCompiling: " + logfile)
             call([keil_dir + "UV4", "-r", complete_file_path, "-o", logfile_dir + logfile + ".log"])
 
             # Check for compile errors in log file
