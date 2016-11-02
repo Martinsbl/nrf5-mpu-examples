@@ -12,9 +12,17 @@
 #include "app_util_platform.h"
 #include "nrf_gpio.h"
 
-/* Pins to connect MPU. Pinout is different for nRF51 and nRF52 DK */
+/* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
+ * and therefore I have added a conditional statement defining different pins
+ * for each board. This is only for my own convenience. 
+ */
+#if defined(BOARD_PCA10040)
+#define MPU_TWI_SCL_PIN 3
+#define MPU_TWI_SDA_PIN 4
+#else
 #define MPU_TWI_SCL_PIN 1
 #define MPU_TWI_SDA_PIN 2
+#endif
 
 
 #define MPU_TWI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
