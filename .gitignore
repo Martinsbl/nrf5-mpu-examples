@@ -4,6 +4,7 @@ armgcc/
 iar/
 *.*
 !*.txt
+!*.py
 !*.c
 !*.h
 !*.md
