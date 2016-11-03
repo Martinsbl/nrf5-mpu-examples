@@ -540,6 +540,8 @@ void mpu_setup(void)
     
     // Setup and configure the MPU with intial values
     mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
+    // The following line decieds how fast the nRF5 will sample the MPU for data. If you sample to fast
+    // the Softdevice might not be able to transmit all the packets and you will receive a BLE_ERROR_NO_TX_PACKETS event.
     p_mpu_config.smplrt_div = 19;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
     err_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
@@ -618,7 +620,8 @@ int main(void)
     
     accel_values_t acc_values;
     
-    char ble_value_string[19]; // String to hold accelerometer data that is to be sent via NUS
+    
+    char ble_value_string[19]; // String to hold accelerometer data that is to be sent via NUS. The length of this string decides how long the BLE packtes will be and will hence, directly affect your troughput.
     uint16_t buffer_overflow = 0; // Variable to count BLE_ERROR_NO_TX_PACKETS (buffer overflows). This can be used to test throughput. If you send data too often you will see BLE_ERROR_NO_TX_PACKETS
     float x, y, z; // Variables to hold accelerometer data in Gs
     
