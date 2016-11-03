@@ -13,7 +13,7 @@
 #include "app_mpu.h"
 #include "nrf_drv_gpiote.h"
 
-#define MPU_MPU_INT_PIN     4
+#define MPU_MPU_INT_PIN     5
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
