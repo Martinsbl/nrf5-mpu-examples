@@ -26,7 +26,7 @@
 
 
 #define MPU_TWI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
-#define MPU_TWI_TIMEOUT 		5000 
+#define MPU_TWI_TIMEOUT 		10000 
 #define MPU_ADDRESS     		0x68 
 
 

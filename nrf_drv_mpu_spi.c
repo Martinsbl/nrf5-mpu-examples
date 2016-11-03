@@ -29,7 +29,7 @@
 #define MPU_SPI_MISO_PIN    3 // MPU SDO. 'AD0' on MPU breakout board silk screen
 #define MPU_SPI_MOSI_PIN    2  // MPU SDI. 'SDA' on MPU breakout board silk screen
 #define MPU_SPI_SCL_PIN     1  // MPU SCLK. 'SCL' on MPU breakout board silk screen
-#define MPU_SPI_CS_PIN      5 // MPU nCS. 'NCS' on MPU breakout board silk screen
+#define MPU_SPI_CS_PIN      4 // MPU nCS. 'NCS' on MPU breakout board silk screen
 #endif
 
 
