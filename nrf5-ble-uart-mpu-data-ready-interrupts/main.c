@@ -565,6 +565,8 @@ void mpu_setup(void)
  */
 void int_pin_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
+    // A rule of thumb is to do as little as possible in an interrupt routine. 
+    // Therefor we just set a flag like this, and check the flag in the main loop. 
     mpu_data_ready = true;
 }
 
@@ -616,28 +618,38 @@ int main(void)
     
     accel_values_t acc_values;
     
-    // Enter main loop.
     char ble_value_string[19]; // String to hold accelerometer data that is to be sent via NUS
     uint16_t buffer_overflow = 0; // Variable to count BLE_ERROR_NO_TX_PACKETS (buffer overflows). This can be used to test throughput. If you send data too often you will see BLE_ERROR_NO_TX_PACKETS
     float x, y, z; // Variables to hold accelerometer data in Gs
+    
+    
+    /* Enter main loop. The power_manage() function is a function that allows the Softdevice 
+     * to manage the sleep modes and the CPU. The CPU will not be sleeping all the time while inside power_manage()
+     * as the Softdevice might need it to maintain a BLE link. 
+     */
     for (;;)
     {
-        nrf_gpio_pin_set(LED_4); // Turn off LED 4 when CPU is sleeping. 
+        nrf_gpio_pin_set(LED_4); // Turn off LED 4 when Softdevice is managing power
         while(mpu_data_ready != true)
         {
+            // Let the Softdevice manage the power modes
             power_manage();
         }
-        nrf_gpio_pin_clear(LED_4); // Light LED 4 when CPU is working
+        nrf_gpio_pin_clear(LED_4); // Light LED 4 when CPU is working on reading and transmitting MPU data
 
         // Read accelerometer data.
         err_code = mpu_read_accel(&acc_values);
         APP_ERROR_CHECK(err_code);
         
+        
+        nrf_gpio_pin_clear(LED_3); // Set LED_3 pin high to measure how long it takes to format string.
         // Divide each accelerometer axis to get values in G
         x = (float)acc_values.x / 0x4000;
         y = (float)acc_values.y / 0x4000;
         z = (float)acc_values.z / 0x4000;
         sprintf(ble_value_string, "%.02f;%.02f;%.02f;\n", x, y, z); // Format string with data. 
+        nrf_gpio_pin_set(LED_3);
+        
         if(m_conn_handle != BLE_CONN_HANDLE_INVALID) // Check if we are in a connection
         {
             // Send data via NUS
