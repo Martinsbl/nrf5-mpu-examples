@@ -336,6 +336,10 @@ uint32_t mpu_read_int_source(uint8_t * int_source);
 uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
 #endif
 
+
+uint32_t mpu_read_magnetometer(uint8_t reg, uint8_t * p_data, uint32_t length);
+uint32_t mpu_magnetometer_start(uint8_t reg, uint8_t mode);
+
 #endif /* APP_MPU_H__ */
 
 /**

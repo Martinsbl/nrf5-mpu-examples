@@ -28,6 +28,7 @@
 #define MPU_TWI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
 #define MPU_TWI_TIMEOUT 		10000 
 #define MPU_ADDRESS     		0x68 
+#define MPU_MAGN_ADDRESS        0x0C
 
 
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
@@ -70,6 +71,7 @@ static void nrf_drv_mpu_twi_event_handler(nrf_drv_twi_evt_t const * p_event, voi
 }
 
 
+
 /**
  * @brief TWI initialization.
  * Just the usual way. Nothing special here
@@ -82,7 +84,7 @@ uint32_t nrf_drv_mpu_init(void)
        .scl                = MPU_TWI_SCL_PIN,
        .sda                = MPU_TWI_SDA_PIN,
        .frequency          = NRF_TWI_FREQ_400K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH
+       .interrupt_priority = APP_IRQ_PRIORITY_HIGHEST
     };
     
     err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, nrf_drv_mpu_twi_event_handler, NULL);
@@ -177,6 +179,48 @@ uint32_t mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
     return err_code;
 }
 
+
+uint32_t mpu_read_magnetometer_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
+{
+    uint32_t err_code;
+    uint32_t timeout = MPU_TWI_TIMEOUT;
+
+    err_code = nrf_drv_twi_tx(&m_twi_instance, MPU_MAGN_ADDRESS, &reg, 1, false);
+    if(err_code != NRF_SUCCESS) return err_code;
+
+    while((!twi_tx_done) && --timeout);
+    if(!timeout) return NRF_ERROR_TIMEOUT;
+    twi_tx_done = false;
+
+    err_code = nrf_drv_twi_rx(&m_twi_instance, MPU_MAGN_ADDRESS, p_data, length);
+    if(err_code != NRF_SUCCESS) return err_code;
+
+    timeout = MPU_TWI_TIMEOUT;
+    while((!twi_rx_done) && --timeout);
+    if(!timeout) return NRF_ERROR_TIMEOUT;
+    twi_rx_done = false;
+
+    return err_code;
+}
+
+
+uint32_t mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
+{
+    uint32_t err_code;
+    uint32_t timeout = MPU_TWI_TIMEOUT;
+
+    uint8_t packet[2] = {reg, data};
+
+    err_code = nrf_drv_twi_tx(&m_twi_instance, MPU_MAGN_ADDRESS, packet, 2, false);
+    if(err_code != NRF_SUCCESS) return err_code;
+
+    while((!twi_tx_done) && --timeout);
+    if(!timeout) return NRF_ERROR_TIMEOUT;
+
+    twi_tx_done = false;
+
+    return err_code;
+}
 
 /**
   @}

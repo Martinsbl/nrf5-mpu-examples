@@ -29,6 +29,7 @@ uint32_t mpu_int_cfg_pin(mpu_int_pin_cfg_t *cfg)
     uint8_t *data;
     data = (uint8_t*)cfg;
     return mpu_write_register(MPU_REG_INT_PIN_CFG, *data);
+    
 }
 
 
@@ -122,6 +123,17 @@ uint32_t mpu_read_int_source(uint8_t * int_source)
     return mpu_read_registers(MPU_REG_INT_STATUS, int_source, 1);
 }
 
+
+uint32_t mpu_read_magnetometer(uint8_t reg, uint8_t * p_data, uint32_t length)
+{
+    
+    return mpu_read_magnetometer_registers(reg, p_data, length);
+}
+
+uint32_t mpu_magnetometer_start(uint8_t reg, uint8_t mode)
+{
+    return mpu_write_magnetometer_register(reg, mode);
+}
 
 
 // Function does not work on MPU60x0 and MPU9255
