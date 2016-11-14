@@ -87,10 +87,12 @@ void mpu_setup(void)
     bypass_config.i2c_bypass_en = 1;
     ret_code = mpu_int_cfg_pin(&bypass_config); // Configure pin behaviour
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
-    ret_code = mpu_magnetometer_start(0x0B, 1);
-    APP_ERROR_CHECK(ret_code); // Check for errors in return value
-    nrf_delay_ms(100);
-    ret_code = mpu_magnetometer_start(0x0A, 6);
+
+	// Enable magnetometer
+	mpu_magn_config_t magnetometer_config;
+	magnetometer_config.mode = CONTINUOUS_MEASUREMENT_100Hz_MODE;
+	magnetometer_config.resolution = OUTPUT_RESOLUTION_16bit;
+    ret_code = mpu_magnetometer_start(&magnetometer_config);
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
 }
 
@@ -108,31 +110,28 @@ int main(void)
        
     
     accel_values_t acc_values;
+	magn_values_t magn_values;
     uint32_t sample_number = 0;
     
-    const uint8_t MAG_DATA_SIZE = 0x13;
+    const uint8_t MAG_DATA_SIZE = 10;
     uint8_t magn_data[MAG_DATA_SIZE];
-    memset(magn_data, 0, 0x12);
+    memset(magn_data, 0, MAG_DATA_SIZE);
     while(1)
     {
         // Read accelerometer sensor values
         err_code = mpu_read_accel(&acc_values);
         APP_ERROR_CHECK(err_code);
         // Clear terminal and print values
-        printf("\033[3;1HSample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d\r\n", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
+        printf("\033[3;1HAccel Sample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d\r\n", ++sample_number, acc_values.x, acc_values.y, acc_values.z);
         
-		nrf_gpio_pin_toggle(LED_1);
-        
-        err_code = mpu_read_magnetometer(0x00, magn_data, 10);
-        for (int i=0; i<MAG_DATA_SIZE; i++)
-        {
-            printf("Reg %#02x: %#02x\n\r", i, magn_data[i]);
-            nrf_delay_ms(10);
-        }
-        
-        
-        
-        nrf_delay_ms(1000);
+        // Read and print magnetometer sensor values
+        err_code = mpu_read_magnetometer(&magn_values, NULL);
+		APP_ERROR_CHECK(err_code);
+        printf("\n\rMagno Sample # %d\r\nX: %06d\r\nY: %06d\r\nZ: %06d\r\n", sample_number, magn_values.x, magn_values.y, magn_values.z);
+ 
+		
+		nrf_gpio_pin_toggle(LED_1);		
+        nrf_delay_ms(200);
     }
 }
 

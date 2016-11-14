@@ -28,7 +28,7 @@
 #define MPU_TWI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
 #define MPU_TWI_TIMEOUT 		10000 
 #define MPU_ADDRESS     		0x68 
-#define MPU_MAGN_ADDRESS        0x0C
+#define MPU_AK89XX_MAGN_ADDRESS        0x0C
 
 
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
@@ -185,14 +185,14 @@ uint32_t mpu_read_magnetometer_registers(uint8_t reg, uint8_t * p_data, uint32_t
     uint32_t err_code;
     uint32_t timeout = MPU_TWI_TIMEOUT;
 
-    err_code = nrf_drv_twi_tx(&m_twi_instance, MPU_MAGN_ADDRESS, &reg, 1, false);
+    err_code = nrf_drv_twi_tx(&m_twi_instance, MPU_AK89XX_MAGN_ADDRESS, &reg, 1, false);
     if(err_code != NRF_SUCCESS) return err_code;
 
     while((!twi_tx_done) && --timeout);
     if(!timeout) return NRF_ERROR_TIMEOUT;
     twi_tx_done = false;
 
-    err_code = nrf_drv_twi_rx(&m_twi_instance, MPU_MAGN_ADDRESS, p_data, length);
+    err_code = nrf_drv_twi_rx(&m_twi_instance, MPU_AK89XX_MAGN_ADDRESS, p_data, length);
     if(err_code != NRF_SUCCESS) return err_code;
 
     timeout = MPU_TWI_TIMEOUT;
@@ -211,7 +211,7 @@ uint32_t mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
 
     uint8_t packet[2] = {reg, data};
 
-    err_code = nrf_drv_twi_tx(&m_twi_instance, MPU_MAGN_ADDRESS, packet, 2, false);
+    err_code = nrf_drv_twi_tx(&m_twi_instance, MPU_AK89XX_MAGN_ADDRESS, packet, 2, false);
     if(err_code != NRF_SUCCESS) return err_code;
 
     while((!twi_tx_done) && --timeout);

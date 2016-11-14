@@ -16,9 +16,11 @@
 	#define MPU_MG_PR_LSB_FF_THR    1
 #elif defined(MPU9150)
     #include "mpu9150_register_map.h"
+	#include "mpu_ak89xx_magnetometer_register_map.h" // MPU9150 Includes AK8979C Magnetometer
 	#define MPU_MG_PR_LSB_FF_THR    32
 #elif defined(MPU9255)
     #include "mpu9255_register_map.h"
+	#include "mpu_ak89xx_magnetometer_register_map.h" // MPU9255 Includes AK8963 Magnetometer
 	#define MPU_MG_PR_LSB_FF_THR    4
 #else 
     #error "No MPU defined. Please define MPU in Target Options C/C++ Defines"
@@ -337,8 +339,84 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
 #endif
 
 
-uint32_t mpu_read_magnetometer(uint8_t reg, uint8_t * p_data, uint32_t length);
-uint32_t mpu_magnetometer_start(uint8_t reg, uint8_t mode);
+/*********************************************************************************************************************
+ * FUNCTIONS FOR MAGNETOMETER.
+ * MPU9150 has an AK8975C and MPU9255 an AK8963 internal magnetometer. Their register maps
+ * are similar, but AK8963 has adjustable resoultion (14 and 16 bits) while AK8975C has 13 bit resolution fixed. 
+ */
+
+
+#if defined(MPU9150) || defined(MPU9255)
+
+/**@brief Enum defining possible magnetometer operating modes */
+enum magn_op_mode {
+	POWER_DOWN_MODE = 0,   				// Power to almost all internal circuits is turned off.
+	SINGLE_MEASUREMENT_MODE,       		// Sensor is measured, and after sensor measurement and signal processing is finished, measurement data is stored to measurement data registers (HXL to HZH), then AK8963 transits to power-down mode automatically.
+	CONTINUOUS_MEASUREMENT_8Hz_MODE,      //  Sensor is measured periodically at 8Hz
+	EXTERNAL_TRIGGER_MODE = 4,       	// When external trigger measurement mode is set, AK89xx waits for trigger input. When a pulse is input from TRG pin, sensor measurement is started on the rising edge of TRG pin.
+	CONTINUOUS_MEASUREMENT_100Hz_MODE = 6,  //  Sensor is measured periodically at 100Hz
+	SELF_TEST_MODE = 8,					// Self-test mode is used to check if the sensor is working normally
+	FUSE_ROM_ACCESS_MODE = 0xFF			// Fuse ROM access mode is used to read Fuse ROM data. Sensitivity adjustment data for each axis is stored in fuse ROM.
+};
+
+/**@brief Enum defining possible output bit resolutions for MPU9255 */
+#if defined(MPU9255)
+enum magn_resolution {
+	OUTPUT_RESOLUTION_14bit = 0,
+	OUTPUT_RESOLUTION_16bit
+};
+#endif
+
+
+typedef struct
+{
+    int16_t z;
+    int16_t y;
+    int16_t x;
+}magn_values_t;
+
+/**@brief Configuration structure used to set magnetometer operation mode
+ * (and bit resolution for MPU9255).
+ */
+typedef struct
+{
+	uint8_t mode : 4;  
+#if defined(MPU9255)
+	uint8_t resolution : 1; // 0 = 14 but, 1 = 16 bit output
+#endif
+}mpu_magn_config_t;
+
+
+/**@brief Structure to hold data read from MPU_AK89XX_REG_ST2 after reading sensor values.
+ */
+typedef struct
+{
+	uint8_t 			: 3;  
+	uint8_t overflow 	: 1; //  single measurement mode, continuous measurement mode, external trigger measurement mode and self-test mode, magnetic sensor may overflow even though measurement data regiseter is not saturated. 
+	uint8_t res_mirror 	: 1; // Output bit setting (mirror) 
+}mpu_magn_read_status_t;
+
+
+/**@brief Function for enabling and starting the magnetometer
+ *
+ * @param[in]   mpu_magn_config_t 	Magnetometer config struct
+ * @retval      uint32_t        	Error code
+ */
+uint32_t mpu_magnetometer_start(mpu_magn_config_t * p_magnetometer_conf);
+
+
+/**@brief Function for reading out magnetometer values
+ *
+ * @param[in]   magn_values_t *				Magnetometer values struct
+ * @param[in]   mpu_magn_read_status_t *	Value of status register 2 (MPU_AK89XX_REG_ST2) after magnetometer data is read. NULL can be passed as argument if status is not needed
+ * @retval      uint32_t     				Error code
+ */
+uint32_t mpu_read_magnetometer(magn_values_t * p_magnetometer_values, mpu_magn_read_status_t * p_read_status);
+
+// Test function for development purposes
+uint32_t mpu_read_magnetometer_test(uint8_t reg, uint8_t * registers, uint8_t len);
+
+#endif
 
 #endif /* APP_MPU_H__ */
 
