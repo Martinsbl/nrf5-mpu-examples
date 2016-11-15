@@ -179,6 +179,10 @@ uint32_t nrf_drv_mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t leng
     return err_code;
 }
 
+
+#if (defined(MPU9150) || defined(MPU9255)) && (TWI_COUNT >= 1) // Magnetometer only works with TWI so check if TWI is enabled
+
+
 uint32_t nrf_drv_mpu_read_magnetometer_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     uint32_t err_code;
@@ -220,6 +224,8 @@ uint32_t nrf_drv_mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
 
     return err_code;
 }
+
+#endif // (defined(MPU9150) || defined(MPU9255)) && (TWI_COUNT >= 1) // Magnetometer only works with TWI so check if TWI is enabled
 
 
 /**

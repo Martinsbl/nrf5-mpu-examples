@@ -25,6 +25,8 @@
     #error "No MPU defined. Please define MPU in Target Options C/C++ Defines"
 #endif
 
+#define MPU_MPU_BASE_NUM    		0x4000
+#define MPU_BAD_PARAMETER       	(MPU_MPU_BASE_NUM + 0) // An invalid paramameter has been passed to function.
 
 
 /**@brief Enum defining Accelerometer's Full Scale range posibillities in Gs. */

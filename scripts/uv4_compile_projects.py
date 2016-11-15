@@ -13,7 +13,7 @@ compile_errors = 0
 for subdir, dirs, files in os.walk(project_rootdir):
     for file in files:
         complete_file_path = os.path.join(subdir, file)
-        if(complete_file_path.endswith(".uvprojx")) and ("nrf5-ble-uart-mpu-data-ready-interrupts" in complete_file_path) :
+        if(complete_file_path.endswith(".uvprojx")):
             if "pca10040" in complete_file_path:
                 logfile = file + "_nrf52"
             elif "pca10028" in complete_file_path:
@@ -34,7 +34,7 @@ for subdir, dirs, files in os.walk(project_rootdir):
 					print(line)
 					
             if compile_error is True:
-                print("Failed compiling  : " + complete_file_path)
+                print("FAILED COMPILING : " + complete_file_path)
                 compile_errors = compile_errors + 1
             else: 
                 print("Success compiling : " + complete_file_path)

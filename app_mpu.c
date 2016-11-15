@@ -132,10 +132,10 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
     uint8_t threshold = (uint8_t)(mg/MPU_MG_PR_LSB_FF_THR);
     if(threshold > 255) return MPU_BAD_PARAMETER;
 
-    err_code = mpu_write_register(MPU_REG_FF_THR, threshold);
+    err_code = nrf_drv_mpu_write_single_register(MPU_REG_FF_THR, threshold);
     if(err_code != NRF_SUCCESS) return err_code;
 
-    return mpu_write_register(MPU_REG_FF_DUR, duration);
+    return nrf_drv_mpu_write_single_register(MPU_REG_FF_DUR, duration);
 }
 #endif // defined(MPU9150)
 
