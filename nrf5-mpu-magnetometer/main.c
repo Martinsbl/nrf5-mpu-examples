@@ -12,7 +12,7 @@
 #include "nrf_delay.h"
 #include "app_mpu.h"
 
-
+#include "math.h"
 
 /*UART buffer size. */
 #define UART_TX_BUF_SIZE 256
@@ -87,10 +87,11 @@ void mpu_setup(void)
 	// Enable magnetometer
 	mpu_magn_config_t magnetometer_config;
 	magnetometer_config.mode = CONTINUOUS_MEASUREMENT_100Hz_MODE;
-	magnetometer_config.resolution = OUTPUT_RESOLUTION_16bit;
     ret_code = mpu_magnetometer_init(&magnetometer_config);
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
 }
+
+
 
 /**
  * @brief Function for main application entry.

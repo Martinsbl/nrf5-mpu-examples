@@ -30,7 +30,7 @@ for subdir, dirs, files in os.walk(project_rootdir):
                 
 				if "0 Error(s), 0 Warning(s)" in line:
 					compile_error = False
-				elif ("rror" in line) or ("arning" in line):
+				elif (("rror" in line) and ("app_error" not in line)) or ("arning" in line):
 					print(line)
 					
             if compile_error is True:
