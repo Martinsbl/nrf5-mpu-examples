@@ -83,16 +83,12 @@ void mpu_setup(void)
     ret_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(ret_code); // Check for errors in return value 
     
-    mpu_int_pin_cfg_t bypass_config;
-    bypass_config.i2c_bypass_en = 1;
-    ret_code = mpu_int_cfg_pin(&bypass_config); // Configure pin behaviour
-    APP_ERROR_CHECK(ret_code); // Check for errors in return value
 
 	// Enable magnetometer
 	mpu_magn_config_t magnetometer_config;
 	magnetometer_config.mode = CONTINUOUS_MEASUREMENT_100Hz_MODE;
 	magnetometer_config.resolution = OUTPUT_RESOLUTION_16bit;
-    ret_code = mpu_magnetometer_start(&magnetometer_config);
+    ret_code = mpu_magnetometer_init(&magnetometer_config);
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
 }
 

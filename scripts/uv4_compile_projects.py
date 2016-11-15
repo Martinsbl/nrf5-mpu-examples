@@ -4,7 +4,7 @@ from subprocess import call
 
 project_rootdir = "C:\\Kode\\Nordic\\SDK_11\\examples\\nrf5-mpu-examples\\"
 keil_dir = "C:\\Keil_v5\\UV4\\"
-logfile_dir = "C:\\Kode\\Nordic\\SDK_11\\examples\\mpu-test\\log_files\\"
+logfile_dir = project_rootdir + "log_files\\"
 
 test_runs = 0
 compile_successes = 0
