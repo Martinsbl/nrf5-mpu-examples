@@ -25,10 +25,10 @@
 #endif
 
 
-#define MPU_TWI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
-#define MPU_TWI_TIMEOUT 		10000 
-#define MPU_ADDRESS     		0x68 
-#define MPU_AK89XX_MAGN_ADDRESS        0x0C
+#define MPU_TWI_BUFFER_SIZE     	14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
+#define MPU_TWI_TIMEOUT 			10000 
+#define MPU_ADDRESS     			0x68 
+#define MPU_AK89XX_MAGN_ADDRESS     0x0C
 
 
 static const nrf_drv_twi_t m_twi_instance = NRF_DRV_TWI_INSTANCE(0);
@@ -101,16 +101,16 @@ uint32_t nrf_drv_mpu_init(void)
 
 
 
-// The new SDK 11 TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
+// The TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
 // Hence we need to merge the MPU register address with the buffer and then transmit all as one transmission
-static void buffer_merger(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
+static void merge_register_and_data(uint8_t * new_buffer, uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     new_buffer[0] = reg;
     memcpy((new_buffer + 1), p_data, length);
 }
 
 
-uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
+uint32_t nrf_drv_mpu_write_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     // This burst write function is not optimal and needs improvement.
     // The new SDK 11 TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
@@ -118,7 +118,7 @@ uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
     uint32_t timeout = MPU_TWI_TIMEOUT;
 
     // Merging MPU register address and p_data into one buffer.
-    buffer_merger(twi_tx_buffer, reg, p_data, length);
+    merge_register_and_data(twi_tx_buffer, reg, p_data, length);
 
     // Setting up transfer
     nrf_drv_twi_xfer_desc_t xfer_desc;
@@ -137,7 +137,7 @@ uint32_t mpu_write_burst(uint8_t reg, uint8_t * p_data, uint32_t length)
     return err_code;
 }
 
-uint32_t mpu_write_register(uint8_t reg, uint8_t data)
+uint32_t nrf_drv_mpu_write_single_register(uint8_t reg, uint8_t data)
 {
     uint32_t err_code;
     uint32_t timeout = MPU_TWI_TIMEOUT;
@@ -156,7 +156,7 @@ uint32_t mpu_write_register(uint8_t reg, uint8_t data)
 }
 
 
-uint32_t mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
+uint32_t nrf_drv_mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     uint32_t err_code;
     uint32_t timeout = MPU_TWI_TIMEOUT;
@@ -179,8 +179,7 @@ uint32_t mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
     return err_code;
 }
 
-
-uint32_t mpu_read_magnetometer_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
+uint32_t nrf_drv_mpu_read_magnetometer_registers(uint8_t reg, uint8_t * p_data, uint32_t length)
 {
     uint32_t err_code;
     uint32_t timeout = MPU_TWI_TIMEOUT;
@@ -204,7 +203,7 @@ uint32_t mpu_read_magnetometer_registers(uint8_t reg, uint8_t * p_data, uint32_t
 }
 
 
-uint32_t mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
+uint32_t nrf_drv_mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
 {
     uint32_t err_code;
     uint32_t timeout = MPU_TWI_TIMEOUT;
@@ -221,6 +220,7 @@ uint32_t mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
 
     return err_code;
 }
+
 
 /**
   @}
