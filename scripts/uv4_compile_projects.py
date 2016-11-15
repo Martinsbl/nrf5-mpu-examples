@@ -4,7 +4,7 @@ from subprocess import call
 
 project_rootdir = "C:\\Kode\\Nordic\\SDK_11\\examples\\nrf5-mpu-examples\\"
 keil_dir = "C:\\Keil_v5\\UV4\\"
-logfile_dir = "C:\\Kode\\Nordic\\SDK_11\\examples\\mpu-test\\log_files\\"
+logfile_dir = project_rootdir + "log_files\\"
 
 test_runs = 0
 compile_successes = 0
@@ -13,7 +13,7 @@ compile_errors = 0
 for subdir, dirs, files in os.walk(project_rootdir):
     for file in files:
         complete_file_path = os.path.join(subdir, file)
-        if(complete_file_path.endswith(".uvprojx")) and ("nrf5-ble-uart-mpu-data-ready-interrupts" in complete_file_path) :
+        if(complete_file_path.endswith(".uvprojx")):
             if "pca10040" in complete_file_path:
                 logfile = file + "_nrf52"
             elif "pca10028" in complete_file_path:
@@ -30,11 +30,11 @@ for subdir, dirs, files in os.walk(project_rootdir):
                 
 				if "0 Error(s), 0 Warning(s)" in line:
 					compile_error = False
-				elif ("rror" in line) or ("arning" in line):
+				elif (("rror" in line) and ("app_error" not in line)) or ("arning" in line):
 					print(line)
 					
             if compile_error is True:
-                print("Failed compiling  : " + complete_file_path)
+                print("FAILED COMPILING : " + complete_file_path)
                 compile_errors = compile_errors + 1
             else: 
                 print("Success compiling : " + complete_file_path)

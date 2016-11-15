@@ -1,15 +1,10 @@
-# Free fall example for nRF5x and MPU9150
-This example will not work on MPU60x0 and MPU9255 as they don't have the same free fall detection hardware as the MPU9150. Nor will it work with SPI interface as MPU9150 only supports the TWI interface. 
+# Magnetometer example for nRF5x and MPU9255 and MPU9150
+This example will not work on MPU60x0 as it does not have a magnetometer. Nor will it work with SPI interface as there is no way of controlling the magnetometer with SPI.
 
-# Tested on:
-* MPU9150
-* nRF51 DK (PCA10028)
-* nRF52 DK (PCA10040)
-* SDK 11.0.0
 
 # How to use:
 * All examples are made for SDK 11.0.0. Other SDKs will not work. Download zip file and extract to "sdk_11.0.0_folder\examples"
-* Define your MPU9150 in Keil's "Target Options -> C/C++".
+* Define your MPU (MPU9150 or MPU9255) in Keil's "Target Options -> C/C++".
 * Remember to define the correct TWI pins and interrupt pins. The defines are located in main.c.
 
 # Disclaimer
