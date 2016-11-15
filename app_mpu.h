@@ -10,26 +10,21 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "nrf_drv_config.h"
 
 #if defined(MPU60x0)
     #include "mpu60x0_register_map.h"
 	#define MPU_MG_PR_LSB_FF_THR    1
 #elif defined(MPU9150)
     #include "mpu9150_register_map.h"
-	#include "mpu_ak89xx_magnetometer_register_map.h" // MPU9150 Includes AK8979C Magnetometer
 	#define MPU_MG_PR_LSB_FF_THR    32
 #elif defined(MPU9255)
     #include "mpu9255_register_map.h"
-	#include "mpu_ak89xx_magnetometer_register_map.h" // MPU9255 Includes AK8963 Magnetometer
 	#define MPU_MG_PR_LSB_FF_THR    4
 #else 
     #error "No MPU defined. Please define MPU in Target Options C/C++ Defines"
 #endif
 
-#define MPU_MPU_BASE_NUM    	0x4000
-#define MPU_SUCCESS             (MPU_MPU_BASE_NUM + 0)
-#define MPU_BAD_PARAMETER       (MPU_MPU_BASE_NUM + 1)
-#define MPU_TIMEOUT	        	(MPU_MPU_BASE_NUM + 2)
 
 
 /**@brief Enum defining Accelerometer's Full Scale range posibillities in Gs. */
@@ -346,7 +341,7 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
  */
 
 
-#if defined(MPU9150) || defined(MPU9255)
+#if (defined(MPU9150) || defined(MPU9255)) && (TWI_COUNT >= 1) // Magnetometer only works with TWI so check if TWI is enabled
 
 /**@brief Enum defining possible magnetometer operating modes */
 enum magn_op_mode {
@@ -402,7 +397,7 @@ typedef struct
  * @param[in]   mpu_magn_config_t 	Magnetometer config struct
  * @retval      uint32_t        	Error code
  */
-uint32_t mpu_magnetometer_start(mpu_magn_config_t * p_magnetometer_conf);
+uint32_t mpu_magnetometer_init(mpu_magn_config_t * p_magnetometer_conf);
 
 
 /**@brief Function for reading out magnetometer values
