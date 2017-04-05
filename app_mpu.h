@@ -10,7 +10,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "nrf_drv_config.h"
+#include "nrf52832_peripherals.h"
 
 #if defined(MPU60x0)
     #include "mpu60x0_register_map.h"
