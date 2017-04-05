@@ -1,19 +1,23 @@
 # Examples for nRF51 & nRF52 and MPUxxxx
-MPU examples meant to be used with Nordic's nRF51 or nRF52 ICs and SDK 11.0.0. 
+MPU examples meant to be used with Nordic's nRF52832 and nRF52840 ICs and SDK 13.0.0. 
 This repository includes MPU hardware drivers for SPI and TWI. The drivers are located in nrf_drv_mpu_spi.c and nrf_drv_mpu_twi.c respectively. A library is running on top of the drivers. The library is located in app_mpu.h/c. By using the library the hardware driver is transparent to the application and it is easy to switch between SPI and TWI. Each of the examples, except the nrf52 easydma examples, have project files to use with bot SPI and TWI. For example: "nrf5-mpu-simple\pca10028\arm5_no_packs\spi\nrf5-mpu-simple.uvprojx". <b>Note that MPU9150 does not support SPI</b>.
+
+<b>!WARNING!</b>
+As of SDK 13 the BLE examples no longer compile to a size smaller than the code size limitation of Keil at 32kB with optimization level -O0 and logger funtionallity turned on. This makes it harder to debug the code and without the logger module nothing will get printed to the UART or RTT.
 
 # Tested on:
 * MPU9255
 * MPU9150
-* nRF51 DK (PCA10028)
 * nRF52 DK (PCA10040)
-* SDK 11.0.0
-* SoftDevice S132 V2.0.0 and S130 V2.0.0.
-* <b>Not tested on PCA10036 and MPU60x0</b>
+* SDK 13.0.0
+* SoftDevice S132 V4.0.2
+* <b>Not tested on MPU60x0</b>
 
 # How to use:
-* All examples are made for SDK 11.0.0. Other SDKs will not work. Download the zip file and extract to "sdk_11.0.0_folder\examples". Or just clone it to the same folder. 
+* All examples are made for SDK 13.0.0. Other SDKs will not work. Download the zip file and extract to "sdk_13.0.0_folder\examples". Or just clone it to the same folder. 
 * Define your MPU in Keil's "Target Options -> C/C++". Use define "MPU9255", "MPU9150", or "MPU60x0".
+* Decide whether to use TWI or SPI in Keil's "Target Options -> C/C++" by using defines MPU_USES_SPI or MPU_USES_TWI.
+* Select SPI_ENABLED <b>or</b> TWI_ENABLED in sdk_config.h dependent on your choise above. 
 * Remember to define the correct TWI, SPI, and/or interrupt pins. The SPI and TWI pin defines are located in the nrf_drv_mpu_xxi.c files. The GPIOTE interrupt pin is defined in main.c.
 
 # Disclaimer
