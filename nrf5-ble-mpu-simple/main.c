@@ -96,14 +96,6 @@ bool start_accel_update_flag = false;
 APP_TIMER_DEF(m_timer_accel_update_id);
 #define TIMER_INTERVAL_ACCEL_UPDATE     APP_TIMER_TICKS(1000) // 1000 ms intervals
 
-/* YOUR_JOB: Declare all services structure your application is using
-   static ble_xx_service_t                     m_xxs;
-   static ble_yy_service_t                     m_yys;
- */
-
-// YOUR_JOB: Use UUIDs for service(s) used in your application.
-static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
-
 static void advertising_start(bool erase_bonds);
 
 /**@brief Callback function for asserts in the SoftDevice.
@@ -236,10 +228,9 @@ static void timers_init(void)
 {
 
     // Initialize timer module.
-
     uint32_t err_code;
-		err_code = app_timer_init();
-		APP_ERROR_CHECK(err_code);
+    err_code = app_timer_init();
+    APP_ERROR_CHECK(err_code);
     err_code = app_timer_create(&m_timer_accel_update_id, APP_TIMER_MODE_REPEATED, timer_accel_update_handler);
     APP_ERROR_CHECK(err_code);
 }
@@ -263,9 +254,6 @@ static void gap_params_init(void)
                                           strlen(DEVICE_NAME));
     APP_ERROR_CHECK(err_code);
 
-    /* YOUR_JOB: Use an appearance value matching the application's use case.
-       err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_);
-       APP_ERROR_CHECK(err_code); */
 
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
 
@@ -286,30 +274,7 @@ static void gatt_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-/**@brief Function for handling the YYY Service events.
- * YOUR_JOB implement a service handler function depending on the event the service you are using can generate
- *
- * @details This function will be called for all YY Service events which are passed to
- *          the application.
- *
- * @param[in]   p_yy_service   YY Service structure.
- * @param[in]   p_evt          Event received from the YY Service.
- *
- *
-   static void on_yys_evt(ble_yy_service_t     * p_yy_service,
-                       ble_yy_service_evt_t * p_evt)
-   {
-    switch (p_evt->evt_type)
-    {
-        case BLE_YY_NAME_EVT_WRITE:
-            APPL_LOG("[APPL]: charact written with value %s. \r\n", p_evt->params.char_xx.value.p_str);
-            break;
 
-        default:
-            // No implementation needed.
-            break;
-    }
-   }*/
 
 /**@brief Function for initializing services that will be used by the application.
  */
@@ -378,10 +343,6 @@ static void conn_params_init(void)
  */
 static void application_timers_start(void)
 {
-    /* YOUR_JOB: Start your timers. below is an example of how to start a timer.
-       uint32_t err_code;
-       err_code = app_timer_start(m_app_timer_id, TIMER_INTERVAL, NULL);
-       APP_ERROR_CHECK(err_code); */
 
 }
 
@@ -712,8 +673,6 @@ static void advertising_init(void)
     advdata.name_type               = BLE_ADVDATA_FULL_NAME;
     advdata.include_appearance      = true;
     advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
-    advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
     memset(&options, 0, sizeof(options));
     options.ble_adv_fast_enabled  = true;
@@ -743,13 +702,6 @@ static void buttons_leds_init(bool * p_erase_bonds)
     *p_erase_bonds = (startup_event == BSP_EVENT_CLEAR_BONDING_DATA);
 }
 
-/**@brief Function for initializing the nrf log module.
- */
-static void log_init(void)
-{
-    ret_code_t err_code = NRF_LOG_INIT(NULL);
-    APP_ERROR_CHECK(err_code);
-}
 
 /**@brief Function for the Power manager.
  */
@@ -761,58 +713,6 @@ static void power_manage(void)
 }
 
 
-
-
-/**
- * @brief UART events handler.
- */
-static void uart_events_handler(app_uart_evt_t * p_event)
-{
-    switch (p_event->evt_type)
-    {
-        case APP_UART_COMMUNICATION_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_communication);
-            break;
-
-        case APP_UART_FIFO_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_code);
-            break;
-
-        default:
-            break;
-    }
-}
-
-
-
-/**
- * @brief UART initialization.
- * Just the usual way. Nothing special here
- */
-static void uart_config(void)
-{
-    uint32_t                     err_code;
-    const app_uart_comm_params_t comm_params =
-    {
-        RX_PIN_NUMBER,
-        TX_PIN_NUMBER,
-        RTS_PIN_NUMBER,
-        CTS_PIN_NUMBER,
-        APP_UART_FLOW_CONTROL_DISABLED,
-        false,
-        UART_BAUDRATE_BAUDRATE_Baud115200
-    };
-
-    APP_UART_FIFO_INIT(&comm_params,
-                       UART_RX_BUF_SIZE,
-                       UART_TX_BUF_SIZE,
-                       uart_events_handler,
-                       APP_IRQ_PRIORITY_LOW,
-                       err_code);
-
-    APP_ERROR_CHECK(err_code);
-
-}
 
 void mpu_setup(void)
 {
@@ -842,7 +742,6 @@ static void advertising_start(bool erase_bonds)
     else
     {
         ret_code_t err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
-
         APP_ERROR_CHECK(err_code);
     }
 }
@@ -851,10 +750,8 @@ static void advertising_start(bool erase_bonds)
  */
 int main(void)
 {
- //   uint32_t err_code;
     bool     erase_bonds;
-		uart_config();
-    log_init();
+    NRF_LOG_INIT(NULL);
 
     timers_init();
     buttons_leds_init(&erase_bonds);
@@ -870,9 +767,10 @@ int main(void)
     mpu_setup();
 
     // Start execution.
-    NRF_LOG_INFO("Template started\r\n");
+    NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
+    NRF_LOG_INFO("MPU BLE simple example.\r\n");
     application_timers_start();
-		advertising_start(erase_bonds);
+    advertising_start(erase_bonds);
 
 		
     accel_values_t accel_values;
@@ -883,16 +781,16 @@ int main(void)
         if (NRF_LOG_PROCESS() == false)
         {
             power_manage();
-						if(start_accel_update_flag == true)
-						{
-							mpu_read_accel(&accel_values);
-                            NRF_LOG_INFO("\033[2J\033[;H");
-							NRF_LOG_INFO("Accel: %05d, %05d, %05d\r\n", accel_values.x, accel_values.y, accel_values.z);
-							NRF_LOG_INFO("Accel: %#02x, %#02x, %#02x, %#02x, %#02x, %#02x\r\n", (uint8_t)(accel_values.x >> 8), (uint8_t)accel_values.x, (uint8_t)(accel_values.y >> 8), (uint8_t)accel_values.y, (uint8_t)(accel_values.z >> 8), (uint8_t)accel_values.z);
-							ble_mpu_update(&m_mpu, &accel_values);
-							start_accel_update_flag = false;
-							nrf_gpio_pin_toggle(LED_4);
-						}
+            if(start_accel_update_flag == true)
+            {
+                mpu_read_accel(&accel_values);
+                NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
+                NRF_LOG_INFO("Accel: %05d, %05d, %05d\r\n", accel_values.x, accel_values.y, accel_values.z);
+                NRF_LOG_INFO("Accel: %#02x, %#02x, %#02x, %#02x, %#02x, %#02x\r\n", (uint8_t)(accel_values.x >> 8), (uint8_t)accel_values.x, (uint8_t)(accel_values.y >> 8), (uint8_t)accel_values.y, (uint8_t)(accel_values.z >> 8), (uint8_t)accel_values.z);
+                ble_mpu_update(&m_mpu, &accel_values);
+                start_accel_update_flag = false;
+                nrf_gpio_pin_toggle(LED_4);
+            }
         }
     }
 }
