@@ -11,7 +11,7 @@
 #include "nrf_gpio.h"
 #include "nrf_drv_mpu.h"
 #include "nrf_error.h"
-#include "nrf52832_peripherals.h"
+#include "nrf_peripherals.h"
 
 
 

@@ -10,7 +10,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "nrf52832_peripherals.h"
+
+#include "nrf_peripherals.h"
 
 #if defined(MPU60x0)
     #include "mpu60x0_register_map.h"
@@ -343,7 +344,7 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
  */
 
 
-#if (defined(MPU9150) || defined(MPU9255)) && (TWI_COUNT >= 1) // Magnetometer only works with TWI so check if TWI is enabled
+#if (defined(MPU9150) || defined(MPU9255)) && (MPU_USES_TWI) // Magnetometer only works with TWI so check if TWI is enabled
 
 /**@brief Enum defining possible magnetometer operating modes */
 enum magn_op_mode {
