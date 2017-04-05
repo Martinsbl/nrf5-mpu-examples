@@ -1,16 +1,19 @@
-# Examples for nRF51 & nRF52 and MPUxxxx
+# SDK 13 PORTING IS A WORK IN PROGRESS
+nrf5-ble-mpu-simple should now work.
+
+# Examples for nRF52 series and MPUxxxx
 MPU examples meant to be used with Nordic's nRF52832 and nRF52840 ICs and SDK 13.0.0. 
-This repository includes MPU hardware drivers for SPI and TWI. The drivers are located in nrf_drv_mpu_spi.c and nrf_drv_mpu_twi.c respectively. A library is running on top of the drivers. The library is located in app_mpu.h/c. By using the library the hardware driver is transparent to the application and it is easy to switch between SPI and TWI. Each of the examples, except the nrf52 easydma examples, have project files to use with bot SPI and TWI. For example: "nrf5-mpu-simple\pca10028\arm5_no_packs\spi\nrf5-mpu-simple.uvprojx". <b>Note that MPU9150 does not support SPI</b>.
+This repository includes MPU hardware drivers for SPI and TWI. The drivers are located in nrf_drv_mpu_spi.c and nrf_drv_mpu_twi.c respectively. A library is running on top of the drivers. The library is located in app_mpu.h/c. By using the library the hardware driver is transparent to the application and it is easy to switch between SPI and TWI. <b>Note that MPU9150 does not support SPI</b>.
 
 <b>!WARNING!</b>
 As of SDK 13 the BLE examples no longer compile to a size smaller than the code size limitation of Keil at 32kB with optimization level -O0 and logger funtionallity turned on. This makes it harder to debug the code and without the logger module nothing will get printed to the UART or RTT.
 
 # Tested on:
 * MPU9255
-* MPU9150
 * nRF52 DK (PCA10040)
+* nRF52 DK (PCA10056)
 * SDK 13.0.0
-* SoftDevice S132 V4.0.2
+* SoftDevice S132 V4.0.2 ans S140 v5.0.0-2.alpha
 * <b>Not tested on MPU60x0</b>
 
 # How to use:
