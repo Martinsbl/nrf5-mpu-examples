@@ -4,6 +4,9 @@
   * NO WARRANTY of ANY KIND is provided.
   */
 
+
+#if defined(MPU_USES_TWI) // Use TWI drivers
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -11,6 +14,7 @@
 #include "nrf_drv_mpu.h"
 #include "app_util_platform.h"
 #include "nrf_gpio.h"
+
 
 /* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
  * and therefore I have added a conditional statement defining different pins
@@ -223,6 +227,8 @@ uint32_t nrf_drv_mpu_write_magnetometer_register(uint8_t reg, uint8_t data)
 
 #endif // (defined(MPU9150) || defined(MPU9255)) && (TWI_COUNT >= 1) // Magnetometer only works with TWI so check if TWI is enabled
 
+
+#endif // Use TWI drivers
 
 /**
   @}

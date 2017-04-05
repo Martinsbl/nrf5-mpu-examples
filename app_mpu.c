@@ -147,7 +147,7 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
  * are similar, but AK8963 has adjustable resoultion (14 and 16 bits) while AK8975C has 13 bit resolution fixed. 
  */
 
-#if (defined(MPU9150) || defined(MPU9255)) && (TWI_COUNT >= 1) // Magnetometer only works with TWI so check if TWI is enabled
+#if (defined(MPU9150) || defined(MPU9255)) && (MPU_USES_TWI) // Magnetometer only works with TWI so check if TWI is enabled
 
 uint32_t mpu_magnetometer_init(mpu_magn_config_t * p_magnetometer_conf)
 {	
@@ -199,7 +199,7 @@ uint32_t mpu_read_magnetometer_test(uint8_t reg, uint8_t * registers, uint8_t le
     return nrf_drv_mpu_read_magnetometer_registers(reg, registers, len);
 }
 
-#endif // defined(MPU9150) || defined(MPU9255) && (TWI_COUNT >= 1) 
+#endif // (defined(MPU9150) || defined(MPU9255)) && (MPU_USES_TWI) 
 
 /**
   @}

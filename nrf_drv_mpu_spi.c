@@ -3,6 +3,8 @@
   * meant as a simple explanation and for inspiration.
   * NO WARRANTY of ANY KIND is provided.
   */
+  
+#if defined(MPU_USES_SPI) // Use SPI drivers
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -20,17 +22,10 @@
  * and therefore I have added a conditional statement defining different pins
  * for each board. This is only for my own convenience and might be subject to changes as I devleop. 
  */
-#if defined(BOARD_PCA10040)
 #define MPU_SPI_MISO_PIN    28 // MPU SDO. 'AD0' on MPU breakout board silk screen
 #define MPU_SPI_MOSI_PIN    4  // MPU SDI. 'SDA' on MPU breakout board silk screen
 #define MPU_SPI_SCL_PIN     3  // MPU SCLK. 'SCL' on MPU breakout board silk screen
 #define MPU_SPI_CS_PIN      29 // MPU nCS. 'NCS' on MPU breakout board silk screen
-#else // If PCA10028
-#define MPU_SPI_MISO_PIN    3 // MPU SDO. 'AD0' on MPU breakout board silk screen
-#define MPU_SPI_MOSI_PIN    2  // MPU SDI. 'SDA' on MPU breakout board silk screen
-#define MPU_SPI_SCL_PIN     1  // MPU SCLK. 'SCL' on MPU breakout board silk screen
-#define MPU_SPI_CS_PIN      4 // MPU nCS. 'NCS' on MPU breakout board silk screen
-#endif
 
 
 #define MPU_SPI_BUFFER_SIZE     14 // 14 byte buffers will suffice to read acceleromter, gyroscope and temperature data in one transmission.
@@ -47,7 +42,7 @@ uint8_t spi_tx_buffer[MPU_SPI_BUFFER_SIZE];
 uint8_t spi_rx_buffer[MPU_SPI_BUFFER_SIZE];
 
 
-void nrf_drv_mpu_spi_event_handler(const nrf_drv_spi_evt_t *evt)
+void nrf_drv_mpu_spi_event_handler(const nrf_drv_spi_evt_t *evt, void * p_context)
 {
     if(evt->type == NRF_DRV_SPI_EVENT_DONE)
     {
@@ -80,7 +75,7 @@ uint32_t nrf_drv_mpu_init(void)
         .bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST,         
     };
     
-    return nrf_drv_spi_init(&m_spi_instance, &spi_mpu_config, nrf_drv_mpu_spi_event_handler);  
+    return nrf_drv_spi_init(&m_spi_instance, &spi_mpu_config, nrf_drv_mpu_spi_event_handler, NULL);  
 }
 
 
@@ -167,7 +162,7 @@ uint32_t nrf_drv_mpu_read_registers(uint8_t reg, uint8_t * p_data, uint32_t leng
     return NRF_SUCCESS;
 }
 
-
+#endif // Use SPI drivers
 
 /**
   @}
