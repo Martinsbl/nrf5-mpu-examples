@@ -101,7 +101,7 @@ void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context
                         NRF_DRV_TWI_FLAG_RX_POSTINC             | // Increment address in buffer after each transfer
                         NRF_DRV_TWI_FLAG_REPEATED_XFER;           // Indicate that we are transfering numerous times
     
-    // Pass configurations and flags to TWIM driver. The TWIM is now and prepared, but actually started.
+    // Pass configurations and flags to TWIM driver. The TWIM is now on and prepared, but not actually started.
     uint32_t err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);
     APP_ERROR_CHECK(err_code);
 }
@@ -199,7 +199,7 @@ static void twi_transfer_start_timer_init()
                         NRF_DRV_TWI_FLAG_RX_POSTINC             | // Increment address in buffer after each transfer
                         NRF_DRV_TWI_FLAG_REPEATED_XFER;           // Indicate that we are transfering numerous times
     
-    // Pass configurations and flags to TWIM driver. The TWIM is now and prepared, but actually started.
+    // Pass configurations and flags to TWIM driver. The TWIM is now on and prepared, but not actually started.
     err_code = nrf_drv_twi_xfer(&m_twi_instance, &xfer, flags);
     APP_ERROR_CHECK(err_code);
     
