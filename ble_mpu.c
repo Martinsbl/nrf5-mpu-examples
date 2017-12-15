@@ -13,7 +13,7 @@
 #include "app_mpu.h"
 
 
-void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t * p_ble_evt)
+void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t const * p_ble_evt)
 {
     switch (p_ble_evt->header.evt_id)
     {

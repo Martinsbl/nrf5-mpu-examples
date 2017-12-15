@@ -31,7 +31,7 @@ typedef struct
  * @param[in]   p_mpu       mpu structure.
  * @param[in]   p_ble_evt  Event received from the BLE stack.
  */
-void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t * p_ble_evt);
+void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t const * p_ble_evt);
 
 /**@brief Function for initializing our new service.
  *
