@@ -17,22 +17,30 @@
 #include "nrf_drv_gpiote.h"
 #include "nrf_gpio.h"
 
-/*UART buffer sizes. */
-#define UART_TX_BUF_SIZE 256
-#define UART_RX_BUF_SIZE 1
+
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
+
+
+/**@brief Function for initializing the nrf log module.
+ */
+static void log_init(void)
+{
+    ret_code_t err_code = NRF_LOG_INIT(NULL);
+    APP_ERROR_CHECK(err_code);
+
+    NRF_LOG_DEFAULT_BACKENDS_INIT();
+}
+
 
 
 /* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
  * and therefore I have added a conditional statement defining different pins
  * for each board. This is only for my own convenience. 
  */
-#if defined(BOARD_PCA10040)
 #define MPU_TWI_SCL_PIN 3
 #define MPU_TWI_SDA_PIN 4
-#else // Pins for PCA10028
-#define MPU_TWI_SCL_PIN 1
-#define MPU_TWI_SDA_PIN 2
-#endif
 
 #define MPU_ADDRESS     		0x68 
 
@@ -106,72 +114,24 @@ void twi_transfer_counter_handler(nrf_timer_event_t event_type, void * p_context
     APP_ERROR_CHECK(err_code);
 }
 
-/**
- * @brief UART events handler. Not really necessary for this example
- */
-static void uart_events_handler(app_uart_evt_t * p_event)
-{
-    switch (p_event->evt_type)
-    {
-        case APP_UART_COMMUNICATION_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_communication);
-            break;
-
-        case APP_UART_FIFO_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_code);
-            break;
-
-        default:
-            break;
-    }
-}
-
-
-/**
- * @brief UART initialization.
- * Just the usual way. Nothing special here
- */
-static void uart_config(void)
-{
-    uint32_t                     err_code;
-    const app_uart_comm_params_t comm_params =
-    {
-        RX_PIN_NUMBER,
-        TX_PIN_NUMBER,
-        RTS_PIN_NUMBER,
-        CTS_PIN_NUMBER,
-        APP_UART_FLOW_CONTROL_DISABLED,
-        false,
-        UART_BAUDRATE_BAUDRATE_Baud115200
-    };
-
-    APP_UART_FIFO_INIT(&comm_params,
-                       UART_RX_BUF_SIZE,
-                       UART_TX_BUF_SIZE,
-                       uart_events_handler,
-                       APP_IRQ_PRIORITY_LOW,
-                       err_code);
-
-    APP_ERROR_CHECK(err_code);
-}
 
 
 /**
  * @brief MPU initialization.
  * Just the usual way. Nothing special here
  */
-void mpu_setup(void)
+void mpu_init(void)
 {
     ret_code_t ret_code;
     // Initiate MPU driver with TWI instance handler
-    ret_code = mpu_init();
+    ret_code = app_mpu_init();
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
-    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
+    app_mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
     p_mpu_config.smplrt_div = 19;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
-    ret_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
+    ret_code = app_mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(ret_code); // Check for errors in return value 
 }
 
@@ -222,7 +182,7 @@ static void twi_transfer_start_timer_init()
 
     // Initate ppi driver. Ignore error if driver is already initialized
     err_code = nrf_drv_ppi_init();
-    if((err_code != 0) && (err_code != MODULE_ALREADY_INITIALIZED))
+    if((err_code != 0) && (err_code != NRF_ERROR_MODULE_ALREADY_INITIALIZED))
     {
         APP_ERROR_CHECK(err_code);
     }
@@ -264,7 +224,7 @@ void twi_transfer_counter_init(void)
     nrf_ppi_channel_t ppi_channel_twi_transfer_count;
     
     // Set up counter with default configuration
-    nrf_drv_timer_config_t counter_config = NRF_DRV_TIMER_DEFAULT_CONFIG(1);
+    nrf_drv_timer_config_t counter_config = NRF_DRV_TIMER_DEFAULT_CONFIG;
     counter_config.mode = NRF_TIMER_MODE_COUNTER;
     
     // Initializing the counter counting the TWI transfers. Passing:
@@ -284,7 +244,7 @@ void twi_transfer_counter_init(void)
     
     // Initate ppi driver. Ignore error if driver is already initialized
     err_code = nrf_drv_ppi_init();
-    if((err_code != 0) && (err_code != MODULE_ALREADY_INITIALIZED))
+    if((err_code != 0) && (err_code != NRF_ERROR_MODULE_ALREADY_INITIALIZED))
     {
         APP_ERROR_CHECK(err_code);
     }
@@ -325,13 +285,17 @@ int main(void)
     // Configure some LEDs
     LEDS_CONFIGURE(LEDS_MASK);
     LEDS_OFF(LEDS_MASK);
-    // Configure UART
-    uart_config();
-    // Print welcome message
-    printf("\033[2J\033[;HMPU nRF52 EasyDMA using timers and drivers example. Compiled @ %s\r\n", __TIME__);
+    
+    // Initialize.
+    log_init();
+	NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
     
     // Setup the MPU
-    mpu_setup();
+    mpu_init();
+    
+    // Start execution.
+    NRF_LOG_INFO("\033[2J\033[;HMPU nRF52 EasyDMA using timers and drivers example. Compiled @ %s\r\n", __TIME__);
+    
     
     // Configure a timer to trigger TWI transfers between nRF52 and MPU
     twi_transfer_start_timer_init();   
@@ -346,41 +310,44 @@ int main(void)
     
     while(1)
     {
-        nrf_gpio_pin_set(LED_4); // Turn LED OFF when CPU is sleeping
-        while(twi_transfers_complete == false)
+        if(NRF_LOG_PROCESS() == false)
         {
-            // Make sure any pending events are cleared
-            __SEV();
-            __WFE();
-            // Enter System ON sleep mode
-            __WFE();           
-        }
-        nrf_gpio_pin_clear(LED_4); // Turn LED ON when CPU is working
-        
-        // Clear terminal
-        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * ++sample_nr);
-        
-        // THIS FOR LOOP ASSUMES THAT TWIM_RX_BUF_WIDTH IS 6 BYTES AND THAT ONLY ACCELEROMETER DATA IS SAMPLED
-        // IF A WIDER BUFFER IS USED TO SAMPLE TEMPERATURE AND GYROSCOPE AS WELL YOU SHOULD CHANGE THIS LOOP
-        // TO PRINT EVERYTHING
-        uint8_t *data;
-        // Itterate through entire RX buffer 
-        for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
-        {
-            // Temporarily store each sensor data set found in buffer in accelerometer structure variable
-            data = (uint8_t*)&acc_values;
-            // Itterate through and store all data in each sensor set
-            for(uint8_t i = 0; i<6; i++)
+            nrf_gpio_pin_set(LED_4); // Turn LED OFF when CPU is sleeping
+            while(twi_transfers_complete == false)
             {
-                *data = p_rx_buffer[j].buffer[5-i];
-                data++;
+                // Make sure any pending events are cleared
+                __SEV();
+                __WFE();
+                // Enter System ON sleep mode
+                __WFE();           
             }
-            // Print sensor data set
-            printf("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
-            nrf_delay_ms(1); // Small delay so not to overload the UART 
+            nrf_gpio_pin_clear(LED_4); // Turn LED ON when CPU is working
+            
+            // Clear terminal
+            NRF_LOG_RAW_INFO("\033[3;1HSample %d:\r\n", (TWIM_RX_BUF_LENGTH * ++sample_nr));
+            
+            // THIS FOR LOOP ASSUMES THAT TWIM_RX_BUF_WIDTH IS 6 BYTES AND THAT ONLY ACCELEROMETER DATA IS SAMPLED
+            // IF A WIDER BUFFER IS USED TO SAMPLE TEMPERATURE AND GYROSCOPE AS WELL YOU SHOULD CHANGE THIS LOOP
+            // TO PRINT EVERYTHING
+            uint8_t *data;
+            // Itterate through entire RX buffer 
+            for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
+            {
+                // Temporarily store each sensor data set found in buffer in accelerometer structure variable
+                data = (uint8_t*)&acc_values;
+                // Itterate through and store all data in each sensor set
+                for(uint8_t i = 0; i<6; i++)
+                {
+                    *data = p_rx_buffer[j].buffer[5-i];
+                    data++;
+                }
+                // Print sensor data set
+                NRF_LOG_RAW_INFO("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
+                nrf_delay_ms(1); // Small delay so not to overload the UART 
+            }
+            // Reset data ready flag
+            twi_transfers_complete = false;
         }
-        // Reset data ready flag
-        twi_transfers_complete = false;
     }
 }
 

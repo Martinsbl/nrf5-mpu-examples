@@ -234,7 +234,7 @@ int main(void)
     mpu_init();
     
     // Start execution.
-    NRF_LOG_INFO("MPU Magnetometer example.");
+    NRF_LOG_INFO("MPU EasyDMA using GPIOTE and registers example.");
     
     
     // Initiate counter to count number of TWI transfers 
