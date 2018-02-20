@@ -122,5 +122,4 @@ void ble_mpu_update(ble_mpu_t *p_mpu, accel_values_t * accel_values)
 
         sd_ble_gatts_hvx(p_mpu->conn_handle, &hvx_params);
     } 
-    
 }
