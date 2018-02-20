@@ -145,7 +145,7 @@ typedef struct
     sync_dlpf_config_t  sync_dlpf_gonfig;   // Digital low pass fileter and external Frame Synchronization (FSYNC) configuration structure
     gyro_config_t       gyro_config;        // Gyro configuration structure
     accel_config_t      accel_config;       // Accelerometer configuration structure
-}mpu_config_t;
+}app_mpu_config_t;
 
 #if defined(MPU9255) 
 #define MPU_DEFAULT_CONFIG()                          \
@@ -204,7 +204,7 @@ typedef struct
     uint8_t latch_int_en    :1;  // When this bit is equal to 0, the INT pin emits a 50us long pulse. When this bit is equal to 1, the INT pin is held high until the interrupt is cleared.
     uint8_t int_open        :1;  // When this bit is equal to 0, the INT pin is configured as push-pull. When this bit is equal to 1, the INT pin is configured as open drain.
     uint8_t int_level       :1; // When this bit is equal to 0, the logic level for the INT pin is active high. When this bit is equal to 1, the logic level for the INT pin is active low.
-}mpu_int_pin_cfg_t;
+}app_mpu_int_pin_cfg_t;
 
 /**@brief MPU interrupt pin default configuration. */
 #define MPU_DEFAULT_INT_PIN_CONFIG()    \
@@ -229,7 +229,7 @@ typedef struct
     uint8_t zmot_en         :1; // When set to 1, this bit enables Zero Motion detection to generate an interrupt.
     uint8_t mot_en          :1; // When set to 1, this bit enables Motion detection to generate an interrupt.
     uint8_t ff_en           :1; // When set to 1, this bit enables Free Fall detection to generate an interrupt.
-}mpu_int_enable_t;
+}app_mpu_int_enable_t;
 
 /**@brief MPU interrupt sources default configuration. */
 #define MPU_DEFAULT_INT_ENABLE_CONFIG() \
@@ -253,7 +253,7 @@ typedef struct
  *
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_init(void);
+uint32_t app_mpu_init(void);
 
     
 
@@ -275,7 +275,7 @@ uint32_t mpu_init(void);
  * @param[in]   config          Pointer to configuration structure
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_config(mpu_config_t * config);
+uint32_t app_mpu_config(app_mpu_config_t * config);
 
 
 /**@brief Function for configuring the behaviour of the interrupt pin of the MPU
@@ -283,7 +283,7 @@ uint32_t mpu_config(mpu_config_t * config);
  * @param[in]   config          Pointer to configuration structure
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_int_cfg_pin(mpu_int_pin_cfg_t *cfg);
+uint32_t app_mpu_int_cfg_pin(app_mpu_int_pin_cfg_t *cfg);
 
 
 /**@brief Function for eneabling interrupts sources in MPU
@@ -291,7 +291,7 @@ uint32_t mpu_int_cfg_pin(mpu_int_pin_cfg_t *cfg);
  * @param[in]   config          Pointer to configuration structure
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_int_enable(mpu_int_enable_t *cfg);
+uint32_t app_mpu_int_enable(app_mpu_int_enable_t *cfg);
     
 
 /**@brief Function for reading MPU accelerometer data.
@@ -299,7 +299,7 @@ uint32_t mpu_int_enable(mpu_int_enable_t *cfg);
  * @param[in]   accel_values    Pointer to variable to hold accelerometer data
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_read_accel(accel_values_t * accel_values);
+uint32_t app_mpu_read_accel(accel_values_t * accel_values);
 
 
 /**@brief Function for reading MPU gyroscope data.
@@ -307,7 +307,7 @@ uint32_t mpu_read_accel(accel_values_t * accel_values);
  * @param[in]   gyro_values     Pointer to variable to hold gyroscope data
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_read_gyro(gyro_values_t * gyro_values);
+uint32_t app_mpu_read_gyro(gyro_values_t * gyro_values);
 
 
 /**@brief Function for reading MPU temperature data.
@@ -315,14 +315,14 @@ uint32_t mpu_read_gyro(gyro_values_t * gyro_values);
  * @param[in]   temp_values     Pointer to variable to hold temperature data
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_read_temp(temp_value_t * temp_values);
+uint32_t app_mpu_read_temp(temp_value_t * temp_values);
 
 /**@brief Function for reading the source of the MPU generated interrupts.
  *
  * @param[in]   int_source      Pointer to variable to hold interrupt source
  * @retval      uint32_t        Error code
  */
-uint32_t mpu_read_int_source(uint8_t * int_source);
+uint32_t app_mpu_read_int_source(uint8_t * int_source);
 
 /**@brief Function for configuring free fall interrupts 
  *
@@ -333,7 +333,7 @@ uint32_t mpu_read_int_source(uint8_t * int_source);
  * @retval      uint8_t        Required free fall duration in ms
  */
 #if defined(MPU9150)
-uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration);
+uint32_t app_mpu_config_ff_detection(uint16_t mg, uint8_t duration);
 #endif
 
 
@@ -382,7 +382,7 @@ typedef struct
 #if defined(MPU9255)
 	uint8_t resolution : 1; // 0 = 14 but, 1 = 16 bit output
 #endif
-}mpu_magn_config_t;
+}app_mpu_magn_config_t;
 
 
 /**@brief Structure to hold data read from MPU_AK89XX_REG_ST2 after reading sensor values.
@@ -392,27 +392,27 @@ typedef struct
 	uint8_t 			: 3;  
 	uint8_t overflow 	: 1; //  single measurement mode, continuous measurement mode, external trigger measurement mode and self-test mode, magnetic sensor may overflow even though measurement data regiseter is not saturated. 
 	uint8_t res_mirror 	: 1; // Output bit setting (mirror) 
-}mpu_magn_read_status_t;
+}app_mpu_magn_read_status_t;
 
 
 /**@brief Function for enabling and starting the magnetometer
  *
- * @param[in]   mpu_magn_config_t 	Magnetometer config struct
+ * @param[in]   app_mpu_magn_config_t 	Magnetometer config struct
  * @retval      uint32_t        	Error code
  */
-uint32_t mpu_magnetometer_init(mpu_magn_config_t * p_magnetometer_conf);
+uint32_t app_mpu_magnetometer_init(app_mpu_magn_config_t * p_magnetometer_conf);
 
 
 /**@brief Function for reading out magnetometer values
  *
  * @param[in]   magn_values_t *				Magnetometer values struct
- * @param[in]   mpu_magn_read_status_t *	Value of status register 2 (MPU_AK89XX_REG_ST2) after magnetometer data is read. NULL can be passed as argument if status is not needed
+ * @param[in]   app_mpu_magn_read_status_t *	Value of status register 2 (MPU_AK89XX_REG_ST2) after magnetometer data is read. NULL can be passed as argument if status is not needed
  * @retval      uint32_t     				Error code
  */
-uint32_t mpu_read_magnetometer(magn_values_t * p_magnetometer_values, mpu_magn_read_status_t * p_read_status);
+uint32_t app_mpu_read_magnetometer(magn_values_t * p_magnetometer_values, app_mpu_magn_read_status_t * p_read_status);
 
 // Test function for development purposes
-uint32_t mpu_read_magnetometer_test(uint8_t reg, uint8_t * registers, uint8_t len);
+uint32_t app_mpu_read_magnetometer_test(uint8_t reg, uint8_t * registers, uint8_t len);
 
 #endif
 

@@ -15,7 +15,7 @@
 
 
 
-uint32_t mpu_config(mpu_config_t * config)
+uint32_t app_mpu_config(app_mpu_config_t * config)
 {
     uint8_t *data;
     data = (uint8_t*)config;
@@ -24,7 +24,7 @@ uint32_t mpu_config(mpu_config_t * config)
 
 
 
-uint32_t mpu_int_cfg_pin(mpu_int_pin_cfg_t *cfg)
+uint32_t app_mpu_int_cfg_pin(app_mpu_int_pin_cfg_t *cfg)
 {
     uint8_t *data;
     data = (uint8_t*)cfg;
@@ -34,7 +34,7 @@ uint32_t mpu_int_cfg_pin(mpu_int_pin_cfg_t *cfg)
 
 
 
-uint32_t mpu_int_enable(mpu_int_enable_t *cfg)
+uint32_t app_mpu_int_enable(app_mpu_int_enable_t *cfg)
 {
     uint8_t *data;
     data = (uint8_t*)cfg;
@@ -43,7 +43,7 @@ uint32_t mpu_int_enable(mpu_int_enable_t *cfg)
 
 
 
-uint32_t mpu_init(void)
+uint32_t app_mpu_init(void)
 {
     uint32_t err_code;
 	
@@ -64,7 +64,7 @@ uint32_t mpu_init(void)
 
 
 
-uint32_t mpu_read_accel(accel_values_t * accel_values)
+uint32_t app_mpu_read_accel(accel_values_t * accel_values)
 {
     uint32_t err_code;
     uint8_t raw_values[6];
@@ -84,7 +84,7 @@ uint32_t mpu_read_accel(accel_values_t * accel_values)
 
 
 
-uint32_t mpu_read_gyro(gyro_values_t * gyro_values)
+uint32_t app_mpu_read_gyro(gyro_values_t * gyro_values)
 {
     uint32_t err_code;
     uint8_t raw_values[6];
@@ -104,7 +104,7 @@ uint32_t mpu_read_gyro(gyro_values_t * gyro_values)
 
 
 
-uint32_t mpu_read_temp(temp_value_t * temperature)
+uint32_t app_mpu_read_temp(temp_value_t * temperature)
 {
     uint32_t err_code;
     uint8_t raw_values[2];
@@ -118,7 +118,7 @@ uint32_t mpu_read_temp(temp_value_t * temperature)
 
 
 
-uint32_t mpu_read_int_source(uint8_t * int_source)
+uint32_t app_mpu_read_int_source(uint8_t * int_source)
 {
     return nrf_drv_mpu_read_registers(MPU_REG_INT_STATUS, int_source, 1);
 }
@@ -126,7 +126,7 @@ uint32_t mpu_read_int_source(uint8_t * int_source)
 
 // Function does not work on MPU60x0 and MPU9255
 #if defined(MPU9150)
-uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
+uint32_t app_mpu_config_ff_detection(uint16_t mg, uint8_t duration)
 {
     uint32_t err_code;
     uint8_t threshold = (uint8_t)(mg/MPU_MG_PR_LSB_FF_THR);
@@ -149,18 +149,18 @@ uint32_t mpu_config_ff_detection(uint16_t mg, uint8_t duration)
 
 #if (defined(MPU9150) || defined(MPU9255)) && (MPU_USES_TWI) // Magnetometer only works with TWI so check if TWI is enabled
 
-uint32_t mpu_magnetometer_init(mpu_magn_config_t * p_magnetometer_conf)
+uint32_t app_mpu_magnetometer_init(app_mpu_magn_config_t * p_magnetometer_conf)
 {	
 	uint32_t err_code;
 	
 	// Read out MPU configuration register
-	mpu_int_pin_cfg_t bypass_config;
+	app_mpu_int_pin_cfg_t bypass_config;
 	err_code = nrf_drv_mpu_read_registers(MPU_REG_INT_PIN_CFG, (uint8_t *)&bypass_config, 1);
 	
 	// Set I2C bypass enable bit to be able to communicate with magnetometer via I2C
 	bypass_config.i2c_bypass_en = 1;
 	// Write config value back to MPU config register
-	err_code = mpu_int_cfg_pin(&bypass_config);
+	err_code = app_mpu_int_cfg_pin(&bypass_config);
 	if (err_code != NRF_SUCCESS) return err_code;
 	
 	// Write magnetometer config data	
@@ -169,7 +169,7 @@ uint32_t mpu_magnetometer_init(mpu_magn_config_t * p_magnetometer_conf)
     return nrf_drv_mpu_write_magnetometer_register(MPU_AK89XX_REG_CNTL, *data);
 }
 
-uint32_t mpu_read_magnetometer(magn_values_t * p_magnetometer_values, mpu_magn_read_status_t * p_read_status)
+uint32_t app_mpu_read_magnetometer(magn_values_t * p_magnetometer_values, app_mpu_magn_read_status_t * p_read_status)
 {
 	uint32_t err_code;
 	err_code = nrf_drv_mpu_read_magnetometer_registers(MPU_AK89XX_REG_HXL, (uint8_t *)p_magnetometer_values, 6);
@@ -194,7 +194,7 @@ uint32_t mpu_read_magnetometer(magn_values_t * p_magnetometer_values, mpu_magn_r
 }
 
 // Test function for development purposes
-uint32_t mpu_read_magnetometer_test(uint8_t reg, uint8_t * registers, uint8_t len)
+uint32_t app_mpu_read_magnetometer_test(uint8_t reg, uint8_t * registers, uint8_t len)
 {
     return nrf_drv_mpu_read_magnetometer_registers(reg, registers, len);
 }

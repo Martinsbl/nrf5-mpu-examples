@@ -731,33 +731,33 @@ static void advertising_start(bool erase_bonds)
     }
 }
 
-void mpu_setup(void)
+void mpu_init(void)
 {
     uint32_t err_code;
     // Initiate MPU driver
-    err_code = mpu_init();
+    err_code = app_mpu_init();
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
-    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
+    app_mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
     // The following line decieds how fast the nRF5 will sample the MPU for data. If you sample to fast
     // the Softdevice might not be able to transmit all the packets and you will receive a BLE_ERROR_NO_TX_PACKETS event.
     p_mpu_config.smplrt_div = 199;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 199 gives a sample rate of 5Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
-    err_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
+    err_code = app_mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
     
     // This is a way to configure the interrupt pin behaviour
-    mpu_int_pin_cfg_t p_int_pin_cfg = MPU_DEFAULT_INT_PIN_CONFIG(); // Default configurations
+    app_mpu_int_pin_cfg_t p_int_pin_cfg = MPU_DEFAULT_INT_PIN_CONFIG(); // Default configurations
     p_int_pin_cfg.int_rd_clear = 1; // When this bit is equal to 1, interrupt status bits are cleared on any read operation
-    err_code = mpu_int_cfg_pin(&p_int_pin_cfg); // Configure pin behaviour
+    err_code = app_mpu_int_cfg_pin(&p_int_pin_cfg); // Configure pin behaviour
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
     // Enable the MPU interrupts
-    mpu_int_enable_t p_int_enable = MPU_DEFAULT_INT_ENABLE_CONFIG();
+    app_mpu_int_enable_t p_int_enable = MPU_DEFAULT_INT_ENABLE_CONFIG();
     p_int_enable.data_rdy_en = 1; // Trigger interrupt everytime new sensor values are available
-    err_code = mpu_int_enable(&p_int_enable); // Configure interrupts
+    err_code = app_mpu_int_enable(&p_int_enable); // Configure interrupts
     APP_ERROR_CHECK(err_code); // Check for errors in return value    
 }
 
@@ -814,11 +814,11 @@ int main(void)
     advertising_init();
     conn_params_init();
     peer_manager_init();
-    mpu_setup();
+    mpu_init();
     gpiote_setup();
     
     // Start execution.
-    NRF_LOG_INFO("MPU BLE simple example.");
+    NRF_LOG_INFO("MPU BLE GPIOTE Interrupt example.");
     application_timers_start();
 
     advertising_start(erase_bonds);
@@ -835,7 +835,7 @@ int main(void)
             if(mpu_data_ready == true)
             {
                 // Read accelerometer data.
-                err_code = mpu_read_accel(&accel_values);
+                err_code = app_mpu_read_accel(&accel_values);
                 APP_ERROR_CHECK(err_code);
                 
                 // Send MUP notification if in valid connection

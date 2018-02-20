@@ -741,18 +741,18 @@ static void advertising_start(bool erase_bonds)
     }
 }
 
-void mpu_setup(void)
+void mpu_init(void)
 {
     ret_code_t ret_code;
     // Initiate MPU driver
-    ret_code = mpu_init();
+    ret_code = app_mpu_init();
     APP_ERROR_CHECK(ret_code); // Check for errors in return value
     
     // Setup and configure the MPU with intial values
-    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
+    app_mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG(); // Load default values
     p_mpu_config.smplrt_div = 19;   // Change sampelrate. Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV). 19 gives a sample rate of 50Hz
     p_mpu_config.accel_config.afs_sel = AFS_2G; // Set accelerometer full scale range to 2G
-    ret_code = mpu_config(&p_mpu_config); // Configure the MPU with above values
+    ret_code = app_mpu_config(&p_mpu_config); // Configure the MPU with above values
     APP_ERROR_CHECK(ret_code); // Check for errors in return value 
 }
 
@@ -777,7 +777,7 @@ int main(void)
     conn_params_init();
     peer_manager_init();
 
-    mpu_setup();
+    mpu_init();
     
     // Start execution.
     NRF_LOG_INFO("MPU BLE simple example.");
@@ -795,7 +795,7 @@ int main(void)
             power_manage();
             if(start_accel_update_flag == true)
             {
-                mpu_read_accel(&accel_values);
+                app_mpu_read_accel(&accel_values);
 
                 // Send MUP notification if in valid connection
                 if ((m_mpu.conn_handle != BLE_CONN_HANDLE_INVALID) && (m_mpu.is_notification_enabled))
