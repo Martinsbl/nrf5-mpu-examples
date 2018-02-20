@@ -36,7 +36,6 @@ volatile static bool twi_rx_done = false;
 
 uint8_t twi_tx_buffer[MPU_TWI_BUFFER_SIZE];
 
-
 static void nrf_drv_mpu_twi_event_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
 {
     switch(p_event->type)
