@@ -67,7 +67,7 @@ int main(void)
     mpu_init();
     
     // Start execution.
-    NRF_LOG_INFO("MPU Free Fall Interrupt example.");
+    NRF_LOG_INFO("MPU Magnetometer example.");
     
     accel_values_t acc_values;
 	magn_values_t magn_values;
