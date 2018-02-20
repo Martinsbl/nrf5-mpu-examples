@@ -49,130 +49,6 @@
 // <h> nRF_Drivers 
 
 //==========================================================
-// <e> APP_USBD_ENABLED - app_usbd - USB Device library
-//==========================================================
-#ifndef APP_USBD_ENABLED
-#define APP_USBD_ENABLED 0
-#endif
-// <s> APP_USBD_VID - Vendor ID
-
-// <i> Vendor ID ordered from USB IF: http://www.usb.org/developers/vendor/
-#ifndef APP_USBD_VID
-#define APP_USBD_VID 0x1915
-#endif
-
-// <s> APP_USBD_PID - Product ID
-
-// <i> Selected Product ID
-#ifndef APP_USBD_PID
-#define APP_USBD_PID 0x520C
-#endif
-
-// <o> APP_USBD_DEVICE_VER_MAJOR - Device version, major part  <0-99> 
-
-
-// <i> Device version, will be converted automatically to BCD notation. Use just decimal values.
-
-#ifndef APP_USBD_DEVICE_VER_MAJOR
-#define APP_USBD_DEVICE_VER_MAJOR 1
-#endif
-
-// <o> APP_USBD_DEVICE_VER_MINOR - Device version, minor part  <0-99> 
-
-
-// <i> Device version, will be converted automatically to BCD notation. Use just decimal values.
-
-#ifndef APP_USBD_DEVICE_VER_MINOR
-#define APP_USBD_DEVICE_VER_MINOR 0
-#endif
-
-// <e> APP_USBD_EVENT_QUEUE_ENABLE - Enable event queue
-
-// <i> This is the default configuration when all the events are placed into internal queue.
-// <i> Disable it when external queue is used like app_scheduler or if you wish to process all events inside interrupts.
-// <i> Processing all events from the interrupt level adds requirement not to call any functions that modifies the USBD library state from the context higher than USB interrupt context.
-// <i> Functions that modify USBD state are functions for sleep, wakeup, start, stop, enable and disable.
-//==========================================================
-#ifndef APP_USBD_EVENT_QUEUE_ENABLE
-#define APP_USBD_EVENT_QUEUE_ENABLE 1
-#endif
-// <o> APP_USBD_EVENT_QUEUE_SIZE - The size of event queue  <16-64> 
-
-
-// <i> The size of the queue for the events that would be processed in the main loop.
-
-#ifndef APP_USBD_EVENT_QUEUE_SIZE
-#define APP_USBD_EVENT_QUEUE_SIZE 32
-#endif
-
-// </e>
-
-// <q> APP_USBD_CONFIG_PROVIDE_SOF_TIMESTAMP  - Provide a function that generates timestamps for logs based on the current SOF
- 
-
-// <i> The function app_usbd_sof_timestamp_get will be implemented if the logger is enabled. 
-// <i> Use it when initializing the logger. 
-// <i> SOF processing will be always enabled when this configuration parameter is active. 
-// <i> Notice that this option is configured outside of APP_USBD_CONFIG_LOG_ENABLED. 
-// <i> This means that it will work even if the logging in this very module is disabled. 
-
-#ifndef APP_USBD_CONFIG_PROVIDE_SOF_TIMESTAMP
-#define APP_USBD_CONFIG_PROVIDE_SOF_TIMESTAMP 0
-#endif
-
-// <e> APP_USBD_CONFIG_LOG_ENABLED - Enable logging in the module
-//==========================================================
-#ifndef APP_USBD_CONFIG_LOG_ENABLED
-#define APP_USBD_CONFIG_LOG_ENABLED 0
-#endif
-// <o> APP_USBD_CONFIG_LOG_LEVEL  - Default Severity level
- 
-// <0=> Off 
-// <1=> Error 
-// <2=> Warning 
-// <3=> Info 
-// <4=> Debug 
-
-#ifndef APP_USBD_CONFIG_LOG_LEVEL
-#define APP_USBD_CONFIG_LOG_LEVEL 3
-#endif
-
-// <o> APP_USBD_CONFIG_INFO_COLOR  - ANSI escape code prefix.
- 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
-
-#ifndef APP_USBD_CONFIG_INFO_COLOR
-#define APP_USBD_CONFIG_INFO_COLOR 0
-#endif
-
-// <o> APP_USBD_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
- 
-// <0=> Default 
-// <1=> Black 
-// <2=> Red 
-// <3=> Green 
-// <4=> Yellow 
-// <5=> Blue 
-// <6=> Magenta 
-// <7=> Cyan 
-// <8=> White 
-
-#ifndef APP_USBD_CONFIG_DEBUG_COLOR
-#define APP_USBD_CONFIG_DEBUG_COLOR 0
-#endif
-
-// </e>
-
-// </e>
-
 // <e> CLOCK_ENABLED - nrf_drv_clock - CLOCK peripheral driver
 //==========================================================
 #ifndef CLOCK_ENABLED
@@ -629,7 +505,7 @@
 // <e> POWER_ENABLED - nrf_drv_power - POWER peripheral driver
 //==========================================================
 #ifndef POWER_ENABLED
-#define POWER_ENABLED 0
+#define POWER_ENABLED 1
 #endif
 // <o> POWER_CONFIG_IRQ_PRIORITY  - Interrupt priority
  
@@ -672,7 +548,7 @@
  
 
 #ifndef PPI_ENABLED
-#define PPI_ENABLED 1
+#define PPI_ENABLED 0
 #endif
 
 // <e> PWM_ENABLED - nrf_drv_pwm - PWM peripheral driver
@@ -795,12 +671,33 @@
 #define PWM2_ENABLED 1
 #endif
 
-// <q> PWM3_ENABLED  - Enable PWM3 instance
- 
+// <e> PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED - Enables nRF52 Anomaly 109 workaround for PWM.
 
-#ifndef PWM3_ENABLED
-#define PWM3_ENABLED 1
+// <i> The workaround uses interrupts to wake up the CPU and ensure
+// <i> it is active when PWM is about to start a DMA transfer. For
+// <i> initial transfer, done when a playback is started via PPI,
+// <i> a specific EGU instance is used to generate the interrupt.
+// <i> During the playback, the PWM interrupt triggered on SEQEND
+// <i> event of a preceding sequence is used to protect the transfer
+// <i> done for the next sequence to be played.
+//==========================================================
+#ifndef PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
 #endif
+// <o> PWM_NRF52_ANOMALY_109_EGU_INSTANCE  - EGU instance used by the nRF52 Anomaly 109 workaround for PWM.
+ 
+// <0=> EGU0 
+// <1=> EGU1 
+// <2=> EGU2 
+// <3=> EGU3 
+// <4=> EGU4 
+// <5=> EGU5 
+
+#ifndef PWM_NRF52_ANOMALY_109_EGU_INSTANCE
+#define PWM_NRF52_ANOMALY_109_EGU_INSTANCE 5
+#endif
+
+// </e>
 
 // </e>
 
@@ -946,7 +843,7 @@
 // <e> RTC_ENABLED - nrf_drv_rtc - RTC peripheral driver
 //==========================================================
 #ifndef RTC_ENABLED
-#define RTC_ENABLED 0
+#define RTC_ENABLED 1
 #endif
 // <o> RTC_DEFAULT_CONFIG_FREQUENCY - Frequency  <16-32768> 
 
@@ -1142,6 +1039,20 @@
 #define SPIS2_ENABLED 1
 #endif
 
+// <q> SPIS_NRF52_ANOMALY_109_WORKAROUND_ENABLED  - Enables nRF52 Anomaly 109 workaround for SPIS.
+ 
+
+// <i> The workaround uses a GPIOTE channel to generate interrupts
+// <i> on falling edges detected on the CSN line. This will make
+// <i> the CPU active for the moment when SPIS starts DMA transfers,
+// <i> and this way the transfers will be protected.
+// <i> This workaround uses GPIOTE driver, so this driver must be
+// <i> enabled as well.
+
+#ifndef SPIS_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define SPIS_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
+#endif
+
 // </e>
 
 // <e> SPI_ENABLED - nrf_drv_spi - SPI/SPIM peripheral driver
@@ -1232,19 +1143,26 @@
 
 // </e>
 
-// </e>
-
-// <q> SYSTICK_ENABLED  - nrf_drv_systick - SysTick driver
+// <q> SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED  - Enables nRF52 anomaly 109 workaround for SPIM.
  
 
-#ifndef SYSTICK_ENABLED
-#define SYSTICK_ENABLED 1
+// <i> The workaround uses interrupts to wake up the CPU by catching
+// <i> a start event of zero-length transmission to start the clock. This 
+// <i> ensures that the DMA transfer will be executed without issues and
+// <i> that the proper transfer will be started. See more in the Errata 
+// <i> document or Anomaly 109 Addendum located at 
+// <i> https://infocenter.nordicsemi.com/
+
+#ifndef SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define SPIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
 #endif
+
+// </e>
 
 // <e> TIMER_ENABLED - nrf_drv_timer - TIMER periperal driver
 //==========================================================
 #ifndef TIMER_ENABLED
-#define TIMER_ENABLED 0
+#define TIMER_ENABLED 1
 #endif
 // <o> TIMER_DEFAULT_CONFIG_FREQUENCY  - Timer frequency if in Timer mode
  
@@ -1497,6 +1415,19 @@
 
 // </e>
 
+// <q> TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED  - Enables nRF52 anomaly 109 workaround for TWIM.
+ 
+
+// <i> The workaround uses interrupts to wake up the CPU by catching
+// <i> the start event of zero-frequency transmission, clear the 
+// <i> peripheral, set desired frequency, start the peripheral, and
+// <i> the proper transmission. See more in the Errata document or
+// <i> Anomaly 109 Addendum located at https://infocenter.nordicsemi.com/
+
+#ifndef TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED
+#define TWIM_NRF52_ANOMALY_109_WORKAROUND_ENABLED 0
+#endif
+
 // </e>
 
 // <e> UART_ENABLED - nrf_drv_uart - UART/UARTE peripheral driver
@@ -1589,53 +1520,6 @@
 #endif
 
 // </e>
-
-// <e> UART1_ENABLED - Enable UART1 instance
-//==========================================================
-#ifndef UART1_ENABLED
-#define UART1_ENABLED 0
-#endif
-// <q> UART1_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
- 
-
-#ifndef UART1_CONFIG_USE_EASY_DMA
-#define UART1_CONFIG_USE_EASY_DMA 1
-#endif
-
-// </e>
-
-// </e>
-
-// <e> USBD_ENABLED - nrf_drv_usbd - USB driver
-//==========================================================
-#ifndef USBD_ENABLED
-#define USBD_ENABLED 0
-#endif
-// <o> USBD_CONFIG_IRQ_PRIORITY  - Interrupt priority
- 
-
-// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
-// <0=> 0 (highest) 
-// <1=> 1 
-// <2=> 2 
-// <3=> 3 
-// <4=> 4 
-// <5=> 5 
-// <6=> 6 
-// <7=> 7 
-
-#ifndef USBD_CONFIG_IRQ_PRIORITY
-#define USBD_CONFIG_IRQ_PRIORITY 7
-#endif
-
-// <o> NRF_DRV_USBD_DMASCHEDULER_MODE  - USBD SMA scheduler working scheme
- 
-// <0=> Prioritized access 
-// <1=> Round Robin 
-
-#ifndef NRF_DRV_USBD_DMASCHEDULER_MODE
-#define NRF_DRV_USBD_DMASCHEDULER_MODE 0
-#endif
 
 // </e>
 
@@ -1831,55 +1715,6 @@
 
 // </e>
 
-// <q> APP_USBD_CLASS_AUDIO_ENABLED  - app_usbd_audio - USB AUDIO class
- 
-
-#ifndef APP_USBD_CLASS_AUDIO_ENABLED
-#define APP_USBD_CLASS_AUDIO_ENABLED 0
-#endif
-
-// <q> APP_USBD_CLASS_CDC_ACM_ENABLED  - app_usbd_cdc_acm - USB CDC ACM class
- 
-
-#ifndef APP_USBD_CLASS_CDC_ACM_ENABLED
-#define APP_USBD_CLASS_CDC_ACM_ENABLED 0
-#endif
-
-// <q> APP_USBD_CLASS_HID_ENABLED  - app_usbd_hid - USB HID class
- 
-
-#ifndef APP_USBD_CLASS_HID_ENABLED
-#define APP_USBD_CLASS_HID_ENABLED 0
-#endif
-
-// <q> APP_USBD_HID_GENERIC_ENABLED  - app_usbd_hid_generic - USB HID generic
- 
-
-#ifndef APP_USBD_HID_GENERIC_ENABLED
-#define APP_USBD_HID_GENERIC_ENABLED 0
-#endif
-
-// <q> APP_USBD_HID_KBD_ENABLED  - app_usbd_hid_kbd - USB HID keyboard
- 
-
-#ifndef APP_USBD_HID_KBD_ENABLED
-#define APP_USBD_HID_KBD_ENABLED 0
-#endif
-
-// <q> APP_USBD_HID_MOUSE_ENABLED  - app_usbd_hid_mouse - USB HID mouse
- 
-
-#ifndef APP_USBD_HID_MOUSE_ENABLED
-#define APP_USBD_HID_MOUSE_ENABLED 0
-#endif
-
-// <q> APP_USBD_MSC_ENABLED  - app_usbd_msc - USB MSC class
- 
-
-#ifndef APP_USBD_MSC_ENABLED
-#define APP_USBD_MSC_ENABLED 0
-#endif
-
 // <q> BUTTON_ENABLED  - app_button - buttons handling module
  
 
@@ -1891,7 +1726,7 @@
  
 
 #ifndef CRC16_ENABLED
-#define CRC16_ENABLED 1
+#define CRC16_ENABLED 0
 #endif
 
 // <q> CRC32_ENABLED  - crc32 - CRC32 calculation routines
@@ -1911,7 +1746,7 @@
 // <e> HARDFAULT_HANDLER_ENABLED - hardfault_default - HardFault default handler for debugging and release
 //==========================================================
 #ifndef HARDFAULT_HANDLER_ENABLED
-#define HARDFAULT_HANDLER_ENABLED 0
+#define HARDFAULT_HANDLER_ENABLED 1
 #endif
 // <q> HARDFAULT_HANDLER_GDB_PSP_BACKTRACE  - Bypass the GDB problem with multiple stack pointers backtrace
  
@@ -2390,22 +2225,6 @@
 // <29=> 29 (P0.29) 
 // <30=> 30 (P0.30) 
 // <31=> 31 (P0.31) 
-// <32=> 32 (P1.0) 
-// <33=> 33 (P1.1) 
-// <34=> 34 (P1.2) 
-// <35=> 35 (P1.3) 
-// <36=> 36 (P1.4) 
-// <37=> 37 (P1.5) 
-// <38=> 38 (P1.6) 
-// <39=> 39 (P1.7) 
-// <40=> 40 (P1.8) 
-// <41=> 41 (P1.9) 
-// <42=> 42 (P1.10) 
-// <43=> 43 (P1.11) 
-// <44=> 44 (P1.12) 
-// <45=> 45 (P1.13) 
-// <46=> 46 (P1.14) 
-// <47=> 47 (P1.15) 
 // <4294967295=> Not connected 
 
 #ifndef NRF_PWR_MGMT_SLEEP_DEBUG_PIN
@@ -2714,7 +2533,7 @@
 // <4=> Debug 
 
 #ifndef NRF_LOG_DEFAULT_LEVEL
-#define NRF_LOG_DEFAULT_LEVEL 4
+#define NRF_LOG_DEFAULT_LEVEL 3
 #endif
 
 // <q> NRF_LOG_DEFERRED  - Enable deffered logger.
