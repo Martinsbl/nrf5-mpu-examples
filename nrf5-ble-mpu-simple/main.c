@@ -75,7 +75,6 @@
 #include "ble_conn_state.h"
 #include "nrf_ble_gatt.h"
 
-#include "nrf_drv_twi.h"
 #include "app_mpu.h"
 #include "ble_mpu.h"
 
@@ -766,6 +765,7 @@ int main(void)
 
     // Initialize.
     log_init();
+	NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
     timers_init();
     buttons_leds_init(&erase_bonds);
     ble_stack_init();
@@ -776,10 +776,9 @@ int main(void)
     conn_params_init();
     peer_manager_init();
 
-    mpu_init();
+    mpu_setup();
     
     // Start execution.
-	NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
     NRF_LOG_INFO("MPU BLE simple example.");
     application_timers_start();
 
