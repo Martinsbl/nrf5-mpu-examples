@@ -22,6 +22,7 @@ typedef struct
     uint16_t                    conn_handle;    /**< Handle of the current connection (as provided by the BLE stack, is BLE_CONN_HANDLE_INVALID if not in a connection).*/
     uint16_t                    service_handle; /**< Handle of ble Service (as provided by the BLE stack). */
     ble_gatts_char_handles_t    accel_char_handles;   /**< Handles related to the our new characteristic. */
+    bool                        is_notification_enabled;
 }ble_mpu_t;
 
 /**@brief Function for handling BLE Stack events related to mpu service and characteristic.
@@ -46,6 +47,6 @@ void ble_mpu_service_init(ble_mpu_t * p_mpu);
  * @param[in]   p_mpu                     mpu structure.
  * @param[in]   characteristic_value     New characteristic value.
  */
-void ble_mpu_update(ble_mpu_t *p_mpu, accel_values_t * accel_values);
+uint32_t ble_mpu_update(ble_mpu_t *p_mpu, accel_values_t * accel_values);
 
 #endif  /* _ MPU_SERVICE_H__ */

@@ -761,6 +761,7 @@ void mpu_setup(void)
  */
 int main(void)
 {
+    uint32_t err_code;
     bool erase_bonds;
 
     // Initialize.
@@ -795,7 +796,14 @@ int main(void)
             if(start_accel_update_flag == true)
             {
                 mpu_read_accel(&accel_values);
-                ble_mpu_update(&m_mpu, &accel_values);
+
+                // Send MUP notification if in valid connection
+                if ((m_mpu.conn_handle != BLE_CONN_HANDLE_INVALID) && (m_mpu.is_notification_enabled))
+                {
+                    err_code = ble_mpu_update(&m_mpu, &accel_values);
+                    APP_ERROR_CHECK(err_code);
+                }
+                
                 NRF_LOG_INFO("Accel: %05d, %05d, %05d, 0x%04X, 0x%04X, 0x%04X", accel_values.x, accel_values.y, accel_values.z, accel_values.x, accel_values.y, accel_values.z);
                 start_accel_update_flag = false;
             }

@@ -12,6 +12,23 @@
 #include "app_error.h"
 #include "app_mpu.h"
 
+static void on_write(ble_mpu_t * p_mpu, ble_evt_t const * p_ble_evt)
+{
+    ble_gatts_evt_write_t const * p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+
+    if (   (p_evt_write->handle == p_mpu->accel_char_handles.cccd_handle)
+        && (p_evt_write->len == 2))
+    {
+        if (ble_srv_is_notification_enabled(p_evt_write->data))
+        {
+            p_mpu->is_notification_enabled = true;
+        }
+        else
+        {
+            p_mpu->is_notification_enabled = false;
+        }
+    }
+}
 
 void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t const * p_ble_evt)
 {
@@ -22,6 +39,9 @@ void ble_mpu_on_ble_evt(ble_mpu_t * p_mpu, ble_evt_t const * p_ble_evt)
             break;
         case BLE_GAP_EVT_DISCONNECTED:
             p_mpu->conn_handle = BLE_CONN_HANDLE_INVALID;
+        case BLE_GATTS_EVT_WRITE:
+            on_write(p_mpu, p_ble_evt);
+            break;
         default:
             // No implementation needed.
             break;
@@ -94,6 +114,7 @@ void ble_mpu_service_init(ble_mpu_t * p_mpu)
     APP_ERROR_CHECK(err_code);    
 
     p_mpu->conn_handle = BLE_CONN_HANDLE_INVALID;
+    p_mpu->is_notification_enabled = false;
 
     err_code = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY,
                                         &service_uuid,
@@ -104,22 +125,24 @@ void ble_mpu_service_init(ble_mpu_t * p_mpu)
     ble_char_accel_add(p_mpu);
 }
 
-// ALREADY_DONE_FOR_YOU: Function to be called when updating characteristic value
-void ble_mpu_update(ble_mpu_t *p_mpu, accel_values_t * accel_values)
+
+uint32_t ble_mpu_update(ble_mpu_t *p_mpu, accel_values_t * accel_values)
 {
     // Send value if connected and notifying
-    if (p_mpu->conn_handle != BLE_CONN_HANDLE_INVALID)
+    if ((p_mpu->conn_handle == BLE_CONN_HANDLE_INVALID) || (!p_mpu->is_notification_enabled))
     {
-        uint16_t               len = sizeof(accel_values_t);
-        ble_gatts_hvx_params_t hvx_params;
-        memset(&hvx_params, 0, sizeof(hvx_params));
+        return NRF_ERROR_INVALID_STATE;
+    }
+    
+    uint16_t               len = sizeof(accel_values_t);
+    ble_gatts_hvx_params_t hvx_params;
+    memset(&hvx_params, 0, sizeof(hvx_params));
 
-        hvx_params.handle = p_mpu->accel_char_handles.value_handle;
-        hvx_params.type   = BLE_GATT_HVX_NOTIFICATION;
-        hvx_params.offset = 0;
-        hvx_params.p_len  = &len;
-        hvx_params.p_data = (uint8_t*)accel_values;  
+    hvx_params.handle = p_mpu->accel_char_handles.value_handle;
+    hvx_params.type   = BLE_GATT_HVX_NOTIFICATION;
+    hvx_params.offset = 0;
+    hvx_params.p_len  = &len;
+    hvx_params.p_data = (uint8_t*)accel_values;  
 
-        sd_ble_gatts_hvx(p_mpu->conn_handle, &hvx_params);
-    } 
+    return sd_ble_gatts_hvx(p_mpu->conn_handle, &hvx_params);
 }
