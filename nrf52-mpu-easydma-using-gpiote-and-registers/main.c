@@ -13,9 +13,21 @@
 #include "app_error.h"
 #include "app_mpu.h"
 
-/*UART buffer sizes. */
-#define UART_TX_BUF_SIZE 256
-#define UART_RX_BUF_SIZE 1
+
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
+
+
+/**@brief Function for initializing the nrf log module.
+ */
+static void log_init(void)
+{
+    ret_code_t err_code = NRF_LOG_INIT(NULL);
+    APP_ERROR_CHECK(err_code);
+
+    NRF_LOG_DEFAULT_BACKENDS_INIT();
+}
 
 
 /* Pins to connect MPU. Pinout is different for nRF51 DK and nRF52 DK
@@ -65,56 +77,6 @@ uint8_t p_tx_buffer[1] = {MPU_REG_ACCEL_XOUT_H};  // Reading accelerometer only
 
 /* Flag to indicate to the applications main context that TWIM_RX_BUF_LENGTH number of samples have been transferred from MPU */
 volatile bool twi_transfers_complete = false;
-
-
-/*
- * @brief UART events handler. Not really necessary for this example
- */
-void uart_events_handler(app_uart_evt_t * p_event)
-{
-    switch (p_event->evt_type)
-    {
-        case APP_UART_COMMUNICATION_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_communication);
-            break;
-
-        case APP_UART_FIFO_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_code);
-            break;
-
-        default:
-            break;
-    }
-}
-
-/**
- * @brief UART initialization.
- * Just the usual way. Nothing special here
- */
-void uart_config(void)
-{
-    // Standard UART setup with fast baudrate so we are able to print everything rapidly 
-    uint32_t                     err_code;
-    const app_uart_comm_params_t comm_params =
-    {
-        RX_PIN_NUMBER,
-        TX_PIN_NUMBER,
-        RTS_PIN_NUMBER,
-        CTS_PIN_NUMBER,
-        APP_UART_FLOW_CONTROL_ENABLED,
-        false,
-        UART_BAUDRATE_BAUDRATE_Baud115200
-    };
-    
-    APP_UART_FIFO_INIT(&comm_params,
-                       UART_RX_BUF_SIZE,
-                       UART_TX_BUF_SIZE,
-                       uart_events_handler,
-                       APP_IRQ_PRIORITY_LOW,
-                       err_code);
-
-    APP_ERROR_CHECK(err_code);
-}
 
 
 
@@ -233,27 +195,27 @@ void TIMER0_IRQHandler(void)
  * @brief MPU initialization.
  * Just the usual way. Nothing special here
  */
-void mpu_setup()
+void mpu_init()
 {
     uint32_t err_code;
     
     // MPU setup
-    err_code = mpu_init();
+    err_code = app_mpu_init();
     APP_ERROR_CHECK(err_code); // Check for errors in return value
-    mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG();
+    app_mpu_config_t p_mpu_config = MPU_DEFAULT_CONFIG();
     p_mpu_config.smplrt_div = 19;
     p_mpu_config.accel_config.afs_sel = AFS_2G;
-    err_code = mpu_config(&p_mpu_config);
+    err_code = app_mpu_config(&p_mpu_config);
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
-    mpu_int_pin_cfg_t p_int_pin_cfg = MPU_DEFAULT_INT_PIN_CONFIG();
+    app_mpu_int_pin_cfg_t p_int_pin_cfg = MPU_DEFAULT_INT_PIN_CONFIG();
     p_int_pin_cfg.int_rd_clear = 1; // Read operation will clear the MPU interrupt
-    err_code = mpu_int_cfg_pin(&p_int_pin_cfg);
+    err_code = app_mpu_int_cfg_pin(&p_int_pin_cfg);
     APP_ERROR_CHECK(err_code); // Check for errors in return value
     
-    mpu_int_enable_t p_int_enable = MPU_DEFAULT_INT_ENABLE_CONFIG();
+    app_mpu_int_enable_t p_int_enable = MPU_DEFAULT_INT_ENABLE_CONFIG();
     p_int_enable.data_rdy_en = 1; // Enable interrupt on completed sample
-    err_code = mpu_int_enable(&p_int_enable);
+    err_code = app_mpu_int_enable(&p_int_enable);
     APP_ERROR_CHECK(err_code); // Check for errors in return value
 }
 
@@ -262,15 +224,18 @@ void mpu_setup()
  */
 int main(void)
 {
-    nrf_gpio_range_cfg_output(LED_START, LED_STOP);
     LEDS_CONFIGURE(LEDS_MASK);
     LEDS_OFF(LEDS_MASK);
-    // Initate UART and pring welcome message
-    uart_config();
-    printf("\033[2J\033[;HMPU nRF52 EasyDMA using GPIOTE and registers example. Compiled @ %s\r\n", __TIME__);
     
-    // Initiate the MPU with interrupt
-    mpu_setup();
+    // Initialize.
+    log_init();
+	NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
+    
+    mpu_init();
+    
+    // Start execution.
+    NRF_LOG_INFO("MPU Magnetometer example.");
+    
     
     // Initiate counter to count number of TWI transfers 
     twi_transfer_counter_init();
@@ -285,42 +250,45 @@ int main(void)
     
     while (true)
     {
-        nrf_gpio_pin_set(LED_4); // Turn LED OFF when CPU is sleeping
-        // Wait for new available data 
-        while(twi_transfers_complete == false)
+        if(NRF_LOG_PROCESS() == false)
         {
-            // Make sure any pending events are cleared
-            __SEV();
-            __WFE();
-            // Enter System ON sleep mode
-            __WFE();           
-        }
-        nrf_gpio_pin_clear(LED_4); // Turn LED ON when CPU is working
-        // Print header with total number of samples received
-        printf("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * sample_nr++);
-        
-        // THIS FOR LOOP ASSUMES THAT TWIM_RX_BUF_WIDTH IS 6 BYTES AND THAT ONLY ACCELEROMETER DATA IS SAMPLED
-        // IF A WIDER BUFFER IS USED TO SAMPLE TEMPERATURE AND GYROSCOPE AS WELL YOU SHOULD CHANGE THIS LOOP
-        // TO PRINT EVERYTHING
-        uint8_t *data;
-        // Itterate through entire RX buffer 
-        for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
-        {
-            // Temporarily store each sensor data set found in buffer in accelerometer structure variable
-            data = (uint8_t*)&acc_values;
-            // Itterate through and store all data in each sensor set
-            for(uint8_t i = 0; i<TWIM_RX_BUF_WIDTH; i++)
+            nrf_gpio_pin_set(LED_4); // Turn LED OFF when CPU is sleeping
+            // Wait for new available data 
+            while(twi_transfers_complete == false)
             {
-                *data = p_rx_buffer[j].buffer[5-i];
-                data++;
+                // Make sure any pending events are cleared
+                __SEV();
+                __WFE();
+                // Enter System ON sleep mode
+                __WFE();           
             }
-            // Print sensor data set
-            printf("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
-            // Small delay so not to overload the UART 
-            nrf_delay_ms(1); 
+            nrf_gpio_pin_clear(LED_4); // Turn LED ON when CPU is working
+            // Print header with total number of samples received
+            NRF_LOG_RAW_INFO("\033[3;1HSample %d:\r\n", TWIM_RX_BUF_LENGTH * sample_nr++);
+            
+            // THIS FOR LOOP ASSUMES THAT TWIM_RX_BUF_WIDTH IS 6 BYTES AND THAT ONLY ACCELEROMETER DATA IS SAMPLED
+            // IF A WIDER BUFFER IS USED TO SAMPLE TEMPERATURE AND GYROSCOPE AS WELL YOU SHOULD CHANGE THIS LOOP
+            // TO PRINT EVERYTHING
+            uint8_t *data;
+            // Itterate through entire RX buffer 
+            for(uint8_t j = 0; j<TWIM_RX_BUF_LENGTH; j++)
+            {
+                // Temporarily store each sensor data set found in buffer in accelerometer structure variable
+                data = (uint8_t*)&acc_values;
+                // Itterate through and store all data in each sensor set
+                for(uint8_t i = 0; i<TWIM_RX_BUF_WIDTH; i++)
+                {
+                    *data = p_rx_buffer[j].buffer[5-i];
+                    data++;
+                }
+                // Print sensor data set
+                NRF_LOG_RAW_INFO("X %06d\r\nY %06d\r\nZ %06d\r\n\r\n", (int16_t)acc_values.x, (int16_t)acc_values.y, (int16_t)acc_values.z);
+                // Small delay so not to overload the UART 
+                nrf_delay_ms(2); 
+            }
+            // Reset data ready flag
+            twi_transfers_complete = false;
         }
-        // Reset data ready flag
-        twi_transfers_complete = false;
     }
 }
 /** @} */
