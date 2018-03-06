@@ -11,7 +11,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
- 
+#if defined(MPU_USES_TWI)
+#warning "INFO: The MPU is using TWI drivers."
+#elif  defined(MPU_USES_SPI)
+#warning "INFO: The MPU is using SPI drivers."
+#elif 
+#error "ERROR: Plese define either MPU_USES_TWI or MPU_USES_SPI."
+#endif
 
 /**@brief Function to initiate TWI drivers
  *
